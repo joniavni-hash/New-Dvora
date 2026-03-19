@@ -1,0 +1,38 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0\froman\fcharset0 Times New Roman;}{\f1\fswiss\fcharset0 Arial;}}
+{\colortbl;\red0\green0\blue0;}
+\paperw12240\paperh15840\margl1800\margr1800\margt1440\margb1440
+
+\f1\fs28\b Google Ads API Tool - Design Document\b0\fs22\par
+\par
+\fs24\b Overview\b0\fs22\par
+Villa Lithos is a vacation rental property located in Porto Rafti, Greece.\par
+This tool provides internal, automated monitoring of Google Ads campaign performance for the property owner.\par
+\par
+\fs24\b Purpose\b0\fs22\par
+\bullet  Monitor campaign performance metrics: impressions, clicks, cost, CTR, conversions\par
+\bullet  Generate automated weekly performance reports\par
+\bullet  Support data-driven budget and targeting decisions for the property owner\par
+\bullet  Alert the property manager to significant changes in campaign performance\par
+\par
+\fs24\b Users\b0\fs22\par
+Internal use only. The tool is accessed exclusively by the property owner (Yoni Avni) and their AI-powered personal assistant (Dvora). No external users, clients, or public access of any kind.\par
+\par
+\fs24\b API Usage\b0\fs22\par
+\bullet  Read-only access to campaign metrics via the Google Ads API\par
+\bullet  Queries cover: campaigns, ad groups, keywords, ads, and performance metrics\par
+\bullet  No programmatic creation, modification, or deletion of ads, budgets, or bids\par
+\bullet  Estimated API calls: fewer than 100 per day\par
+\bullet  Data is fetched on demand or on a scheduled daily basis\par
+\par
+\fs24\b Architecture\b0\fs22\par
+The tool runs as a private local service on the property owner's server (WSL2/Linux). It uses OAuth 2.0 for secure authentication. API responses are stored locally in a JSON file and surfaced to the owner via a private messaging interface.\par
+\par
+\fs24\b Data Handling\b0\fs22\par
+\bullet  All data is stored locally and never shared with third parties\par
+\bullet  No personal user data is collected\par
+\bullet  The tool does not re-display or redistribute Google Ads data beyond the property owner\par
+\bullet  Full compliance with the Google Ads API Terms of Service\par
+\par
+\f1\fs18 Villa Lithos | Porto Rafti, Greece | Internal Use Only | March 2026\par
+}

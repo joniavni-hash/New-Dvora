@@ -1,0 +1,114 @@
+📊 *Google Ads — Villa Lithos*
+_17.03.2026_
+
+*אתמול:*
+• חשיפות: 60
+• קליקים: 5 | CTR: 8.3%
+• המרות: 0
+• הוצאה: 5 ₪
+
+*מתחילת March (17 ימים):*
+• חשיפות: 7,302
+• קליקים: 563 | CTR: 7.7%
+• המרות: 28
+• הוצאה: 841 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 559 קליקים | 28 המרות | 840 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_18.03.2026_
+
+*אתמול:*
+• חשיפות: 984
+• קליקים: 46 | CTR: 4.7%
+• המרות: 2
+• הוצאה: 23 ₪
+
+*מתחילת March (18 ימים):*
+• חשיפות: 8,557
+• קליקים: 645 | CTR: 7.5%
+• המרות: 35
+• הוצאה: 911 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 641 קליקים | 35 המרות | 911 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_19.03.2026_
+
+*אתמול:*
+• חשיפות: 835
+• קליקים: 32 | CTR: 3.8%
+• המרות: 3
+• הוצאה: 23 ₪
+
+*מתחילת March (19 ימים):*
+• חשיפות: 9,886
+• קליקים: 707 | CTR: 7.2%
+• המרות: 47
+• הוצאה: 962 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 703 קליקים | 47 המרות | 961 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
