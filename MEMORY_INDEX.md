@@ -23,8 +23,10 @@
 - `policies/EXTERNAL_ACTIONS_POLICY.md`
 ## אם המשימה על מערכת מחוברת
 קראי:
+- `CAPABILITY_INDEX.md`
 - הקובץ המתאים ב-`integrations/`
 - ואם צריך, גם את ה-runbook המתאים ב-`runbooks/`
+- אם המשימה רגישה או כרוכה בפעולה חיצונית, גם `policies/EXTERNAL_ACTIONS_POLICY.md`
 ## אם יש שאלה האם לשמור משהו לזיכרון
 קראי:
 - `policies/MEMORY_POLICY.md`

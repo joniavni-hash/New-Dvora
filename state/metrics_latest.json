@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-18T16:38:27.332955+00:00",
+  "generated_at": "2026-03-20T13:24:28.654533+00:00",
   "period_days": 30,
-  "total_sessions": 61,
-  "total_response_pairs": 1608,
+  "total_sessions": 71,
+  "total_response_pairs": 1801,
   "model_stats": {
     "claude-haiku-4-5": {
       "count": 25,
@@ -13,12 +13,12 @@
       "avg_tool_calls": 0.2
     },
     "delivery-mirror": {
-      "count": 4,
-      "avg_latency": 1.51,
-      "median_latency": 1.27,
-      "p90_latency": 2.81,
-      "p99_latency": 3.28,
-      "avg_tool_calls": 1.75
+      "count": 5,
+      "avg_latency": 1.34,
+      "median_latency": 0.96,
+      "p90_latency": 2.63,
+      "p99_latency": 3.26,
+      "avg_tool_calls": 1.6
     },
     "gpt-4o": {
       "count": 6,
@@ -29,48 +29,54 @@
       "avg_tool_calls": 0
     },
     "opus": {
-      "count": 137,
-      "avg_latency": 8.14,
-      "median_latency": 6.41,
-      "p90_latency": 14.39,
-      "p99_latency": 28.22,
-      "avg_tool_calls": 2.09
+      "count": 320,
+      "avg_latency": 8.0,
+      "median_latency": 5.94,
+      "p90_latency": 14.58,
+      "p99_latency": 31.42,
+      "avg_tool_calls": 2.19
     },
     "sonnet": {
-      "count": 1436,
-      "avg_latency": 9.36,
-      "median_latency": 6.23,
-      "p90_latency": 19.54,
-      "p99_latency": 43.64,
-      "avg_tool_calls": 2.23
+      "count": 1445,
+      "avg_latency": 9.39,
+      "median_latency": 6.35,
+      "p90_latency": 19.57,
+      "p99_latency": 43.6,
+      "avg_tool_calls": 2.22
     }
   },
   "cost": {
-    "today": 48.959893,
-    "this_week": 156.393569,
-    "last_30d": 300.955259
+    "today": 8.942567,
+    "this_week": 227.56636,
+    "last_30d": 372.12805
   },
-  "total_output_tokens": 1456404,
+  "total_output_tokens": 1602534,
   "busiest_hours_utc": {
-    "10": 159,
-    "21": 128,
-    "17": 121,
-    "15": 113,
-    "19": 98,
-    "13": 98,
-    "18": 96,
-    "20": 95
+    "10": 184,
+    "17": 139,
+    "21": 131,
+    "9": 126,
+    "13": 119,
+    "15": 116,
+    "11": 103,
+    "18": 102
   },
   "activity_by_weekday": {
-    "Wednesday": 362,
-    "Thursday": 265,
-    "Friday": 224,
+    "Wednesday": 376,
+    "Thursday": 377,
+    "Friday": 291,
     "Saturday": 41,
     "Sunday": 156,
     "Monday": 351,
     "Tuesday": 209
   },
   "slowest_responses": [
+    {
+      "latency_s": 95.361,
+      "model": "opus",
+      "timestamp": "2026-03-19T14:22:41.484000+00:00",
+      "user_text": "Conversation info (untrusted metadata):\n```json\n{\n  \"message_id\": \"3BDF22603E556D9376C3\",\n  \"reply_to_id\": \"3EB0DCB75FB1"
+    },
     {
       "latency_s": 86.054,
       "model": "sonnet",
@@ -94,12 +100,6 @@
       "model": "sonnet",
       "timestamp": "2026-03-12T16:42:56.955000+00:00",
       "user_text": "[Queued messages while agent was busy]\n\n---\nQueued #1\nConversation info (untrusted metadata):\n```json\n{\n  \"message_id\": "
-    },
-    {
-      "latency_s": 69.877,
-      "model": "sonnet",
-      "timestamp": "2026-03-14T12:49:26.042000+00:00",
-      "user_text": "Conversation info (untrusted metadata):\n```json\n{\n  \"message_id\": \"3AC909239E39B46AB9E4\",\n  \"sender_id\": \"+972543333556\""
     }
   ]
 }
