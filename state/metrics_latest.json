@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-20T13:24:28.654533+00:00",
+  "generated_at": "2026-03-20T19:53:19.515925+00:00",
   "period_days": 30,
-  "total_sessions": 71,
-  "total_response_pairs": 1801,
+  "total_sessions": 74,
+  "total_response_pairs": 1872,
   "model_stats": {
     "claude-haiku-4-5": {
       "count": 25,
@@ -29,12 +29,12 @@
       "avg_tool_calls": 0
     },
     "opus": {
-      "count": 320,
-      "avg_latency": 8.0,
-      "median_latency": 5.94,
-      "p90_latency": 14.58,
-      "p99_latency": 31.42,
-      "avg_tool_calls": 2.19
+      "count": 391,
+      "avg_latency": 10.43,
+      "median_latency": 6.69,
+      "p90_latency": 21.16,
+      "p99_latency": 67.37,
+      "avg_tool_calls": 2.14
     },
     "sonnet": {
       "count": 1445,
@@ -46,25 +46,25 @@
     }
   },
   "cost": {
-    "today": 8.942567,
-    "this_week": 227.56636,
-    "last_30d": 372.12805
+    "today": 99.771193,
+    "this_week": 318.394986,
+    "last_30d": 462.956676
   },
-  "total_output_tokens": 1602534,
+  "total_output_tokens": 1700218,
   "busiest_hours_utc": {
     "10": 184,
-    "17": 139,
+    "17": 160,
     "21": 131,
+    "15": 129,
     "9": 126,
-    "13": 119,
-    "15": 116,
-    "11": 103,
-    "18": 102
+    "13": 125,
+    "18": 122,
+    "11": 103
   },
   "activity_by_weekday": {
     "Wednesday": 376,
     "Thursday": 377,
-    "Friday": 291,
+    "Friday": 362,
     "Saturday": 41,
     "Sunday": 156,
     "Monday": 351,
@@ -90,16 +90,16 @@
       "user_text": "Conversation info (untrusted metadata):\n```json\n{\n  \"message_id\": \"3A51495330983D92BC80\",\n  \"sender_id\": \"16962983402711"
     },
     {
-      "latency_s": 75.275,
-      "model": "sonnet",
-      "timestamp": "2026-03-12T08:38:45.125000+00:00",
-      "user_text": "Conversation info (untrusted metadata):\n```json\n{\n  \"message_id\": \"3A26155828DE809A4B91\",\n  \"sender_id\": \"+972543333556\""
+      "latency_s": 79.961,
+      "model": "opus",
+      "timestamp": "2026-03-20T18:37:37.999000+00:00",
+      "user_text": "Conversation info (untrusted metadata):\n```json\n{\n  \"message_id\": \"3AA3B95F34E7FDE14E5E\",\n  \"sender_id\": \"+972543333556\""
     },
     {
-      "latency_s": 73.019,
-      "model": "sonnet",
-      "timestamp": "2026-03-12T16:42:56.955000+00:00",
-      "user_text": "[Queued messages while agent was busy]\n\n---\nQueued #1\nConversation info (untrusted metadata):\n```json\n{\n  \"message_id\": "
+      "latency_s": 77.852,
+      "model": "opus",
+      "timestamp": "2026-03-20T17:04:19.173000+00:00",
+      "user_text": "Conversation info (untrusted metadata):\n```json\n{\n  \"message_id\": \"3AB085D95FC0D76F98C8\",\n  \"sender_id\": \"+972543333556\""
     }
   ]
 }

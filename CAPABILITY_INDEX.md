@@ -79,3 +79,65 @@ Load order:
 Notes:
 - אם צריך ממש לבצע הזמנה, דרוש אישור מפורש
 - אם לא ברור איזה חשבון להשתמש, שואלים רק על בחירת החשבון, לא על עצם קיום החיבור
+
+## Google Ads
+Keywords:
+- google ads
+- campaign
+- keywords
+- villa lithos
+- קמפיין
+- מודעות
+
+Load order:
+1. `integrations/GOOGLE_ADS.md`
+2. `scripts/google_ads_report.py` for credentials
+3. `HEARTBEAT.md` for monitoring schedule
+
+## Gmail / Google Workspace
+Keywords:
+- gmail
+- google calendar
+- google sheets
+- google docs
+- google drive
+- contacts
+- tasks
+
+Load order:
+1. `integrations/GMAIL.md`
+2. GOG CLI documentation
+
+Notes:
+- Gmail is NOT the default for email
+- Outlook is default. Gmail only when explicitly requested.
+
+## GitHub
+Keywords:
+- github
+- git
+- repo
+- push
+- commit
+
+Load order:
+1. `integrations/GITHUB.md`
+
+## Vercel
+Keywords:
+- vercel
+- dashboard
+- deploy
+
+Load order:
+1. `integrations/VERCEL.md`
+
+## Tailscale
+Keywords:
+- tailscale
+- funnel
+- tunnel
+- vpn
+
+Load order:
+1. `integrations/TAILSCALE.md`
