@@ -141,3 +141,21 @@ Keywords:
 
 Load order:
 1. `integrations/TAILSCALE.md`
+
+## Web Search / Browser
+Keywords:
+- search
+- google
+- browse
+- website
+- חיפוש
+
+Load order:
+1. `integrations/CHROME_USER.md`
+2. Use profile=user for authenticated/search tasks
+3. Fall back to headless openclaw browser for simple fetches
+
+Notes:
+- Chrome user browser is the PRIMARY search method
+- Brave API is broken — do not rely on it
+- If Chrome is not running, inform Yoni to start it
