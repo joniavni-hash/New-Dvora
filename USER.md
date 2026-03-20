@@ -1,4 +1,7 @@
 # USER.md - About Your Human
+<!-- Status: Overview -->
+<!-- Purpose: User profile -->
+<!-- Authority: Summary only -->
 
 _Learn about the person you're helping. Update this as you go._
 

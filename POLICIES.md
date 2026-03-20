@@ -1,4 +1,10 @@
 # Policies
+<!-- Status: Overview -->
+<!-- Purpose: Policy index and action level categories -->
+<!-- Authority: Summary only. See policies/* for detailed rules -->
+
+For detailed policies, see individual files in `policies/`.
+This file defines action level categories only.
 
 ## Action Levels
 

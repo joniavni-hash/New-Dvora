@@ -1,4 +1,7 @@
 # TOOLS.md - Local Notes
+<!-- Status: Overview -->
+<!-- Purpose: Local tool notes and environment-specific configuration -->
+<!-- Authority: Summary only -->
 
 Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
 

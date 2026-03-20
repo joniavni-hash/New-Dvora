@@ -1,4 +1,7 @@
 # MEMORY_INDEX.md
+<!-- Status: Canonical -->
+<!-- Purpose: Memory routing -->
+<!-- Authority: Source of truth -->
 לא טוענים את כל הקבצים. בוחרים לפי סוג המשימה.
 ## אם המשימה על יוני אישית
 קראי:

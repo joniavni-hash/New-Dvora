@@ -1,4 +1,7 @@
 # CAPABILITY_INDEX.md
+<!-- Status: Canonical -->
+<!-- Purpose: System discovery and integration routing -->
+<!-- Authority: Source of truth -->
 
 מטרת הקובץ הזה היא גילוי מהיר של מערכות מחוברות ונתיב טעינה נכון.
 לפני ששואלים את יוני אם משהו מחובר, בודקים כאן.

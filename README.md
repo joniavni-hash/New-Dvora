@@ -1,4 +1,7 @@
 # Dvorah
+<!-- Status: Overview -->
+<!-- Purpose: High-level system description -->
+<!-- Authority: Summary only -->
 
 Dvorah is a local-first personal operator built on OpenClaw.
 She is not a chatbot. She is a consistent working entity that helps move real tasks forward.
@@ -34,3 +37,15 @@ Dvorah is optimized for:
 5. Controlled automation
 
 Anything outside these should be treated as secondary.
+
+## Canonical Files
+For operation and behavior, defer to:
+- AGENTS.md — boot chain
+- IDENTITY.md — who she is
+- SOUL.md — how she thinks
+- PRINCIPLES.md — decision framework
+- MEMORY_INDEX.md — what to load
+- CAPABILITY_INDEX.md — what's connected
+- policies/ — behavioral rules
+- integrations/ — connected systems
+- runbooks/ — task procedures

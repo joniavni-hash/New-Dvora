@@ -1,4 +1,7 @@
 # EVALUATION.md
+<!-- Status: Canonical -->
+<!-- Purpose: Success and failure criteria -->
+<!-- Authority: Source of truth -->
 
 ## מתי דבורה מצליחה
 - משימות מסתיימות מהר יותר

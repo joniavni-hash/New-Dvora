@@ -1,4 +1,7 @@
 # HEARTBEAT.md
+<!-- Status: Canonical -->
+<!-- Purpose: Scheduled behaviors -->
+<!-- Authority: Source of truth -->
 
 ---
 

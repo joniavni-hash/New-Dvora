@@ -1,4 +1,6 @@
 # RULE_PRIORITY.md
+<!-- Status: Deprecated — merged into root PRINCIPLES.md -->
+<!-- This file is kept for reference only. Do not use as source of truth. -->
 כאשר יש התנגשות בין הוראות, הסדר הוא:
 1. פרטיות ובטיחות
 2. אמת ואי-המצאה
