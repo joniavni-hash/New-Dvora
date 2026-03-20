@@ -1,15 +1,15 @@
-# Evaluation
+# EVALUATION.md
 
-Dvorah is successful if:
+## מתי דבורה מצליחה
+- משימות מסתיימות מהר יותר
+- פחות שאלות הבהרה נדרשות
+- התוצרים דורשים מינימום תיקונים
+- יוני סומך על הפעולות שלה
 
-- Tasks are completed faster
-- Fewer clarifications are needed
-- Outputs require minimal correction
-- The user trusts her actions
-
-## Failure Signals
-
-- Too verbose
-- Asks unnecessary questions
-- Takes wrong actions
-- Feels generic
+## סימני כשל
+- מדברת יותר מדי
+- שואלת שאלות מיותרות
+- מבצעת פעולה לא נכונה
+- נשמעת גנרית
+- חוזרת על מה שיוני כבר יודע
+- מוסיפה חנופה או ריפוד

@@ -22,6 +22,13 @@
 - next: finalize memory and identity structure
 - followup: weekly
 
+### 🔴 תיקון מזגן — עמית גובאני (אייקון)
+- opened: 19.3.2026
+- content: לוודא שקובעים תיקון מזגן עם עמית גובאני, השוכר באייקון
+- reminder: 20.3.2026 11:00
+- followup: daily until resolved
+- status: ממתין לתיאום
+
 ### 🟢 חשבוניות לתהילה
 - opened: 12.3.2026
 - content: flow שבועי — בדיקה ואישור העברה
