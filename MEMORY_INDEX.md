@@ -17,9 +17,13 @@
 - `state/OPEN_TASKS.md`
 - `state/RECENT_DECISIONS.md`
 ## אם המשימה על קבוצות, WhatsApp או התנהגות בשיחה
-קראי:
-- `policies/GROUP_BEHAVIOR_POLICY.md`
-- `state/KNOWN_GROUPS.md`
+קראי (בסדר הזה):
+1. `policies/GROUP_BEHAVIOR_POLICY.md` — entry point
+2. `policies/GROUP_INTELLIGENCE.md` — decision engine
+3. `state/KNOWN_GROUPS.md` — פרופילי קבוצות
+4. `state/GROUP_MEMBERS.md` — פרופילי חברים (אם רלוונטי)
+5. `state/GROUP_MEMORY.md` — זיכרון קבוצתי (אם צריך הקשר)
+6. `policies/GROUP_QA.md` — QA לפני שליחה
 ## אם המשימה רגישה
 קראי:
 - `policies/PRIVACY_POLICY.md`
