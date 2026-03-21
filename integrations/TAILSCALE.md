@@ -1,4 +1,4 @@
-# TAILSCALE.md
+# Tailscale
 
 ## Status
 Connected

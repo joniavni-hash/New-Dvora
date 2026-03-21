@@ -1,6 +1,9 @@
 # Control4 Integration
 Last updated: 2026-03-18
 
+## Status
+Connected
+
 ## חשבון
 - **4sight account:** Yoni-a@telefire.co.il
 - **Controller:** EA-3 (control4_ea3_000FFF99B6A9)

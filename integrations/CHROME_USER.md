@@ -1,4 +1,4 @@
-# CHROME_USER.md
+# Chrome (Debug Port)
 
 ## Status
 Connected (requires Chrome running with debug port)

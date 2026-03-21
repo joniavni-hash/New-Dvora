@@ -96,23 +96,31 @@ def parse_integrations():
         content = md_file.read_text(encoding="utf-8")
         name = md_file.stem.replace("_", " ").title()
 
-        # Try to extract name from "Integration:" field or first heading
+        # Try to extract name from first heading, then filename
+        heading = re.search(r"^#\s+(.+)", content, re.MULTILINE)
+        if heading:
+            name = heading.group(1).strip()
+            # Remove trailing "Integration" / ".md" noise
+            name = re.sub(r"\s*(Integration|\.md)\s*$", "", name, flags=re.IGNORECASE).strip()
         integ_match = re.search(r"^Integration:\s*(.+)", content, re.MULTILINE)
         if integ_match:
             name = integ_match.group(1).strip()
-        else:
-            heading = re.search(r"^#\s+(.+)", content, re.MULTILINE)
-            if heading:
-                name = heading.group(1).strip()
 
-        # Extract status — check both "Status: X" and presence of ✅/⏳ markers
+        # Extract status — multiple formats:
+        #   "Status: Connected"  (inline)
+        #   "## Status\nConnected" (heading + next line)
+        status_key = "unknown"
+        # Try inline format first
         status_match = re.search(r"^[Ss]tatus:\s*(\w+)", content, re.MULTILINE)
         if status_match:
             status_key = status_match.group(1).lower()
-        elif "✅" in content and "API" in content:
-            status_key = "connected"
         else:
-            status_key = "unknown"
+            # Try heading format: ## Status\n<value>
+            heading_match = re.search(r"^##\s+[Ss]tatus\s*\n+(.+)", content, re.MULTILINE)
+            if heading_match:
+                val = heading_match.group(1).strip().split("(")[0].strip().split()[0].lower()
+                if val:
+                    status_key = val
         badge_class, badge_text = status_map.get(status_key, ("warn", status_key))
 
         results.append({

@@ -1,4 +1,4 @@
-# GOOGLE_ADS.md
+# Google Ads
 
 ## Status
 Connected

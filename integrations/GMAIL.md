@@ -1,4 +1,4 @@
-# GMAIL.md
+# Gmail
 
 ## Status
 Connected (refreshed 20.3.2026)

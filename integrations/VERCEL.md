@@ -1,4 +1,4 @@
-# VERCEL.md
+# Vercel
 
 ## Status
 Connected

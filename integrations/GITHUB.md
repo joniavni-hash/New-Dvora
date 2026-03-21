@@ -1,4 +1,4 @@
-# GITHUB.md
+# GitHub
 
 ## Status
 Connected

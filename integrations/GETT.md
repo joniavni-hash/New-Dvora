@@ -1,4 +1,4 @@
-# GETT.md
+# Gett
 
 ## Status
 Connected
