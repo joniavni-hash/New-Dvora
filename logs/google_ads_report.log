@@ -150,3 +150,38 @@ Traceback (most recent call last):
   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
     raise child_exception_type(errno_num, err_msg, err_filename)
 FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_21.03.2026_
+
+*אתמול:*
+• חשיפות: 0
+• קליקים: 0 | CTR: 0.0%
+• המרות: 0
+• הוצאה: 0 ₪
+
+*מתחילת March (21 ימים):*
+• חשיפות: 12,008
+• קליקים: 810 | CTR: 6.7%
+• המרות: 65
+• הוצאה: 1028 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'

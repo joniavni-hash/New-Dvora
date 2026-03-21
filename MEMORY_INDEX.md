@@ -33,5 +33,15 @@
 ## אם יש שאלה האם לשמור משהו לזיכרון
 קראי:
 - `policies/MEMORY_POLICY.md`
+
+## אם יוני מתקן אותי או אני צריכה לבדוק דפוסי טעויות
+קראי:
+- `memory/corrections.md`
+- `policies/CORRECTION_POLICY.md`
+
+## אם צריך לבדוק ביצועים או מדדים
+הריצי:
+- `python3 scripts/metrics.py`
+- או קראי `state/metrics_latest.json`
 ## כלל ברזל
 לא טוענים secrets כברירת מחדל.
