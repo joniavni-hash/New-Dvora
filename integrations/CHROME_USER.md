@@ -36,7 +36,7 @@ socat TCP-LISTEN:9222,fork,reuseaddr TCP:$(ip route show default | awk '{print $
 - User-data-dir is separate profile (ChromeDebug), not main Chrome profile
 
 ## When to Use
-- Web search (primary method now — replaces broken Brave API)
+- Web search (primary method)
 - Accessing authenticated services
 - Scraping sites that block headless browsers
 - Any task that needs real browser with logins

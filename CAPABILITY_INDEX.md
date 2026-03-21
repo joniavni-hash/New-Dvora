@@ -157,5 +157,4 @@ Load order:
 
 Notes:
 - Chrome user browser is the PRIMARY search method
-- Brave API is broken — do not rely on it
 - If Chrome is not running, inform Yoni to start it
