@@ -185,3 +185,31 @@ Traceback (most recent call last):
   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
     raise child_exception_type(errno_num, err_msg, err_filename)
 FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 155, in main
+    data, errors = get_report()
+                   ^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 46, in get_report
+    client = GoogleAdsClient.load_from_storage(YAML_PATH)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/client.py", line 317, in load_from_storage
+    kwargs: Dict[str, Any] = cls._get_client_kwargs(config_data)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/client.py", line 196, in _get_client_kwargs
+    "credentials": oauth2.get_credentials(config_data),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/oauth2.py", line 151, in get_credentials
+    return get_installed_app_credentials(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/oauth2.py", line 56, in initialize_credentials_wrapper
+    credentials.refresh(Request())
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/credentials.py", line 412, in refresh
+    ) = reauth.refresh_grant(
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/reauth.py", line 370, in refresh_grant
+    _client._handle_error_response(response_data, retryable_error)
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/_client.py", line 69, in _handle_error_response
+    raise exceptions.RefreshError(
+google.auth.exceptions.RefreshError: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})

@@ -1,0 +1,17 @@
+{
+  "last_run": {
+    "daily_digest": null,
+    "group_summary": null,
+    "email_followup": null,
+    "health_check": null,
+    "daily_memory": null,
+    "weekly_metrics": null,
+    "weekly_corrections": null,
+    "weekly_recursive_summary": null,
+    "x_twitter_digest": null,
+    "fitness_weigh_in": null,
+    "fitness_weekly_summary": null,
+    "google_ads_check": null
+  },
+  "note": "Track when each heartbeat task last ran to avoid duplicates"
+}

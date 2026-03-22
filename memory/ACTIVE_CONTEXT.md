@@ -21,5 +21,17 @@ Last updated: 2026-03-20
 - סוכנת בתהליך הקמה עבור מתן
 - שם נבחר: אושר
 - סטטוס: ongoing
+
+### שיפור עצמי — דבורה v2
+- תוכנית 10 נקודות אושרה 22.3.2026
+- הושלם: corrections log (3 תיקונים), health check script, heartbeat tracker, daily memory
+- בתהליך: model routing, context compression, task delegation framework
+- ממתין ליוני: Brave API key
+
+### דיאטת אבא חטוב
+- התחלה: 22.3.2026
+- יעד: 73→68 ק"ג
+- מעקב: state/fitness_tracker.md
+- סיכום שבועי: מוצ"ש 20:00
 ## תזכורת
 הקובץ הזה הוא על מה שחי עכשיו, לא על ביוגרפיה ולא על secrets.
