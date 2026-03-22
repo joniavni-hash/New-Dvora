@@ -11,16 +11,28 @@ from datetime import datetime, date
 import sys
 import os
 
-# Config
+# Config — load from secrets/.env
+SECRETS_PATH = os.path.join(os.path.expanduser('~/.openclaw/workspace/secrets'), '.env')
 YAML_PATH = '/tmp/google_ads_mcc.yaml'
-CUSTOMER_ID = "5627405650"
-MCC_ID = "7395869307"
-DEVELOPER_TOKEN = 'REDACTED_DEV_TOKEN'
-CLIENT_ID = 'REDACTED_CLIENT_ID'
-CLIENT_SECRET = 'REDACTED_CLIENT_SECRET'
-REFRESH_TOKEN = 'REDACTED_REFRESH_TOKEN'
-
 OPENCLAW_DIR = os.path.expanduser('~/.openclaw')
+
+def _load_secrets():
+    secrets = {}
+    with open(SECRETS_PATH) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                secrets[k.strip()] = v.strip()
+    return secrets
+
+_secrets = _load_secrets()
+CUSTOMER_ID = _secrets.get('GOOGLE_ADS_CUSTOMER_ID', '5627405650')
+MCC_ID = _secrets.get('GOOGLE_ADS_MCC_ID', '7395869307')
+DEVELOPER_TOKEN = _secrets['GOOGLE_ADS_DEVELOPER_TOKEN']
+CLIENT_ID = _secrets['GOOGLE_ADS_CLIENT_ID']
+CLIENT_SECRET = _secrets['GOOGLE_ADS_CLIENT_SECRET']
+REFRESH_TOKEN = _secrets['GOOGLE_ADS_REFRESH_TOKEN']
 
 
 def write_yaml():

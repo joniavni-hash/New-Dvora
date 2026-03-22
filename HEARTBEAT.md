@@ -122,24 +122,10 @@
 
 ---
 
-## 📊 מעקב Google Ads — Villa Lithos (פעם בשבוע)
+## 📊 מעקב Google Ads — Villa Lithos (מושהה)
 
-בדקי פעם בשבוע (בערך) את ביצועי קבוצת "Large villas" ב-Google Ads.
-**שלחי עדכון ליוני רק אם** קרה אחד מהבאים:
-- קליקים השבוע > 20
-- CTR ירד מתחת ל-3%
-- עלות יומית קרובה ל-$50 (תקציב מלא)
-- חשיפות עלו פי 3+ לעומת הבדיקה הקודמת
-
-**נתוני baseline (16.3.2026):** 13 חשיפות, 2 קליקים, $0.93 — לפני הוספת 48 מילות מפתח
-**אסטרטגיה נוכחית:** Maximize Clicks, max CPC $2
-**חשבון:** customers/5627405650, קבוצה ID 194291769837, login-customer-id: 7395869307
-
-```python
-# SELECT ad_group.name, metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.ctr
-# FROM ad_group WHERE ad_group.id = 194291769837 AND segments.date DURING LAST_7_DAYS
-# API: POST https://googleads.googleapis.com/v20/customers/5627405650/googleAds:search
-```
+**סטטוס:** הקמפיין הושהה ב-20.3.2026 (מצב ביטחוני). הבדיקה השבועית מושהית.
+**לחידוש:** כשיוני יבקש להפעיל מחדש — לתקן קודם את ה-credentials בסקריפט (הועברו חלקית ל-secrets/.env), ואז לחדש את הבדיקה.
 
 ---
 
