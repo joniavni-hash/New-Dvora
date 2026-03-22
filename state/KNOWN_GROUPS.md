@@ -75,10 +75,12 @@
 
 ---
 
-## כיתה ב׳-3 האלופה
+## כיתה ב׳-3 האלופה (הקבוצה של אלון)
 - id: 120363418497534459@g.us
 - type: school
 - role: observer
+- aliases: ["הקבוצה של אלון", "כיתה ב"]
+- teacher: שירן
 - formality: n/a
 - activity_level: high
 - tone: n/a
