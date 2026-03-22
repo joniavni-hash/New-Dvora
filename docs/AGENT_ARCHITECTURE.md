@@ -62,10 +62,10 @@ Yoni → Dvorah (orchestrator)
 | Context | Does NOT inherit conversation — must be passed explicitly |
 | Memory | Cannot search — orchestrator must provide relevant context |
 
-## Phase 1: WhatsApp Group Agent (Week 1)
+## Phase 1: אודיה — סוכנת הודעות (Week 1)
 
 ### Goal
-When a group message arrives, spawn a sub-agent to analyze it and return a decision. Dvorah reviews and acts.
+When a group message arrives, spawn Odya to analyze, research if needed, and return a ready-to-send response. Dvorah reviews and acts.
 
 ### Flow
 ```

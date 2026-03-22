@@ -24,9 +24,16 @@ Last updated: 2026-03-20
 
 ### שיפור עצמי — דבורה v2
 - תוכנית 10 נקודות אושרה 22.3.2026
-- הושלם: corrections log (3 תיקונים), health check script, heartbeat tracker, daily memory
-- בתהליך: model routing, context compression, task delegation framework
+- הושלם: corrections log, health check script, heartbeat tracker, daily memory
+- בתהליך: model routing, context compression
 - ממתין ליוני: Brave API key
+
+### אודיה (Odya) — סוכנת הודעות
+- Sub-agent ראשון, מנתחת הודעות קבוצתיות
+- POC הושלם בהצלחה 22.3.2026
+- מצב: אפשרות ב' — מחליטה + עושה מחקר + מחזירה תשובה מוכנה
+- Prompt: agents/group_agent_prompt.md
+- Context assembler: scripts/group_agent_context.py
 
 ### דיאטת אבא חטוב
 - התחלה: 22.3.2026
