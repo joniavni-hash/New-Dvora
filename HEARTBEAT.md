@@ -51,7 +51,7 @@ python3 /home/jonia/.openclaw/workspace/scripts/health_check.py
 
 **בכל heartbeat אחרי 18:00 (לפני 20:00):**
 1. `python3 scripts/group_messages.py "120363418497534459" --days 1`
-2. יש הודעות → אודיה מסכמת
+2. יש הודעות → אודיה מסכמת (**model: haiku**)
 3. שלחי ל**קבוצה Yoni <> Shani <> Dvora** (120363425514726135@g.us)
 4. אין הודעות → דלגי
 5. כבר נשלח היום → דלגי
@@ -140,6 +140,18 @@ python3 /home/jonia/.openclaw/workspace/scripts/x_feed.py
 
 ---
 
+## 🐕 הזמנת אוכל כלבים — כל 35 ימים
+
+**חישוב:** 35 ימים מתאריך הזמנה אחרונה (23.3.2026)
+**מועד הבא:** 27.4.2026
+
+**בכל heartbeat לאחר 35 ימים מההזמנה האחרונה:**
+"⏰ זמן הזמנת אוכל כלבים - Hills W/D 10 ק"ג מ-All4Pet (399 ש"ח)
+🔗 https://www.all4pet.co.il/product/hills-prescription-diet-הילס-פרסקריפשן-דיאט-10-קג-מזון-יבש-רפואי-לכלביםדאבליודי
+👤 joni.avni@gmail.com_2 / nivi2026"
+
+---
+
 ## 📊 שבועי — ראשון
 
 **בכל heartbeat ביום ראשון:**
@@ -149,6 +161,19 @@ python3 /home/jonia/.openclaw/workspace/scripts/x_feed.py
 python3 /home/jonia/.openclaw/workspace/scripts/metrics.py
 ```
 סיכום קצר ליוני.
+
+## ⚖️ תזכורת שקילה — כל ראשון ב-8:00
+
+**בכל heartbeat שנופל ביום ראשון אחרי 7:30 ולפני 9:00:**
+שלחי ליוני תזכורת שקילה: "בוקר טוב! יום שקילה — תעלה על המשקל ותשלח לי."
+**אחרי שיוני שולח משקל:** תעדי ב-memory היומי.
+
+## 📊 סיכום דיאטה שבועי — כל ראשון ב-20:00
+
+**בכל heartbeat שנופל ביום ראשון אחרי 19:30:**
+סכמי את שבוע הדיאטה: ממוצע קלורי, חלבון, ימי עמידה ביעד, שינוי משקל, מגמה.
+
+---
 
 ### סריקת תיקונים
 סרקי `memory/corrections.md`:

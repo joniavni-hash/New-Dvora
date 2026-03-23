@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-22T05:15:07.138311+00:00",
+  "generated_at": "2026-03-22T19:21:38.964909+00:00",
   "period_days": 30,
-  "total_sessions": 80,
-  "total_response_pairs": 2064,
+  "total_sessions": 91,
+  "total_response_pairs": 2298,
   "model_stats": {
     "claude-haiku-4-5": {
       "count": 25,
@@ -29,59 +29,64 @@
       "avg_tool_calls": 0
     },
     "opus": {
-      "count": 577,
-      "avg_latency": 10.88,
-      "median_latency": 6.81,
-      "p90_latency": 23.43,
-      "p99_latency": 53.28,
-      "avg_tool_calls": 2.0
+      "count": 805,
+      "avg_latency": 10.08,
+      "median_latency": 6.4,
+      "p90_latency": 22.51,
+      "p99_latency": 51.72,
+      "avg_tool_calls": 1.92
     },
     "sonnet": {
-      "count": 1450,
-      "avg_latency": 9.4,
-      "median_latency": 6.36,
-      "p90_latency": 19.56,
-      "p99_latency": 43.58,
-      "avg_tool_calls": 2.22
+      "count": 1456,
+      "avg_latency": 9.42,
+      "median_latency": 6.38,
+      "p90_latency": 19.54,
+      "p99_latency": 43.55,
+      "avg_tool_calls": 2.21
     }
   },
   "cost": {
-    "today": 0.582607,
-    "this_week": 436.920358,
-    "last_30d": 581.482047
+    "today": 99.922163,
+    "this_week": 536.259913,
+    "last_30d": 680.821603
   },
-  "total_output_tokens": 1819646,
+  "total_output_tokens": 1993176,
   "corrections": {
-    "total": 1,
+    "total": 5,
     "new": 0,
     "pattern": 0,
     "resolved": 0,
-    "categories": {},
-    "repeating_patterns": []
+    "categories": {
+      "memory": 1,
+      "judgment": 3
+    },
+    "repeating_patterns": [
+      "judgment"
+    ]
   },
   "tasks": {
-    "red": 2,
-    "yellow": 0,
+    "red": 1,
+    "yellow": 1,
     "green": 1,
-    "stuck_3d": 3,
+    "stuck_3d": 4,
     "stuck_7d": 1
   },
   "busiest_hours_utc": {
-    "10": 206,
-    "17": 160,
+    "10": 259,
+    "9": 175,
+    "15": 169,
+    "17": 163,
     "21": 146,
-    "9": 137,
-    "20": 136,
-    "8": 133,
-    "15": 129,
-    "13": 127
+    "8": 143,
+    "7": 140,
+    "20": 136
   },
   "activity_by_weekday": {
     "Wednesday": 376,
     "Thursday": 377,
     "Friday": 416,
     "Saturday": 174,
-    "Sunday": 161,
+    "Sunday": 395,
     "Monday": 351,
     "Tuesday": 209
   },
