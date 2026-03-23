@@ -73,5 +73,5 @@ Return format:
 | צופית (ResearchAgent) | deep research | ✅ פעילה | agents/research_agent_prompt.md |
 | SchedulingAgent | calendar, scheduling | 🔲 Phase 2 | — |
 | TravelAgent | travel planning | 🔲 Phase 3 | — |
-| LegalAgent | legal analysis | 🔲 Phase 3 | — |
+| מאשה (LegalAgent) | legal analysis | ✅ פעילה | agents/legal-agent/ |
 | DocumentAgent | document summary | 🔲 Phase 3 | — |

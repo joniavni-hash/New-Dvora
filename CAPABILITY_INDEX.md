@@ -94,6 +94,22 @@ Load order:
 2. `scripts/google_ads_report.py` for credentials
 3. `HEARTBEAT.md` for monitoring schedule
 
+## Google Analytics
+Keywords:
+- google analytics
+- GA4
+- website traffic
+- villa analytics
+- sessions
+- users
+- conversions
+- traffic sources
+
+Load order:
+1. `integrations/GOOGLE_ANALYTICS.md`
+2. `secrets/.env` for credentials
+3. Villa Lithos property analysis
+
 ## Gmail / Google Workspace
 Keywords:
 - gmail

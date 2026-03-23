@@ -17,6 +17,7 @@
 - **כוונה:** מה יוני רוצה? (שאלה, פעולה, מעקב, שיחה...)
 - **Domain:** group / email / fitness / legal / travel / general
 - **סוג פעולה:** READ / DRAFT / SEND / MUTATE
+- **Legal Detection:** לפי `core/legal_intent_detection.md` - בדוק keywords, actions, attachments
 
 ### 4. POLICY
 - טען policies רלוונטיים לפי `core/policy_engine.md`
@@ -29,7 +30,7 @@
 | הודעת קבוצה | WhatsAppGroupAgent (אודיה) |
 | מחקר עמוק | ResearchAgent |
 | תיאום לו"ז | SchedulingAgent (Phase 2) |
-| חוזה/משפטי | LegalAgent (Phase 3) |
+| חוזה/משפטי | LegalAgent (מאשה) ✅ |
 | נסיעות | TravelAgent (Phase 3) |
 
 ### 6. INVOKE

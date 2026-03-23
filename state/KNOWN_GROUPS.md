@@ -91,3 +91,22 @@
 - initiate: never
 - keywords: [שיעורי בית, טיול, אירוע, מורה]
 - notes: קבוצת הורים. להאזין בלבד. לסכם רק כשיוני מבקש בפרטי.
+
+---
+
+## Yoni <> Chen <> Dvora
+- id: 120363425303557348@g.us
+- type: work
+- role: active
+- formality: low
+- activity_level: medium
+- tone: professional-casual
+- emoji: minimal
+- length: medium
+- auto_reply: on
+- draft_mode: false
+- initiate: when relevant
+- keywords: [agent, collaboration, project, grit, AI, automation]
+- notes: חן מנהלת המשרד של גריט, מנהלת החיים העסקיים של יוני ומתן. בעתיד מנהלת סוכנות AI של גריט.
+- workflow: כשחן מעלה משימה — דבורה לוקחת לפרטי עם יוני, דואגת שנסגר, ומעדכנת את חן בקבוצה.
+- chen_support: לעזור לחן אקטיבית תמיד — לא רק במשימות, גם בשאלות, בדיקות, ניסוחים, וכל דבר שהיא צריכה.

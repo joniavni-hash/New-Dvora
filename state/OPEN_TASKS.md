@@ -26,11 +26,35 @@
 - next: waiting for next batch
 - followup: weekly (ראשון), רק כשיוני מבקש
 
-### 🔴 מייל רוני — ספק יחיד (תשובה)
+### 🚀 Villa Lithos Pilot — טלי 
+- opened: 23.3.2026
+- content: פיילוט מרכטינג עצמאי — 6 TikTok slides + tracking + autonomous operation plan
+- status: PILOT PHASE — מכינה תוכנית פרסום ומעקב ביצועים
+- success criteria: ביצועים + תובנות תוך 48 שעות → אוטונומיה מלאה
+- agent: טלי מכינה מערכת פיילוט
+- followup: autonomous pilot → full independence if successful
+
+### 🔴 הסכם מיגונית — סיטיקידס / נופר יואב 
+- opened: 23.3.2026
+- source: חן (קבוצת Yoni<>Chen<>Dvora)
+- content: טיוטת הסכם מיגונית יבילה מחן - נקודות קריטיות + הגהה משפטית. נופר יואב (511800682) + סיטיקידס (515567238). בעיית דלת: הצעת מחיר vs הבטחה בעל פה.
+- status: **מאשה מנתחת את ההסכם עכשיו** - first legal task!
+- agent: מאשה מבצעת contract review מלא
+- followup: urgent - חן ממתינה לחוזה סופי
+
+### ✅ מכתב רוני — ספק יחיד 
 - opened: 22.3.2026
-- content: לסגור טיוטת מכתב תשובה בנושא ספק יחיד ולשלוח לרוני
-- status: טיוטה קיימת, צריך לסיים ולשלוח
-- followup: 24.3.2026 (שלישי)
+- completed: 23.3.2026
+- content: מכתב מקצועי על "ספק יחיד" - הגדרה, תנאים חוקיים, המלצות מעשיות
+- result: מכתב מוכן ב-`מכתב_רוני_ספק_יחיד.md`, ממתין לכתובת מייל של רוני
+
+### 🟢 מאשה - Legal Domain Agent
+- opened: 23.3.2026  
+- content: סוכנת דומיין משפטית מלאה - contract review, risk analysis, clause extraction, draft response, compare versions
+- status: MVP מוכן ופעיל - intent detection + workflows + output formats + risk rubric
+- capabilities: legal intent classification (0.8+ confidence), structured legal analysis, draft-first approach
+- integration: orchestrator_flow מעודכן, agent_contract מעודכן
+- followup: autonomous legal work
 
 ### ✅ שאלון אנשי קשר אינטראקטיבי
 - opened: 22.3.2026

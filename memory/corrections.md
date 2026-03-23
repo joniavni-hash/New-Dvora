@@ -1,29 +1,25 @@
 # Corrections Log
 
-## 2026-03-23
+## Communication Style - 2026-03-23
+**Issue:** Wrote "יוני אמר לי לחקור אותך" when introducing myself to Chen
+**Problem:** Too direct/mechanical, not natural for human introductions
+**Fix:** Make introductions organic - focus on collaboration, not "investigation"
+**Better approach:** "איך אנחנו יכולים לעבוד יחד הכי טוב?" instead of referencing boss's instructions
 
-### Model Routing מ-Opus ל-Sonnet
-- **מה אמרתי:** "אין לי גישה API ל-Outlook"  
-- **המציאות:** יש גישה פעילה דרך Graph API בסקריפט health_check.py
-- **תיקון:** לבדוק בכל הסקריפטים הקיימים לפני שאומרת "אין גישה"
+## Geographic Error - 2026-03-23  
+**Issue:** Said Villa Lithos is "15 min from Ben Gurion Airport"
+**Problem:** Villa is in Greece, not Israel
+**Fix:** Villa Lithos is 15 min from Athens International Airport (El. Venizelos), Greece
+**Impact:** Could have caused serious marketing problems
 
-### תזכורת שקילה שבועית  
-- **מה אמרתי:** "זמן שקילה שבועית, מה המספר?"  
-- **תיקון יוני:** "פשוט תשאלי מה המספר בלי להסביר"
-- **כלל:** בתזכורות ברורות — לא להסביר מה לעשות, לשאול ישר
+## Model Routing - 2026-03-23
+**Issue:** Using Opus when Sonnet should be default
+**Problem:** Wasting computational resources unnecessarily  
+**Fix:** Sonnet for routine tasks, Opus only for legal/sensitive/complex analysis
+**Result:** Gateway restarted, all sessions now on Sonnet
 
-### תיקון משקל התחלת דיאטה
-- **מה תיעדתי:** 73 ק"ג ב-22.3.2026 (הערכה)
-- **המציאות:** 72.5 ק"ג ב-23.3.2026 (שקילה אמיתית)
-- **תיקון:** עדכנתי ל-72.5 ק"ג כנקודת התחלה
-
-### מייל ברירת מחדל
-- **מה עשיתי:** שלחתי מייל דרך Gmail
-- **תיקון יוני:** "מייל" = Outlook אוטומטית, Gmail רק אם מציין במפורש
-- **כלל:** Outlook = ברירת מחדל לכל דבר מייל
-
-## קטגוריות שכיחות
-1. **Access/גישה** — לבדוק קודם כל הסקריפטים הקיימים  
-2. **Email routing** — Outlook ברירת מחדל  
-3. **תזכורות** — ישיר, בלי הסברים מיותרים  
-4. **נתונים** — לא להעריך, רק עובדות
+## Email Context - 2026-03-23
+**Issue:** Not defaulting to Outlook for "מייל" requests
+**Problem:** Hebrew "מייל" should mean Outlook primarily, Gmail only when specified
+**Fix:** "מייל" = Outlook default; Gmail needs explicit mention
+**Result:** Updated in corrections.md for future reference
