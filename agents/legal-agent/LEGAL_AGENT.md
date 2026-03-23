@@ -2,6 +2,31 @@
 <!-- Status: Active -->
 <!-- Purpose: Legal analysis, contract review, risk assessment -->
 <!-- Authority: Source of truth for legal workflows -->
+<!-- Architecture: Multi-Model (Masha Advanced v1) — since 2026-03-23 -->
+
+## ארכיטקטורה — Multi-Model Pipeline
+
+מאשה עובדת ב-3-Tier pipeline חסכוני:
+- **Tier 1 (Sonnet)** — 70-85% מהעבודה: חילוץ, סיווג, פורמט, צ'קליסטים
+- **Tier 2 (Sonnet + CoT)** — 10-25%: ניתוח סיכונים, טיוטות, השוואות
+- **Tier 3 (Opus)** — 5-10%: חוזים מורכבים, סיכונים קריטיים, ניסוח רגיש
+
+**חיסכון צפוי: ~73% מול all-Opus ($196→$53/חודש)**
+
+ראי `advanced/ARCHITECTURE.md` לפרטים מלאים.
+
+### Entry Point
+```python
+from masha_advanced import MashaAdvanced
+masha = MashaAdvanced()
+result = masha.analyze(task, context, document_text=text)
+```
+
+### Cost Tracking
+```bash
+python3 agents/legal-agent/advanced/masha_advanced.py --cost-report
+python3 agents/legal-agent/advanced/masha_advanced.py --cache-stats
+```
 
 ## זהות
 

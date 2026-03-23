@@ -1,0 +1,30 @@
+{
+  "cache_key": "f29695c6aca4416c",
+  "task_type": "contract_review",
+  "document_hash": "f6eca7819730",
+  "query_hash": "3d59f6c280f5",
+  "result": {
+    "decision": "analysis",
+    "confidence": 0.9,
+    "reasoning": "Standard contract review (complexity 35)",
+    "draft": {
+      "type": "contract_review",
+      "content": ""
+    },
+    "legalRisk": "low",
+    "riskFactors": [],
+    "memoryDelta": null,
+    "stateDelta": null,
+    "qaResult": "pass",
+    "suggestedActions": [],
+    "requiresApproval": true,
+    "modelTier": "tier1",
+    "costUsd": 0.07068
+  },
+  "model_tier": "tier1",
+  "cost_usd": 0.155778,
+  "created_at": 1774291861.6055107,
+  "ttl_hours": 168,
+  "hit_count": 1,
+  "tags": []
+}

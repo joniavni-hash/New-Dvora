@@ -153,9 +153,9 @@ ROUTING_TABLE = {
         "model": "sonnet",
     },
     "legal": {
-        "agent": "LegalAgent",
-        "prompt_file": "agents/legal-agent/",
-        "model": "sonnet",
+        "agent": "MashaAdvanced",
+        "prompt_file": "agents/legal-agent/advanced/",
+        "model": "multi-tier",  # Tier 1/2/3 via model_router
     },
     "research": {
         "agent": "ResearchAgent",
