@@ -1,5 +1,11 @@
 # Corrections Log
 
+## Group Summary Format - 2026-03-23
+**Issue:** Sent audio files for group summaries instead of text
+**Problem:** Group summaries should be TEXT ONLY - never audio files
+**Rule:** Group summaries = pure text message, no media attachments
+**Process:** Let אודיה create text summary, send as regular message
+
 ## Communication Style - 2026-03-23
 **Issue:** Wrote "יוני אמר לי לחקור אותך" when introducing myself to Chen
 **Problem:** Too direct/mechanical, not natural for human introductions
