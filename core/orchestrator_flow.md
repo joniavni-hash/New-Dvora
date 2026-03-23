@@ -1,67 +1,58 @@
-# Orchestrator Flow — Dvorah
+# Orchestrator Flow — Dvorah (Runtime)
 <!-- Status: Active -->
-<!-- Purpose: Central routing and execution flow for all requests -->
+<!-- Purpose: Central routing and execution flow — automated pipeline -->
+<!-- Switchover: 2026-03-23T20:10 — manual flow backed up as orchestrator_flow.md.old -->
 
-## זרימה — כל בקשה עוברת כאן
+## Pipeline
+כל בקשה עוברת דרך `scripts/orchestrator.py`:
 
-### 1. INTAKE
-- קבלת הודעה/בקשה
-- זיהוי מקור: DM / קבוצה / heartbeat / sub-agent return
+```
+INTAKE → CONTEXT → CLASSIFY → POLICY → ROUTE → [INVOKE → QA → APPROVE → EXECUTE → WRITEBACK] → TRACE
+```
 
-### 2. CONTEXT
-- **חובה:** סרוק `state/` ו-`memory/` לקבצים רלוונטיים
-- טען לפי `core/context_loader.md`
-- לעולם לא לומר "אין לי מידע" בלי שנסרק קודם
+שלבים 1-5 (INTAKE→ROUTE) רצים אוטומטית ע"י ה-pipeline.
+שלבים 6-10 (INVOKE→WRITEBACK) מבוצעים ע"י דבורה לפי החלטת ה-pipeline.
+שלב 11 (TRACE) אוטומטי.
 
-### 3. CLASSIFY
-- **כוונה:** מה יוני רוצה? (שאלה, פעולה, מעקב, שיחה...)
-- **Domain:** group / email / fitness / legal / travel / general
-- **סוג פעולה:** READ / DRAFT / SEND / MUTATE
-- **Legal Detection:** לפי `core/legal_intent_detection.md` - בדוק keywords, actions, attachments
+## Runtime Services
 
-### 4. POLICY
-- טען policies רלוונטיים לפי `core/policy_engine.md`
-- הוסף constraints ל-context
+| Step | Service | Script |
+|------|---------|--------|
+| CONTEXT | ContextService | `scripts/context_service.py` |
+| CLASSIFY | Classifier (inline) | orchestrator.py |
+| POLICY | PolicyService | `scripts/policy_service.py` |
+| QA | QAService | `scripts/qa_service.py` |
+| TRACE | TraceService | `scripts/trace_service.py` |
 
-### 5. ROUTE
-| סוג | ניתוב |
-|------|--------|
-| פשוט (שאלה, חישוב, תזכורת) | דבורה ישירות |
-| הודעת קבוצה | WhatsAppGroupAgent (אודיה) |
-| מחקר עמוק | ResearchAgent |
-| תיאום לו"ז | SchedulingAgent (Phase 2) |
-| חוזה/משפטי | LegalAgent (מאשה) ✅ |
-| נסיעות | TravelAgent (Phase 3) |
+## Routing Table
 
-### 6. INVOKE
-- הרכב task prompt עם: task + context + constraints + outputFormat
-- `sessions_spawn` עם model מתאים (sonnet כברירת מחדל)
-- **אם agent צפוי לרוץ 30+ שניות (research, broad scope)** → שלחי ליוני הודעת ביניים: "חוקרת, חצי דקה..." / "בודקת, רגע..."
-- agent מחזיר JSON לפי `core/agent_contract.md`
+| Domain | Agent | Notes |
+|--------|-------|-------|
+| general, fitness, email | direct | דבורה מטפלת |
+| group | WhatsAppGroupAgent | `agents/whatsapp_group_agent.py` |
+| legal | LegalAgent (מאשה) | `agents/legal-agent/` |
+| research | ResearchAgent | `agents/research_agent_prompt.md` |
+| travel | direct (Phase 3+) | |
 
-### 7. QA
-- בדוק output לפי `core/qa_layer.md`
-- כשל → עצור, דבורה מחליטה
+## Approval Flows
 
-### 8. APPROVE
-- בדוק לפי `core/approval_gate.md`
-- READ → חופשי
-- DRAFT → דבורה בודקת
-- SEND → דבורה מאשרת (רגיש → יוני מאשר)
-- MUTATE → דבורה בלבד
+| Flow | Rule |
+|------|------|
+| auto | בצעי מיד |
+| dvorah_approve | בדקי בעצמך |
+| yoni_approve | בקשי אישור |
+| dvorah_only | דבורה בלבד |
+| blocked | אל תבצעי |
 
-### 9. EXECUTE
-- בצע את הפעולה (שלח הודעה, עדכן, ענה)
+## QA Checks (pre-send)
+- Anti-patterns (חנופה, ניסוחים אסורים)
+- Privacy leaks (טלפונים, מיילים)
+- Group role enforcement (observer → block)
+- Confidence threshold
+- Message length limits
 
-### 10. WRITEBACK
-- אם ה-agent החזיר memoryDelta → דבורה מחליטה אם לכתוב
-- אם ה-agent החזיר stateDelta → דבורה מחליטה אם לעדכן
-- **רק דבורה כותבת ל-memory/state**
-
-### 11. TRACE
-- תעד לפי `core/trace_logger.md`
-
----
+## Fallback
+אם ה-pipeline נכשל → ראי `core/orchestrator_flow.md.old` (הזרימה הידנית הקודמת).
 
 ## כלל ברזל
 דבורה לא מכילה לוגיקה דומיינית עמוקה. היא מנהלת flow. ה-agents מכילים את הידע.

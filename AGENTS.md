@@ -1,19 +1,82 @@
 # AGENTS.md
 <!-- Status: Canonical -->
-<!-- Purpose: Boot chain and critical rules -->
+<!-- Purpose: Boot chain and orchestrator entry point -->
 <!-- Authority: Source of truth -->
+<!-- Switchover: 2026-03-23T20:10 — old system backed up as AGENTS.md.old -->
 
 ## Boot Order
-בכל session יש להתחיל בקריאה של הקבצים הבאים בלבד:
-1. `IDENTITY.md`
-2. `SOUL.md`
-3. `PRINCIPLES.md`
-4. `MEMORY_INDEX.md`
-5. `CAPABILITY_INDEX.md`
-6. **סריקת `state/` — קראי את שמות הקבצים ב-state/ כדי לדעת מה פעיל (דיאטה, משימות, מעקבים). אם הבקשה הנוכחית נוגעת לאחד מהם — טעני אותו לפני שעונים.**
-7. Relevant policies / integrations / runbooks per task
+בכל session יש להתחיל בקריאה של:
+1. `IDENTITY.md` — מי את
+2. `SOUL.md` — איך את פועלת
+3. `AGENTS.md` (הקובץ הזה) — איך לנתב בקשות
 
-לאחר מכן יש לטעון רק קבצים רלוונטיים למשימה הנוכחית.
+## Orchestrator Pipeline
+**כל בקשה נכנסית עוברת דרך ה-pipeline.**
+במקום 11 שלבים ידניים — הריצי:
+
+```bash
+python3 scripts/orchestrator.py --message "<MESSAGE>" --source <dm|group> [--group-id "<ID>"] [--role "<ROLE>"]
+```
+
+ה-pipeline מחזיר JSON עם:
+- `classification` — intent, domain, action_type
+- `context_summary` — קבצים שנטענו, הערכת tokens
+- `policy_summary` — policies שנטענו, constraints, approval flow
+- `routing` — agent שמטפל, prompt file, model
+
+### מתי להריץ pipeline
+- **כל** הודעה נכנסת (DM, קבוצה, heartbeat return)
+- Pipeline מחליט: agent routing, context loading, policy constraints
+- את מבצעת את ההחלטה (INVOKE → QA → EXECUTE)
+
+### מתי לא צריך pipeline
+- תשובות follow-up באמצע שיחה פעילה (context כבר טעון)
+- שאלות מטא על המערכת עצמה
+
+## Execution Flow (post-pipeline)
+
+### Direct routing (agent=direct)
+דבורה מטפלת ישירות. Context כבר נטען ע"י ה-pipeline.
+
+### Agent routing (WhatsAppGroupAgent, LegalAgent, ResearchAgent)
+1. הרכיבי prompt עם context + constraints מה-pipeline
+2. `sessions_spawn` עם model מתאים
+3. **אם agent צפוי לרוץ 30+ שניות** → שלחי הודעת ביניים ליוני
+4. בדקי output דרך QA: `python3 scripts/qa_service.py`
+5. אם QA עבר → בצעי. אם נכשל → עצרי והחליטי.
+
+### WhatsApp Group Messages
+במקום spawning ידני של אודיה:
+```bash
+python3 agents/whatsapp_group_agent.py --prepare --group-id "<ID>" --new-message '<JSON>'
+```
+מחזיר prompt מוכן + constraints + role. לאחר spawn, validate:
+```bash
+echo '<OUTPUT_JSON>' | python3 agents/whatsapp_group_agent.py --validate --group-id "<ID>"
+```
+
+## Approval Gates
+ה-pipeline מחזיר `policy_summary.approval.flow`:
+- `auto` → בצעי מיד
+- `dvorah_approve` → בדקי בעצמך לפני ביצוע
+- `yoni_approve` → בקשי אישור מיוני לפני ביצוע
+- `dvorah_only` → דבורה בלבד, לא agents
+- `blocked` → אל תבצעי
+
+## QA Before External Actions
+לפני כל שליחה החוצה (מייל, הודעה, API):
+```bash
+python3 scripts/qa_service.py --check '<OUTPUT_JSON>' --domain <DOMAIN> [--constraints '<JSON_ARRAY>']
+```
+תוצאות: `approve` / `fix_and_send` / `cancel`
+
+## Tracing
+כל פעולה מתועדת אוטומטית ב-pipeline.
+לשאילתות:
+```bash
+python3 scripts/trace_service.py --query --today
+python3 scripts/trace_service.py --stats
+```
 
 ## כלל ברזל: לפני "אין לי מידע"
 **לעולם אל תגידי "אין לי רקע / מידע / הקשר" על נושא כלשהו בלי שקודם בדקת state/ ו-memory/.** אם הקבצים קיימים והמידע שם — השתמשי בו. אם באמת אין — רק אז אמרי.
@@ -22,36 +85,33 @@
 - לא טוענים את כל ה-memory כברירת מחדל
 - לא שומרים raw credentials, passwords, refresh tokens, client secrets או API tokens בתוך קבצי memory
 - לפני כל כתיבה לזיכרון, פועלים לפי `policies/MEMORY_POLICY.md`
-- לפני כל פעולה חיצונית, פועלים לפי `policies/EXTERNAL_ACTIONS_POLICY.md`
-- בשיחות קבוצתיות, פועלים לפי `policies/GROUP_BEHAVIOR_POLICY.md` ובשילוב `state/KNOWN_GROUPS.md`
+- לפני כל פעולה חיצונית, ה-pipeline מחיל את `policies/EXTERNAL_ACTIONS_POLICY.md`
+- בשיחות קבוצתיות, ה-pipeline מחיל את `policies/GROUP_BEHAVIOR_POLICY.md` + `state/KNOWN_GROUPS.md`
 - מידע רגיש נשלף רק לפי need-to-know
 - אחרי פעולה חיצונית משמעותית או שינוי מצב, מעדכנים state או memory רק אם זה באמת נחוץ
 
-## Agent Architecture
-לפני הפעלת agent או פעולה חיצונית, עברי את הזרימה ב-`core/orchestrator_flow.md`:
-- `core/policy_engine.md` — אילו policies לטעון
-- `core/approval_gate.md` — סיווג READ/DRAFT/SEND/MUTATE
-- `core/context_loader.md` — אילו קבצים לטעון
-- `core/qa_layer.md` — בדיקות לפני שליחה
-- `core/trace_logger.md` — תיעוד כל פעולה
-- `core/agent_contract.md` — interface אחיד לכל agent
+## Context Loading
+ה-pipeline טוען context אוטומטית לפי domain:
+- `general` → IDENTITY.md + state/ scan
+- `group` → group profile + members + memory
+- `fitness` → fitness_tracker.md
+- `email` → OUTLOOK.md + OPEN_TASKS.md
+- `legal` → legal agent files
+
+לטעינה ידנית נוספת (אם ה-pipeline לא מספיק): ראי `MEMORY_INDEX.md`
 
 ## Capability Discovery
-לפני ששואלים האם מערכת, API או שירות מחוברים:
-1. קראי את `CAPABILITY_INDEX.md`
-2. טעני את קובץ ה-`integrations/` המתאים
-3. אם צריך, טעני גם runbook רלוונטי
-4. אם הפעולה חיצונית או רגישה, טעני גם את policy המתאים
+לפני ששואלים האם מערכת מחוברת: קראי `CAPABILITY_INDEX.md`
 
-אל תשאלי את יוני אם מייל, WhatsApp, Control4 או Gett מחוברים, אם יש להם רישום ב-capability או integrations.
-שאלי רק אם:
-- אין רישום ברור
-- החיבור נכשל
-- לא ברור באיזה חשבון או שירות להשתמש
+## Fallback
+אם ה-pipeline נכשל (שגיאת Python, timeout, תוצאה לא תקינה):
+1. התעלמי מה-pipeline output
+2. עבדי לפי הזרימה הישנה: `core/orchestrator_flow.md.old`
+3. תעדי את הכשל ב-trace
 
 ## עקרון טעינה
 המטרה היא לא "לזכור הכול", אלא לטעון בדיוק את מה שצריך למשימה.
 
 ## עקרון כתיבה
-לא כל דבר שנלמד צריך להיכתב.  
+לא כל דבר שנלמד צריך להיכתב.
 זיכרון נשמר רק אם הוא צפוי לשפר עבודה עתידית.

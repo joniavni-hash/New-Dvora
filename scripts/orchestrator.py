@@ -9,12 +9,12 @@ This is the main entry point. It coordinates all services:
 - QAService: validate agent output
 - TraceService: log everything
 
-Usage (shadow mode — compare with current flow):
-    python3 orchestrator.py --message "מה מזג האוויר?" --source dm --shadow
-    python3 orchestrator.py --message "שלום" --source group --group-id "family" --shadow
-    
-Usage (active mode — produce routing decision):
+Usage (active mode — default, produces routing decision):
     python3 orchestrator.py --message "שלח מייל לדני" --source dm
+    python3 orchestrator.py --message "שלום" --source group --group-id "family" --role "active"
+
+Usage (shadow mode — log only, compare with current flow):
+    python3 orchestrator.py --message "מה מזג האוויר?" --source dm --shadow
 """
 
 import argparse
@@ -55,18 +55,17 @@ def intake(message: str, source: str, metadata: dict = None) -> dict:
 
 # Domain detection keywords
 DOMAIN_KEYWORDS = {
-    "fitness": ["דיאטה", "משקל", "קלוריות", "אימון", "diet", "weight", "workout", "שקילה"],
+    "fitness": ["דיאטה", "משקל", "קלוריות", "אימון", "diet", "weight", "workout", "שקילה", "שקלתי"],
     "email": ["מייל", "אימייל", "email", "outlook", "inbox", "דוא\"ל"],
     "legal": ["חוזה", "הסכם", "משפטי", "עו\"ד", "legal", "contract", "סעיף"],
     "travel": ["טיסה", "מלון", "flight", "hotel", "booking", "הזמנה", "נסיעה"],
-    "fitness": ["דיאטה", "משקל", "קלוריות", "אימון"],
 }
 
 # Intent detection patterns
 INTENT_PATTERNS = {
     "action": [
         r"^(שלח|תשלחי|תדליקי|תכבי|send|turn|open|close|create|delete)",
-        r"(תעשי|תבדקי|תריצי|תכתבי|תמחקי)",
+        r"(תעשי|תבדקי|תריצי|תכתבי|תמחקי|תחפשי|הכיני|נסחי)",
     ],
     "question": [
         r"\?$",
@@ -74,6 +73,7 @@ INTENT_PATTERNS = {
     ],
     "tracking": [
         r"(סטטוס|מצב|status|update|עדכון|מה קורה עם)",
+        r"(שקלתי|אכלתי|רצתי|הלכתי|התאמנתי)",  # Self-reporting → tracking/command
     ],
     "command": [
         r"^(עדכני|שמרי|זכרי|update|save|remember)",
@@ -231,12 +231,13 @@ def run_pipeline(message: str, source: str, metadata: dict = None, shadow: bool 
     routing = route(classification)
     
     # 6-9: INVOKE → QA → APPROVE → EXECUTE
-    # In shadow mode, we stop here and just produce the decision
+    # In active mode, Dvorah executes these steps using the pipeline decision.
+    # In shadow mode, we stop here and just produce the decision.
     
     duration_ms = int((time.time() - start_time) * 1000)
     
     pipeline_result = {
-        "shadow_mode": shadow,
+        "mode": "shadow" if shadow else "active",
         "classification": classification,
         "context_summary": {
             "files_loaded": context["files_loaded"],
@@ -262,7 +263,7 @@ def run_pipeline(message: str, source: str, metadata: dict = None, shadow: bool 
         "agent_decision": f"classified as {classification['intent']} → {routing['agent']}",
         "qa_result": "skip" if shadow else "pending",
         "approval": policy["approval"]["flow"],
-        "action_taken": "shadow_only" if shadow else "pending",
+        "action_taken": "shadow_only" if shadow else "routed",
         "memory_writes": [],
         "duration_ms": duration_ms,
         "shadow_mode": shadow,

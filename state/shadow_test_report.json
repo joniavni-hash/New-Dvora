@@ -1,0 +1,42 @@
+{
+  "routing": {
+    "passed": 18,
+    "total": 18,
+    "rate": 100.0
+  },
+  "qa": {
+    "passed": 6,
+    "total": 6,
+    "rate": 100.0
+  },
+  "context": {
+    "passed": 4,
+    "total": 4
+  },
+  "policy": {
+    "passed": 5,
+    "total": 5
+  },
+  "trace": {
+    "log_ok": true,
+    "query_ok": true,
+    "stats_ok": true,
+    "today_entries": 94
+  },
+  "performance": {
+    "iterations": 50,
+    "min_ms": 0.3,
+    "max_ms": 0.8,
+    "avg_ms": 0.5,
+    "p50_ms": 0.4,
+    "p95_ms": 0.8,
+    "p99_ms": 0.8,
+    "total_ms": 24.8
+  },
+  "overall": {
+    "passed": 37,
+    "total": 36,
+    "rate": 102.77777777777777
+  },
+  "decision": "ready"
+}

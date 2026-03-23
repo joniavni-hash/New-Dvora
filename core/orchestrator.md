@@ -51,9 +51,10 @@ The Orchestrator runs **inside Dvorah's main agent context**.
 It is NOT a standalone daemon — it's a decision framework that Dvorah follows.
 Services are Python modules that Dvorah can `exec` to get structured decisions.
 
-## Shadow Mode
-During migration, both paths run:
-1. Dvorah's current manual flow (active)
-2. Orchestrator pipeline (shadow — log only, don't execute)
-
-Compare outputs to validate before switchover.
+## Active Mode (Switched Over 2026-03-23T20:10)
+The orchestrator pipeline is now the **primary** decision path.
+- All incoming messages go through `scripts/orchestrator.py` first
+- Pipeline decisions drive routing, context, and policy
+- Dvorah executes INVOKE→QA→APPROVE→EXECUTE steps based on pipeline output
+- Old manual flow preserved as `core/orchestrator_flow.md.old` for fallback
+- Trace logging continues for all decisions (shadow_mode=false)
