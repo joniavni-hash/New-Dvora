@@ -208,7 +208,11 @@ class Router:
         
         base_tier = domain_tiers.get(domain, "tier2")
         
-        # Adjust based on confidence
+        # Don't downgrade marketing and research - they need good models
+        if domain in ["marketing", "research"]:
+            return base_tier
+        
+        # Adjust based on confidence for other domains
         if confidence < 0.5 and base_tier == "tier1":
             return "tier2"  # Uncertain simple tasks -> mid tier
         elif confidence > 0.8 and base_tier == "tier2":

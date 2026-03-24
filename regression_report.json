@@ -1,28 +1,28 @@
 {
-  "timestamp": "2026-03-24T09:21:01.388405",
+  "timestamp": "2026-03-24T11:08:11.707459",
   "summary": {
     "total_scenarios": 15,
-    "passed_scenarios": 10,
-    "failed_scenarios": 5,
-    "success_rate": 66.66666666666666,
-    "total_estimated_cost": 5.287483,
-    "average_duration_ms": 0.7
+    "passed_scenarios": 15,
+    "failed_scenarios": 0,
+    "success_rate": 100.0,
+    "total_estimated_cost": 5.357337,
+    "average_duration_ms": 0.1
   },
   "validation_breakdown": {
     "domain": {
-      "passed": 13,
+      "passed": 15,
       "total": 15
     },
     "agent": {
-      "passed": 13,
+      "passed": 15,
       "total": 15
     },
     "model_tier": {
-      "passed": 14,
+      "passed": 15,
       "total": 15
     },
     "requires_approval": {
-      "passed": 10,
+      "passed": 15,
       "total": 15
     },
     "context_files": {
@@ -64,7 +64,7 @@
         "context_size": 6950,
         "execution_status": "blocked_by_qa",
         "cost_estimate": 0.1209,
-        "duration_ms": 9
+        "duration_ms": 1
       },
       "validation": {
         "validations": {
@@ -81,7 +81,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092715568",
+        "execution_id": "exec_20260324_110811_140125930394672",
         "routing": {
           "classification": {
             "domain": "legal",
@@ -145,7 +145,7 @@
             "model_tier_used": "tier3",
             "confidence": 0.8,
             "requires_human_review": true,
-            "timestamp": "2026-03-24T09:21:01.380827"
+            "timestamp": "2026-03-24T11:08:11.703053"
           },
           "execution_details": {
             "model_used": "anthropic/claude-opus-4-20250514",
@@ -212,8 +212,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092715568",
-          "timestamp": "2026-03-24T09:21:01.373157",
+          "execution_id": "exec_20260324_110811_140125930394672",
+          "timestamp": "2026-03-24T11:08:11.701238",
           "message": "חוזה עבודה לבדיקה משפטית - צריך לבדוק סעיף 3.1",
           "channel": "direct",
           "group_id": null,
@@ -235,7 +235,7 @@
           "qa_passed": false,
           "action_executed": "blocked_by_qa",
           "response_sent": "no_response_sent",
-          "duration_ms": 9
+          "duration_ms": 1
         }
       },
       "status": "completed"
@@ -268,10 +268,10 @@
           "USER.md",
           "state/fitness_tracker.md"
         ],
-        "context_size": 14808,
+        "context_size": 15186,
         "execution_status": "completed",
-        "cost_estimate": 0.043039,
-        "duration_ms": 1
+        "cost_estimate": 0.043946,
+        "duration_ms": 0
       },
       "validation": {
         "validations": {
@@ -287,7 +287,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073093140432",
+        "execution_id": "exec_20260324_110811_140125930819536",
         "routing": {
           "classification": {
             "domain": "fitness",
@@ -303,7 +303,7 @@
               "state/fitness_tracker.md"
             ],
             "integrations_activated": [],
-            "context_size": 14808,
+            "context_size": 15186,
             "truncated": false
           },
           "model": "tier1",
@@ -327,7 +327,7 @@
           "data_logged": {
             "type": "meal",
             "description": "אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות",
-            "timestamp": "2026-03-24T09:21:01.383717",
+            "timestamp": "2026-03-24T11:08:11.703452",
             "parsed": true
           },
           "file_updated": "state/fitness_tracker.md",
@@ -346,9 +346,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 14808,
+                "chars": 15186,
                 "max_chars": 160000,
-                "usage_ratio": 0.09255,
+                "usage_ratio": 0.0949125,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -389,8 +389,8 @@
           "note": "Response prepared but no valid channel/sender"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073093140432",
-          "timestamp": "2026-03-24T09:21:01.383075",
+          "execution_id": "exec_20260324_110811_140125930819536",
+          "timestamp": "2026-03-24T11:08:11.703257",
           "message": "אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות",
           "channel": "direct",
           "group_id": null,
@@ -401,9 +401,9 @@
             "reason": "Pattern match: fitness (score: 0.50)"
           },
           "context_status": {
-            "chars": 14808,
+            "chars": 15186,
             "max_chars": 160000,
-            "usage_ratio": 0.09255,
+            "usage_ratio": 0.0949125,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -412,7 +412,7 @@
           "qa_passed": true,
           "action_executed": "completed",
           "response_sent": "response_ready",
-          "duration_ms": 1
+          "duration_ms": 0
         }
       },
       "status": "completed"
@@ -445,9 +445,9 @@
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 21059,
+        "context_size": 21437,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.058042,
+        "cost_estimate": 0.058949,
         "duration_ms": 0
       },
       "validation": {
@@ -464,7 +464,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092642224",
+        "execution_id": "exec_20260324_110811_140125930321328",
         "routing": {
           "classification": {
             "domain": "whatsapp_group",
@@ -479,7 +479,7 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 21059,
+            "context_size": 21437,
             "truncated": false
           },
           "model": "tier1",
@@ -505,7 +505,7 @@
             "message_type": "question",
             "mentions_dvorah": false,
             "group_id": null,
-            "analysis_timestamp": "2026-03-24T09:21:01.384881"
+            "analysis_timestamp": "2026-03-24T11:08:11.703886"
           },
           "requires_approval": true,
           "approval_reason": "Group response requires review before sending",
@@ -523,9 +523,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 21059,
+                "chars": 21437,
                 "max_chars": 160000,
-                "usage_ratio": 0.13161875,
+                "usage_ratio": 0.13398125,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -573,8 +573,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092642224",
-          "timestamp": "2026-03-24T09:21:01.384723",
+          "execution_id": "exec_20260324_110811_140125930321328",
+          "timestamp": "2026-03-24T11:08:11.703762",
           "message": "שלום לכולם, איך אתם?",
           "channel": "whatsapp",
           "group_id": "family_group",
@@ -585,9 +585,9 @@
             "reason": "WhatsApp group message (channel=whatsapp, group=family_group)"
           },
           "context_status": {
-            "chars": 21059,
+            "chars": 21437,
             "max_chars": 160000,
-            "usage_ratio": 0.13161875,
+            "usage_ratio": 0.13398125,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -629,9 +629,9 @@
           "USER.md",
           "state/fitness_tracker.md"
         ],
-        "context_size": 28985,
+        "context_size": 29741,
         "execution_status": "completed",
-        "cost_estimate": 0.077064,
+        "cost_estimate": 0.078878,
         "duration_ms": 0
       },
       "validation": {
@@ -648,7 +648,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092642352",
+        "execution_id": "exec_20260324_110811_140125930321456",
         "routing": {
           "classification": {
             "domain": "fitness",
@@ -664,7 +664,7 @@
               "state/fitness_tracker.md"
             ],
             "integrations_activated": [],
-            "context_size": 28985,
+            "context_size": 29741,
             "truncated": false
           },
           "model": "tier1",
@@ -688,7 +688,7 @@
           "data_logged": {
             "type": "weight",
             "description": "שקלתי היום 71.2 קילו",
-            "timestamp": "2026-03-24T09:21:01.385181",
+            "timestamp": "2026-03-24T11:08:11.704197",
             "parsed": true
           },
           "file_updated": "state/fitness_tracker.md",
@@ -707,9 +707,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 28985,
+                "chars": 29741,
                 "max_chars": 160000,
-                "usage_ratio": 0.18115625,
+                "usage_ratio": 0.18588125,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -750,8 +750,8 @@
           "note": "Response prepared but no valid channel/sender"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092642352",
-          "timestamp": "2026-03-24T09:21:01.385020",
+          "execution_id": "exec_20260324_110811_140125930321456",
+          "timestamp": "2026-03-24T11:08:11.704020",
           "message": "שקלתי היום 71.2 קילו",
           "channel": "direct",
           "group_id": null,
@@ -762,9 +762,9 @@
             "reason": "Pattern match: fitness (score: 0.25)"
           },
           "context_status": {
-            "chars": 28985,
+            "chars": 29741,
             "max_chars": 160000,
-            "usage_ratio": 0.18115625,
+            "usage_ratio": 0.18588125,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -795,18 +795,18 @@
         "domain": "research",
         "agent": "tzofit",
         "model_tier": "tier2",
-        "confidence": 0.5,
+        "confidence": 1.0,
         "qa_passed": false,
         "qa_score": 0.75,
-        "approval_required": true,
+        "approval_required": false,
         "context_files": [
           "IDENTITY.md",
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 35236,
+        "context_size": 35992,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.092066,
+        "cost_estimate": 0.093881,
         "duration_ms": 0
       },
       "validation": {
@@ -814,22 +814,22 @@
           "domain": true,
           "agent": true,
           "model_tier": true,
-          "requires_approval": false
+          "requires_approval": true
         },
-        "score": 3,
+        "score": 4,
         "total": 4,
-        "percentage": 75.0,
-        "passed": false
+        "percentage": 100.0,
+        "passed": true
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073094090016",
+        "execution_id": "exec_20260324_110811_140125934161184",
         "routing": {
           "classification": {
             "domain": "research",
-            "confidence": 0.5,
+            "confidence": 1.0,
             "agent": "tzofit",
-            "reason": "Pattern match: research (score: 0.25)"
+            "reason": "Pattern match: research (score: 0.50)"
           },
           "context": {
             "files_loaded": [
@@ -838,7 +838,7 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 35236,
+            "context_size": 35992,
             "truncated": false
           },
           "model": "tier2",
@@ -881,9 +881,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 35236,
+                "chars": 35992,
                 "max_chars": 160000,
-                "usage_ratio": 0.220225,
+                "usage_ratio": 0.22495,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -931,21 +931,21 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073094090016",
-          "timestamp": "2026-03-24T09:21:01.385419",
+          "execution_id": "exec_20260324_110811_140125934161184",
+          "timestamp": "2026-03-24T11:08:11.704461",
           "message": "תחקרי לי על השוק של AI agents בישראל",
           "channel": "direct",
           "group_id": null,
           "routing": {
             "domain": "research",
-            "confidence": 0.5,
+            "confidence": 1.0,
             "agent": "tzofit",
-            "reason": "Pattern match: research (score: 0.25)"
+            "reason": "Pattern match: research (score: 0.50)"
           },
           "context_status": {
-            "chars": 35236,
+            "chars": 35992,
             "max_chars": 160000,
-            "usage_ratio": 0.220225,
+            "usage_ratio": 0.22495,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -979,15 +979,15 @@
         "confidence": 0.3,
         "qa_passed": false,
         "qa_score": 0.75,
-        "approval_required": true,
+        "approval_required": false,
         "context_files": [
           "IDENTITY.md",
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 41487,
+        "context_size": 42243,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.107069,
+        "cost_estimate": 0.108883,
         "duration_ms": 0
       },
       "validation": {
@@ -995,16 +995,16 @@
           "domain": true,
           "agent": true,
           "model_tier": true,
-          "requires_approval": false
+          "requires_approval": true
         },
-        "score": 3,
+        "score": 4,
         "total": 4,
-        "percentage": 75.0,
-        "passed": false
+        "percentage": 100.0,
+        "passed": true
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092896240",
+        "execution_id": "exec_20260324_110811_140125930575344",
         "routing": {
           "classification": {
             "domain": "general",
@@ -1019,7 +1019,7 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 41487,
+            "context_size": 42243,
             "truncated": false
           },
           "model": "tier2",
@@ -1061,9 +1061,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 41487,
+                "chars": 42243,
                 "max_chars": 160000,
-                "usage_ratio": 0.25929375,
+                "usage_ratio": 0.26401875,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -1111,8 +1111,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092896240",
-          "timestamp": "2026-03-24T09:21:01.385729",
+          "execution_id": "exec_20260324_110811_140125930575344",
+          "timestamp": "2026-03-24T11:08:11.704800",
           "message": "מה מזג האוויר היום?",
           "channel": "direct",
           "group_id": null,
@@ -1123,9 +1123,9 @@
             "reason": "No specific pattern matched - general routing"
           },
           "context_status": {
-            "chars": 41487,
+            "chars": 42243,
             "max_chars": 160000,
-            "usage_ratio": 0.25929375,
+            "usage_ratio": 0.26401875,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -1166,9 +1166,9 @@
           "USER.md",
           "policies/EXTERNAL_ACTIONS_POLICY.md"
         ],
-        "context_size": 48437,
+        "context_size": 49193,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.618744,
+        "cost_estimate": 0.627816,
         "duration_ms": 0
       },
       "validation": {
@@ -1185,7 +1185,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092642480",
+        "execution_id": "exec_20260324_110811_140125930321584",
         "routing": {
           "classification": {
             "domain": "legal",
@@ -1201,7 +1201,7 @@
               "policies/EXTERNAL_ACTIONS_POLICY.md"
             ],
             "integrations_activated": [],
-            "context_size": 48437,
+            "context_size": 49193,
             "truncated": false
           },
           "model": "tier3",
@@ -1249,7 +1249,7 @@
             "model_tier_used": "tier3",
             "confidence": 0.8,
             "requires_human_review": true,
-            "timestamp": "2026-03-24T09:21:01.386146"
+            "timestamp": "2026-03-24T11:08:11.705161"
           },
           "execution_details": {
             "model_used": "anthropic/claude-opus-4-20250514",
@@ -1266,9 +1266,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 48437,
+                "chars": 49193,
                 "max_chars": 160000,
-                "usage_ratio": 0.30273125,
+                "usage_ratio": 0.30745625,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -1316,8 +1316,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092642480",
-          "timestamp": "2026-03-24T09:21:01.385916",
+          "execution_id": "exec_20260324_110811_140125930321584",
+          "timestamp": "2026-03-24T11:08:11.704973",
           "message": "סיכום חוזה השכרה - בדקי את התנאים",
           "channel": "direct",
           "group_id": null,
@@ -1328,9 +1328,9 @@
             "reason": "Pattern match: legal (score: 0.75)"
           },
           "context_status": {
-            "chars": 48437,
+            "chars": 49193,
             "max_chars": 160000,
-            "usage_ratio": 0.30273125,
+            "usage_ratio": 0.30745625,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -1358,44 +1358,44 @@
         }
       },
       "actual": {
-        "domain": "general",
-        "agent": "direct",
+        "domain": "marketing",
+        "agent": "tali",
         "model_tier": "tier2",
-        "confidence": 0.3,
+        "confidence": 1.0,
         "qa_passed": false,
         "qa_score": 0.75,
-        "approval_required": true,
+        "approval_required": false,
         "context_files": [
           "IDENTITY.md",
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 54688,
+        "context_size": 55444,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.138751,
+        "cost_estimate": 0.140566,
         "duration_ms": 0
       },
       "validation": {
         "validations": {
-          "domain": false,
-          "agent": false,
+          "domain": true,
+          "agent": true,
           "model_tier": true,
-          "requires_approval": false
+          "requires_approval": true
         },
-        "score": 1,
+        "score": 4,
         "total": 4,
-        "percentage": 25.0,
-        "passed": false
+        "percentage": 100.0,
+        "passed": true
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092642608",
+        "execution_id": "exec_20260324_110811_140125930321712",
         "routing": {
           "classification": {
-            "domain": "general",
-            "confidence": 0.3,
-            "agent": "direct",
-            "reason": "No specific pattern matched - general routing"
+            "domain": "marketing",
+            "confidence": 1.0,
+            "agent": "tali",
+            "reason": "Pattern match: marketing (score: 0.75)"
           },
           "context": {
             "files_loaded": [
@@ -1404,14 +1404,14 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 54688,
+            "context_size": 55444,
             "truncated": false
           },
           "model": "tier2",
           "routing_decision": {
-            "action": "handle_direct",
-            "agent": "direct",
-            "domain": "general"
+            "action": "route_to_agent",
+            "agent": "tali",
+            "domain": "marketing"
           },
           "metadata": {
             "channel": "direct",
@@ -1421,21 +1421,15 @@
           }
         },
         "agent_result": {
-          "status": "direct_response",
-          "agent": "dvorah_direct",
-          "response_type": "conversational",
-          "requires_approval": false,
-          "routing_reason": "No specific pattern matched - general routing",
-          "confidence": 0.3,
-          "response_ready": true,
-          "metadata": {
-            "model_tier": "tier2",
-            "context_files": [
-              "IDENTITY.md",
-              "SOUL.md",
-              "USER.md"
-            ],
-            "direct_processing": true
+          "status": "not_implemented",
+          "agent": "tali",
+          "message": "Agent tali execution not implemented yet",
+          "fallback_action": "handle_as_direct",
+          "routing_info": {
+            "domain": "marketing",
+            "confidence": 1.0,
+            "agent": "tali",
+            "reason": "Pattern match: marketing (score: 0.75)"
           }
         },
         "qa_result": {
@@ -1446,9 +1440,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 54688,
+                "chars": 55444,
                 "max_chars": 160000,
-                "usage_ratio": 0.3418,
+                "usage_ratio": 0.346525,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -1496,26 +1490,26 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092642608",
-          "timestamp": "2026-03-24T09:21:01.386295",
+          "execution_id": "exec_20260324_110811_140125930321712",
+          "timestamp": "2026-03-24T11:08:11.705284",
           "message": "תכיני פוסט לטיקטוק על הווילה בליתוס",
           "channel": "direct",
           "group_id": null,
           "routing": {
-            "domain": "general",
-            "confidence": 0.3,
-            "agent": "direct",
-            "reason": "No specific pattern matched - general routing"
+            "domain": "marketing",
+            "confidence": 1.0,
+            "agent": "tali",
+            "reason": "Pattern match: marketing (score: 0.75)"
           },
           "context_status": {
-            "chars": 54688,
+            "chars": 55444,
             "max_chars": 160000,
-            "usage_ratio": 0.3418,
+            "usage_ratio": 0.346525,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
           },
-          "agent_response": "direct_response",
+          "agent_response": "not_implemented",
           "qa_passed": false,
           "action_executed": "blocked_by_qa",
           "response_sent": "no_response_sent",
@@ -1552,9 +1546,9 @@
           "USER.md",
           "state/fitness_tracker.md"
         ],
-        "context_size": 62656,
+        "context_size": 63790,
         "execution_status": "completed",
-        "cost_estimate": 0.157874,
+        "cost_estimate": 0.160596,
         "duration_ms": 0
       },
       "validation": {
@@ -1571,7 +1565,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_476499056",
+        "execution_id": "exec_20260324_110811_301304944",
         "routing": {
           "classification": {
             "domain": "fitness",
@@ -1587,7 +1581,7 @@
               "state/fitness_tracker.md"
             ],
             "integrations_activated": [],
-            "context_size": 62656,
+            "context_size": 63790,
             "truncated": false
           },
           "model": "tier1",
@@ -1611,7 +1605,7 @@
           "data_logged": {
             "type": "meal",
             "description": "אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל",
-            "timestamp": "2026-03-24T09:21:01.386632",
+            "timestamp": "2026-03-24T11:08:11.705655",
             "parsed": true
           },
           "file_updated": "state/fitness_tracker.md",
@@ -1630,9 +1624,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 62656,
+                "chars": 63790,
                 "max_chars": 160000,
-                "usage_ratio": 0.3916,
+                "usage_ratio": 0.3986875,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -1673,8 +1667,8 @@
           "note": "Response prepared but no valid channel/sender"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_476499056",
-          "timestamp": "2026-03-24T09:21:01.386469",
+          "execution_id": "exec_20260324_110811_301304944",
+          "timestamp": "2026-03-24T11:08:11.705466",
           "message": "אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל",
           "channel": "direct",
           "group_id": null,
@@ -1685,9 +1679,9 @@
             "reason": "Pattern match: fitness (score: 0.50)"
           },
           "context_status": {
-            "chars": 62656,
+            "chars": 63790,
             "max_chars": 160000,
-            "usage_ratio": 0.3916,
+            "usage_ratio": 0.3986875,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -1728,9 +1722,9 @@
           "USER.md",
           "policies/EXTERNAL_ACTIONS_POLICY.md"
         ],
-        "context_size": 69606,
+        "context_size": 70740,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.872772,
+        "cost_estimate": 0.88638,
         "duration_ms": 0
       },
       "validation": {
@@ -1747,7 +1741,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092896336",
+        "execution_id": "exec_20260324_110811_140125930575440",
         "routing": {
           "classification": {
             "domain": "legal",
@@ -1763,7 +1757,7 @@
               "policies/EXTERNAL_ACTIONS_POLICY.md"
             ],
             "integrations_activated": [],
-            "context_size": 69606,
+            "context_size": 70740,
             "truncated": false
           },
           "model": "tier3",
@@ -1811,7 +1805,7 @@
             "model_tier_used": "tier3",
             "confidence": 0.8,
             "requires_human_review": true,
-            "timestamp": "2026-03-24T09:21:01.387084"
+            "timestamp": "2026-03-24T11:08:11.706066"
           },
           "execution_details": {
             "model_used": "anthropic/claude-opus-4-20250514",
@@ -1828,9 +1822,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 69606,
+                "chars": 70740,
                 "max_chars": 160000,
-                "usage_ratio": 0.4350375,
+                "usage_ratio": 0.442125,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -1878,8 +1872,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092896336",
-          "timestamp": "2026-03-24T09:21:01.386896",
+          "execution_id": "exec_20260324_110811_140125930575440",
+          "timestamp": "2026-03-24T11:08:11.705880",
           "message": "זה חוזה תקין?",
           "channel": "direct",
           "group_id": null,
@@ -1890,9 +1884,9 @@
             "reason": "Pattern match: legal (score: 0.25)"
           },
           "context_status": {
-            "chars": 69606,
+            "chars": 70740,
             "max_chars": 160000,
-            "usage_ratio": 0.4350375,
+            "usage_ratio": 0.442125,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -1934,9 +1928,9 @@
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 75857,
+        "context_size": 76991,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.189557,
+        "cost_estimate": 0.192278,
         "duration_ms": 0
       },
       "validation": {
@@ -1953,7 +1947,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092798528",
+        "execution_id": "exec_20260324_110811_140125930477632",
         "routing": {
           "classification": {
             "domain": "whatsapp_group",
@@ -1968,7 +1962,7 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 75857,
+            "context_size": 76991,
             "truncated": false
           },
           "model": "tier1",
@@ -1994,7 +1988,7 @@
             "message_type": "question",
             "mentions_dvorah": true,
             "group_id": null,
-            "analysis_timestamp": "2026-03-24T09:21:01.387319"
+            "analysis_timestamp": "2026-03-24T11:08:11.706303"
           },
           "requires_approval": true,
           "approval_reason": "Group response requires review before sending",
@@ -2012,9 +2006,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 75857,
+                "chars": 76991,
                 "max_chars": 160000,
-                "usage_ratio": 0.47410625,
+                "usage_ratio": 0.48119375,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -2062,8 +2056,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092798528",
-          "timestamp": "2026-03-24T09:21:01.387211",
+          "execution_id": "exec_20260324_110811_140125930477632",
+          "timestamp": "2026-03-24T11:08:11.706192",
           "message": "דבורה, מה דעתך על הנושא?",
           "channel": "whatsapp",
           "group_id": "work_group",
@@ -2074,9 +2068,9 @@
             "reason": "WhatsApp group message (channel=whatsapp, group=work_group)"
           },
           "context_status": {
-            "chars": 75857,
+            "chars": 76991,
             "max_chars": 160000,
-            "usage_ratio": 0.47410625,
+            "usage_ratio": 0.48119375,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -2104,44 +2098,44 @@
         }
       },
       "actual": {
-        "domain": "general",
-        "agent": "direct",
-        "model_tier": "tier2",
-        "confidence": 0.3,
+        "domain": "automation",
+        "agent": "eti",
+        "model_tier": "tier1",
+        "confidence": 0.5,
         "qa_passed": false,
         "qa_score": 0.75,
-        "approval_required": true,
+        "approval_required": false,
         "context_files": [
           "IDENTITY.md",
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 82108,
+        "context_size": 83242,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.204559,
+        "cost_estimate": 0.207281,
         "duration_ms": 0
       },
       "validation": {
         "validations": {
-          "domain": false,
-          "agent": false,
-          "model_tier": false,
-          "requires_approval": false
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
         },
-        "score": 0,
+        "score": 4,
         "total": 4,
-        "percentage": 0.0,
-        "passed": false
+        "percentage": 100.0,
+        "passed": true
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073092896432",
+        "execution_id": "exec_20260324_110811_140125930575536",
         "routing": {
           "classification": {
-            "domain": "general",
-            "confidence": 0.3,
-            "agent": "direct",
-            "reason": "No specific pattern matched - general routing"
+            "domain": "automation",
+            "confidence": 0.5,
+            "agent": "eti",
+            "reason": "Pattern match: automation (score: 0.25)"
           },
           "context": {
             "files_loaded": [
@@ -2150,14 +2144,14 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 82108,
+            "context_size": 83242,
             "truncated": false
           },
-          "model": "tier2",
+          "model": "tier1",
           "routing_decision": {
-            "action": "handle_direct",
-            "agent": "direct",
-            "domain": "general"
+            "action": "route_to_agent",
+            "agent": "eti",
+            "domain": "automation"
           },
           "metadata": {
             "channel": "direct",
@@ -2167,21 +2161,15 @@
           }
         },
         "agent_result": {
-          "status": "direct_response",
-          "agent": "dvorah_direct",
-          "response_type": "conversational",
-          "requires_approval": false,
-          "routing_reason": "No specific pattern matched - general routing",
-          "confidence": 0.3,
-          "response_ready": true,
-          "metadata": {
-            "model_tier": "tier2",
-            "context_files": [
-              "IDENTITY.md",
-              "SOUL.md",
-              "USER.md"
-            ],
-            "direct_processing": true
+          "status": "not_implemented",
+          "agent": "eti",
+          "message": "Agent eti execution not implemented yet",
+          "fallback_action": "handle_as_direct",
+          "routing_info": {
+            "domain": "automation",
+            "confidence": 0.5,
+            "agent": "eti",
+            "reason": "Pattern match: automation (score: 0.25)"
           }
         },
         "qa_result": {
@@ -2192,9 +2180,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 82108,
+                "chars": 83242,
                 "max_chars": 160000,
-                "usage_ratio": 0.513175,
+                "usage_ratio": 0.5202625,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -2242,26 +2230,26 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073092896432",
-          "timestamp": "2026-03-24T09:21:01.387446",
+          "execution_id": "exec_20260324_110811_140125930575536",
+          "timestamp": "2026-03-24T11:08:11.706438",
           "message": "מה סטטוס המערכת?",
           "channel": "direct",
           "group_id": null,
           "routing": {
-            "domain": "general",
-            "confidence": 0.3,
-            "agent": "direct",
-            "reason": "No specific pattern matched - general routing"
+            "domain": "automation",
+            "confidence": 0.5,
+            "agent": "eti",
+            "reason": "Pattern match: automation (score: 0.25)"
           },
           "context_status": {
-            "chars": 82108,
+            "chars": 83242,
             "max_chars": 160000,
-            "usage_ratio": 0.513175,
+            "usage_ratio": 0.5202625,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
           },
-          "agent_response": "direct_response",
+          "agent_response": "not_implemented",
           "qa_passed": false,
           "action_executed": "blocked_by_qa",
           "response_sent": "no_response_sent",
@@ -2297,9 +2285,9 @@
           "USER.md",
           "policies/EXTERNAL_ACTIONS_POLICY.md"
         ],
-        "context_size": 89058,
+        "context_size": 90192,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 1.106196,
+        "cost_estimate": 1.119804,
         "duration_ms": 0
       },
       "validation": {
@@ -2316,7 +2304,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073094094624",
+        "execution_id": "exec_20260324_110811_140125934165792",
         "routing": {
           "classification": {
             "domain": "legal",
@@ -2332,7 +2320,7 @@
               "policies/EXTERNAL_ACTIONS_POLICY.md"
             ],
             "integrations_activated": [],
-            "context_size": 89058,
+            "context_size": 90192,
             "truncated": false
           },
           "model": "tier3",
@@ -2380,7 +2368,7 @@
             "model_tier_used": "tier3",
             "confidence": 0.8,
             "requires_human_review": true,
-            "timestamp": "2026-03-24T09:21:01.387778"
+            "timestamp": "2026-03-24T11:08:11.706791"
           },
           "execution_details": {
             "model_used": "anthropic/claude-opus-4-20250514",
@@ -2397,9 +2385,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 89058,
+                "chars": 90192,
                 "max_chars": 160000,
-                "usage_ratio": 0.5566125,
+                "usage_ratio": 0.5637,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -2447,8 +2435,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073094094624",
-          "timestamp": "2026-03-24T09:21:01.387604",
+          "execution_id": "exec_20260324_110811_140125934165792",
+          "timestamp": "2026-03-24T11:08:11.706609",
           "message": "אכלתי ארוחה והקחתי חוזה עבודה לבדיקה",
           "channel": "direct",
           "group_id": null,
@@ -2459,9 +2447,9 @@
             "reason": "Pattern match: legal (score: 0.25)"
           },
           "context_status": {
-            "chars": 89058,
+            "chars": 90192,
             "max_chars": 160000,
-            "usage_ratio": 0.5566125,
+            "usage_ratio": 0.5637,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -2495,15 +2483,15 @@
         "confidence": 0.3,
         "qa_passed": false,
         "qa_score": 0.75,
-        "approval_required": true,
+        "approval_required": false,
         "context_files": [
           "IDENTITY.md",
           "SOUL.md",
           "USER.md"
         ],
-        "context_size": 95309,
+        "context_size": 96443,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 0.236242,
+        "cost_estimate": 0.238963,
         "duration_ms": 0
       },
       "validation": {
@@ -2511,16 +2499,16 @@
           "domain": true,
           "agent": true,
           "model_tier": true,
-          "requires_approval": false
+          "requires_approval": true
         },
-        "score": 3,
+        "score": 4,
         "total": 4,
-        "percentage": 75.0,
-        "passed": false
+        "percentage": 100.0,
+        "passed": true
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_136073093091760",
+        "execution_id": "exec_20260324_110811_140125930770784",
         "routing": {
           "classification": {
             "domain": "general",
@@ -2535,7 +2523,7 @@
               "USER.md"
             ],
             "integrations_activated": [],
-            "context_size": 95309,
+            "context_size": 96443,
             "truncated": false
           },
           "model": "tier2",
@@ -2577,9 +2565,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 95309,
+                "chars": 96443,
                 "max_chars": 160000,
-                "usage_ratio": 0.59568125,
+                "usage_ratio": 0.60276875,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -2627,8 +2615,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_136073093091760",
-          "timestamp": "2026-03-24T09:21:01.387897",
+          "execution_id": "exec_20260324_110811_140125930770784",
+          "timestamp": "2026-03-24T11:08:11.706907",
           "message": "היי",
           "channel": "direct",
           "group_id": null,
@@ -2639,9 +2627,9 @@
             "reason": "No specific pattern matched - general routing"
           },
           "context_status": {
-            "chars": 95309,
+            "chars": 96443,
             "max_chars": 160000,
-            "usage_ratio": 0.59568125,
+            "usage_ratio": 0.60276875,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -2682,9 +2670,9 @@
           "USER.md",
           "policies/EXTERNAL_ACTIONS_POLICY.md"
         ],
-        "context_size": 102259,
+        "context_size": 103393,
         "execution_status": "blocked_by_qa",
-        "cost_estimate": 1.264608,
+        "cost_estimate": 1.278216,
         "duration_ms": 0
       },
       "validation": {
@@ -2701,7 +2689,7 @@
       },
       "raw_result": {
         "status": "success",
-        "execution_id": "exec_20260324_092101_476462736",
+        "execution_id": "exec_20260324_110811_301268624",
         "routing": {
           "classification": {
             "domain": "legal",
@@ -2717,7 +2705,7 @@
               "policies/EXTERNAL_ACTIONS_POLICY.md"
             ],
             "integrations_activated": [],
-            "context_size": 102259,
+            "context_size": 103393,
             "truncated": false
           },
           "model": "tier3",
@@ -2765,7 +2753,7 @@
             "model_tier_used": "tier3",
             "confidence": 0.8,
             "requires_human_review": true,
-            "timestamp": "2026-03-24T09:21:01.388258"
+            "timestamp": "2026-03-24T11:08:11.707317"
           },
           "execution_details": {
             "model_used": "anthropic/claude-opus-4-20250514",
@@ -2782,9 +2770,9 @@
               "name": "context_overflow",
               "passed": true,
               "details": {
-                "chars": 102259,
+                "chars": 103393,
                 "max_chars": 160000,
-                "usage_ratio": 0.63911875,
+                "usage_ratio": 0.64620625,
                 "status": "ok",
                 "tokens_estimate": 4,
                 "files_loaded": 5
@@ -2832,8 +2820,8 @@
           "reason": "Execution status: blocked_by_qa"
         },
         "execution_summary": {
-          "execution_id": "exec_20260324_092101_476462736",
-          "timestamp": "2026-03-24T09:21:01.388045",
+          "execution_id": "exec_20260324_110811_301268624",
+          "timestamp": "2026-03-24T11:08:11.707063",
           "message": "שלום דבורה, אני צריך עזרה עם כמה דברים: ראשית, אכלתי היום ארוחת צהריים עם דג סלמון וירקות, שנית יש ל...",
           "channel": "direct",
           "group_id": null,
@@ -2844,9 +2832,9 @@
             "reason": "Pattern match: legal (score: 0.50)"
           },
           "context_status": {
-            "chars": 102259,
+            "chars": 103393,
             "max_chars": 160000,
-            "usage_ratio": 0.63911875,
+            "usage_ratio": 0.64620625,
             "status": "ok",
             "tokens_estimate": 4,
             "files_loaded": 5
@@ -2862,7 +2850,6 @@
     }
   ],
   "recommendations": [
-    "Fix 5 failing scenarios for full system reliability",
     "Consider cost optimization - several high-cost scenarios detected"
   ]
 }
