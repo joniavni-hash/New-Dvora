@@ -74,6 +74,19 @@ python3 /home/jonia/.openclaw/workspace/core/research_scheduler.py run-scheduled
 
 ---
 
+## 🏖️ טלי - Villa Marketing — 09:00
+
+**בכל heartbeat אחרי 09:00 (לפני 11:00):**
+טלי מנתבת דרך Context Injection:
+```
+צרי תוכן שיווקי יומי לVilla Lithos - Larry methodology עם 6 slides לTikTok ו-Instagram
+```
+- פרסום חדש → שלחי דרך Postiz לכל הפלטפורמות
+- תוכן לא מוכן → דלגי
+- פעם ביום בלבד
+
+---
+
 ## 📋 סיכום יומי — 20:00
 
 **בכל heartbeat אחרי 20:00 (לפני 22:00):**
@@ -131,7 +144,7 @@ python3 /home/jonia/.openclaw/workspace/scripts/x_feed.py
 **משפט אחד ששווה לזכור:** [ציטוט/תובנה]
 ```
 
-**Last sent:** (עדכני כאן)
+**Last sent:** 24.3.2026
 
 ---
 
