@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-24T08:13:40.891008",
+  "timestamp": "2026-03-24T11:26:16.431321",
   "checks": {
     "outlook": {
-      "status": "ok",
-      "ok": true
+      "status": "missing_credentials",
+      "ok": false
     },
     "google_ads": {
-      "status": "HTTP Error 400: Bad Request",
+      "status": "missing_credentials",
       "ok": false
     },
     "dashboard": {
@@ -30,8 +30,8 @@
   },
   "summary": {
     "total": 6,
-    "ok": 4,
-    "failed": 1,
+    "ok": 3,
+    "failed": 2,
     "unknown": 1
   }
 }
