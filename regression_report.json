@@ -1,0 +1,2868 @@
+{
+  "timestamp": "2026-03-24T09:21:01.388405",
+  "summary": {
+    "total_scenarios": 15,
+    "passed_scenarios": 10,
+    "failed_scenarios": 5,
+    "success_rate": 66.66666666666666,
+    "total_estimated_cost": 5.287483,
+    "average_duration_ms": 0.7
+  },
+  "validation_breakdown": {
+    "domain": {
+      "passed": 13,
+      "total": 15
+    },
+    "agent": {
+      "passed": 13,
+      "total": 15
+    },
+    "model_tier": {
+      "passed": 14,
+      "total": 15
+    },
+    "requires_approval": {
+      "passed": 10,
+      "total": 15
+    },
+    "context_files": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "scenario_results": [
+    {
+      "scenario": {
+        "id": 1,
+        "name": "Legal Contract Analysis",
+        "message": "חוזה עבודה לבדיקה משפטית - צריך לבדוק סעיף 3.1",
+        "channel": "direct",
+        "expected": {
+          "domain": "legal",
+          "agent": "masha",
+          "model_tier": "tier3",
+          "requires_approval": true,
+          "context_files_include": [
+            "policies/EXTERNAL_ACTIONS_POLICY.md"
+          ]
+        }
+      },
+      "actual": {
+        "domain": "legal",
+        "agent": "masha",
+        "model_tier": "tier3",
+        "confidence": 1.0,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "policies/EXTERNAL_ACTIONS_POLICY.md"
+        ],
+        "context_size": 6950,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.1209,
+        "duration_ms": 9
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true,
+          "context_files": true
+        },
+        "score": 5,
+        "total": 5,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092715568",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.75)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 6950,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 46,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:21:01.380827"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 6950,
+                "max_chars": 160000,
+                "usage_ratio": 0.0434375,
+                "status": "ok",
+                "tokens_estimate": 3,
+                "files_loaded": 4
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092715568",
+          "timestamp": "2026-03-24T09:21:01.373157",
+          "message": "חוזה עבודה לבדיקה משפטית - צריך לבדוק סעיף 3.1",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.75)"
+          },
+          "context_status": {
+            "chars": 6950,
+            "max_chars": 160000,
+            "usage_ratio": 0.0434375,
+            "status": "ok",
+            "tokens_estimate": 3,
+            "files_loaded": 4
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 9
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 2,
+        "name": "Fitness Tracking - Meal",
+        "message": "אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות",
+        "channel": "direct",
+        "expected": {
+          "domain": "fitness",
+          "agent": "dana",
+          "model_tier": "tier1",
+          "requires_approval": false,
+          "file_update": "state/fitness_tracker.md"
+        }
+      },
+      "actual": {
+        "domain": "fitness",
+        "agent": "dana",
+        "model_tier": "tier1",
+        "confidence": 1.0,
+        "qa_passed": true,
+        "qa_score": 1.0,
+        "approval_required": false,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "state/fitness_tracker.md"
+        ],
+        "context_size": 14808,
+        "execution_status": "completed",
+        "cost_estimate": 0.043039,
+        "duration_ms": 1
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073093140432",
+        "routing": {
+          "classification": {
+            "domain": "fitness",
+            "confidence": 1.0,
+            "agent": "dana",
+            "reason": "Pattern match: fitness (score: 0.50)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "state/fitness_tracker.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 14808,
+            "truncated": false
+          },
+          "model": "tier1",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "dana",
+            "domain": "fitness"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 46,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "executed",
+          "agent": "דנה",
+          "domain": "fitness",
+          "action_taken": "Updated meal data",
+          "data_logged": {
+            "type": "meal",
+            "description": "אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות",
+            "timestamp": "2026-03-24T09:21:01.383717",
+            "parsed": true
+          },
+          "file_updated": "state/fitness_tracker.md",
+          "execution_details": {
+            "model_used": "anthropic/claude-sonnet-4-20250514",
+            "tier": "tier1",
+            "cost_usd": 0.0021
+          },
+          "summary": "רשמתי אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות במעקב הכושר"
+        },
+        "qa_result": {
+          "passed": true,
+          "score": 1.0,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 14808,
+                "max_chars": 160000,
+                "usage_ratio": 0.09255,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [],
+          "blocking_issues": []
+        },
+        "execution_result": {
+          "status": "completed",
+          "action": "fitness_data_logged",
+          "details": "רשמתי אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות במעקב הכושר",
+          "file_updated": "state/fitness_tracker.md"
+        },
+        "response_result": {
+          "status": "response_ready",
+          "text": "רשמתי אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות במעקב הכושר",
+          "note": "Response prepared but no valid channel/sender"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073093140432",
+          "timestamp": "2026-03-24T09:21:01.383075",
+          "message": "אכלתי חזה עוף עם אורז וירקות, בערך 400 קלוריות",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "fitness",
+            "confidence": 1.0,
+            "agent": "dana",
+            "reason": "Pattern match: fitness (score: 0.50)"
+          },
+          "context_status": {
+            "chars": 14808,
+            "max_chars": 160000,
+            "usage_ratio": 0.09255,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "executed",
+          "qa_passed": true,
+          "action_executed": "completed",
+          "response_sent": "response_ready",
+          "duration_ms": 1
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 3,
+        "name": "WhatsApp Group Message",
+        "message": "שלום לכולם, איך אתם?",
+        "channel": "whatsapp",
+        "group_id": "family_group",
+        "expected": {
+          "domain": "whatsapp_group",
+          "agent": "odya",
+          "model_tier": "tier1",
+          "requires_approval": true,
+          "low_response_confidence": true
+        }
+      },
+      "actual": {
+        "domain": "whatsapp_group",
+        "agent": "odya",
+        "model_tier": "tier1",
+        "confidence": 0.9,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 21059,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.058042,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092642224",
+        "routing": {
+          "classification": {
+            "domain": "whatsapp_group",
+            "confidence": 0.9,
+            "agent": "odya",
+            "reason": "WhatsApp group message (channel=whatsapp, group=family_group)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 21059,
+            "truncated": false
+          },
+          "model": "tier1",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "odya",
+            "domain": "whatsapp_group"
+          },
+          "metadata": {
+            "channel": "whatsapp",
+            "group_id": "family_group",
+            "message_length": 20,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "analysis_ready",
+          "agent": "אודיה",
+          "domain": "whatsapp_group",
+          "analysis": {
+            "should_respond": true,
+            "confidence": 0.7,
+            "message_type": "question",
+            "mentions_dvorah": false,
+            "group_id": null,
+            "analysis_timestamp": "2026-03-24T09:21:01.384881"
+          },
+          "requires_approval": true,
+          "approval_reason": "Group response requires review before sending",
+          "execution_details": {
+            "model_used": "anthropic/claude-sonnet-4-20250514",
+            "tier": "tier1",
+            "cost_usd": 0.0039
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 21059,
+                "max_chars": 160000,
+                "usage_ratio": 0.13161875,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": false,
+              "details": "Response requires approval but no reason provided",
+              "blocking": true
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Group message - moderate risk",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Add approval reason before proceeding"
+          ],
+          "blocking_issues": [
+            "approval_required"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "approval_required"
+          ],
+          "recommendations": [
+            "Add approval reason before proceeding"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092642224",
+          "timestamp": "2026-03-24T09:21:01.384723",
+          "message": "שלום לכולם, איך אתם?",
+          "channel": "whatsapp",
+          "group_id": "family_group",
+          "routing": {
+            "domain": "whatsapp_group",
+            "confidence": 0.9,
+            "agent": "odya",
+            "reason": "WhatsApp group message (channel=whatsapp, group=family_group)"
+          },
+          "context_status": {
+            "chars": 21059,
+            "max_chars": 160000,
+            "usage_ratio": 0.13161875,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "analysis_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 4,
+        "name": "Fitness Tracking - Weight",
+        "message": "שקלתי היום 71.2 קילו",
+        "channel": "direct",
+        "expected": {
+          "domain": "fitness",
+          "agent": "dana",
+          "model_tier": "tier1",
+          "requires_approval": false,
+          "file_update": "state/fitness_tracker.md"
+        }
+      },
+      "actual": {
+        "domain": "fitness",
+        "agent": "dana",
+        "model_tier": "tier1",
+        "confidence": 0.5,
+        "qa_passed": true,
+        "qa_score": 1.0,
+        "approval_required": false,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "state/fitness_tracker.md"
+        ],
+        "context_size": 28985,
+        "execution_status": "completed",
+        "cost_estimate": 0.077064,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092642352",
+        "routing": {
+          "classification": {
+            "domain": "fitness",
+            "confidence": 0.5,
+            "agent": "dana",
+            "reason": "Pattern match: fitness (score: 0.25)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "state/fitness_tracker.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 28985,
+            "truncated": false
+          },
+          "model": "tier1",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "dana",
+            "domain": "fitness"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 20,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "executed",
+          "agent": "דנה",
+          "domain": "fitness",
+          "action_taken": "Updated weight data",
+          "data_logged": {
+            "type": "weight",
+            "description": "שקלתי היום 71.2 קילו",
+            "timestamp": "2026-03-24T09:21:01.385181",
+            "parsed": true
+          },
+          "file_updated": "state/fitness_tracker.md",
+          "execution_details": {
+            "model_used": "anthropic/claude-sonnet-4-20250514",
+            "tier": "tier1",
+            "cost_usd": 0.0021
+          },
+          "summary": "רשמתי שקלתי היום 71.2 קילו במעקב הכושר"
+        },
+        "qa_result": {
+          "passed": true,
+          "score": 1.0,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 28985,
+                "max_chars": 160000,
+                "usage_ratio": 0.18115625,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [],
+          "blocking_issues": []
+        },
+        "execution_result": {
+          "status": "completed",
+          "action": "fitness_data_logged",
+          "details": "רשמתי שקלתי היום 71.2 קילו במעקב הכושר",
+          "file_updated": "state/fitness_tracker.md"
+        },
+        "response_result": {
+          "status": "response_ready",
+          "text": "רשמתי שקלתי היום 71.2 קילו במעקב הכושר",
+          "note": "Response prepared but no valid channel/sender"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092642352",
+          "timestamp": "2026-03-24T09:21:01.385020",
+          "message": "שקלתי היום 71.2 קילו",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "fitness",
+            "confidence": 0.5,
+            "agent": "dana",
+            "reason": "Pattern match: fitness (score: 0.25)"
+          },
+          "context_status": {
+            "chars": 28985,
+            "max_chars": 160000,
+            "usage_ratio": 0.18115625,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "executed",
+          "qa_passed": true,
+          "action_executed": "completed",
+          "response_sent": "response_ready",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 5,
+        "name": "Research Task",
+        "message": "תחקרי לי על השוק של AI agents בישראל",
+        "channel": "direct",
+        "expected": {
+          "domain": "research",
+          "agent": "tzofit",
+          "model_tier": "tier2",
+          "requires_approval": false
+        }
+      },
+      "actual": {
+        "domain": "research",
+        "agent": "tzofit",
+        "model_tier": "tier2",
+        "confidence": 0.5,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 35236,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.092066,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": false
+        },
+        "score": 3,
+        "total": 4,
+        "percentage": 75.0,
+        "passed": false
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073094090016",
+        "routing": {
+          "classification": {
+            "domain": "research",
+            "confidence": 0.5,
+            "agent": "tzofit",
+            "reason": "Pattern match: research (score: 0.25)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 35236,
+            "truncated": false
+          },
+          "model": "tier2",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "tzofit",
+            "domain": "research"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 36,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "research_ready",
+          "agent": "צופית",
+          "domain": "research",
+          "query": "לי על השוק של AI agents בישראל",
+          "results": {
+            "status": "pending_implementation",
+            "note": "Research execution not yet implemented",
+            "suggested_tools": [
+              "web_search",
+              "tavily_search"
+            ]
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-sonnet-4-20250514",
+            "tier": "tier2",
+            "cost_usd": 0.0135
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 35236,
+                "max_chars": 160000,
+                "usage_ratio": 0.220225,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": false,
+              "details": "Status: True, Content: False",
+              "blocking": true
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Complete response before sending"
+          ],
+          "blocking_issues": [
+            "response_completeness"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "response_completeness"
+          ],
+          "recommendations": [
+            "Complete response before sending"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073094090016",
+          "timestamp": "2026-03-24T09:21:01.385419",
+          "message": "תחקרי לי על השוק של AI agents בישראל",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "research",
+            "confidence": 0.5,
+            "agent": "tzofit",
+            "reason": "Pattern match: research (score: 0.25)"
+          },
+          "context_status": {
+            "chars": 35236,
+            "max_chars": 160000,
+            "usage_ratio": 0.220225,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "research_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 6,
+        "name": "General Question",
+        "message": "מה מזג האוויר היום?",
+        "channel": "direct",
+        "expected": {
+          "domain": "general",
+          "agent": "direct",
+          "model_tier": "tier2",
+          "requires_approval": false
+        }
+      },
+      "actual": {
+        "domain": "general",
+        "agent": "direct",
+        "model_tier": "tier2",
+        "confidence": 0.3,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 41487,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.107069,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": false
+        },
+        "score": 3,
+        "total": 4,
+        "percentage": 75.0,
+        "passed": false
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092896240",
+        "routing": {
+          "classification": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 41487,
+            "truncated": false
+          },
+          "model": "tier2",
+          "routing_decision": {
+            "action": "handle_direct",
+            "agent": "direct",
+            "domain": "general"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 19,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "direct_response",
+          "agent": "dvorah_direct",
+          "response_type": "conversational",
+          "requires_approval": false,
+          "routing_reason": "No specific pattern matched - general routing",
+          "confidence": 0.3,
+          "response_ready": true,
+          "metadata": {
+            "model_tier": "tier2",
+            "context_files": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "direct_processing": true
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 41487,
+                "max_chars": 160000,
+                "usage_ratio": 0.25929375,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": false,
+              "details": "Status: True, Content: False",
+              "blocking": true
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Complete response before sending"
+          ],
+          "blocking_issues": [
+            "response_completeness"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "response_completeness"
+          ],
+          "recommendations": [
+            "Complete response before sending"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092896240",
+          "timestamp": "2026-03-24T09:21:01.385729",
+          "message": "מה מזג האוויר היום?",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context_status": {
+            "chars": 41487,
+            "max_chars": 160000,
+            "usage_ratio": 0.25929375,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "direct_response",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 7,
+        "name": "Legal - Contract Review",
+        "message": "סיכום חוזה השכרה - בדקי את התנאים",
+        "channel": "direct",
+        "expected": {
+          "domain": "legal",
+          "agent": "masha",
+          "model_tier": "tier3",
+          "requires_approval": true
+        }
+      },
+      "actual": {
+        "domain": "legal",
+        "agent": "masha",
+        "model_tier": "tier3",
+        "confidence": 1.0,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "policies/EXTERNAL_ACTIONS_POLICY.md"
+        ],
+        "context_size": 48437,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.618744,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092642480",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.75)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 48437,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 33,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:21:01.386146"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 48437,
+                "max_chars": 160000,
+                "usage_ratio": 0.30273125,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092642480",
+          "timestamp": "2026-03-24T09:21:01.385916",
+          "message": "סיכום חוזה השכרה - בדקי את התנאים",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.75)"
+          },
+          "context_status": {
+            "chars": 48437,
+            "max_chars": 160000,
+            "usage_ratio": 0.30273125,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 8,
+        "name": "Marketing Request",
+        "message": "תכיני פוסט לטיקטוק על הווילה בליתוס",
+        "channel": "direct",
+        "expected": {
+          "domain": "marketing",
+          "agent": "tali",
+          "model_tier": "tier2",
+          "requires_approval": false
+        }
+      },
+      "actual": {
+        "domain": "general",
+        "agent": "direct",
+        "model_tier": "tier2",
+        "confidence": 0.3,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 54688,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.138751,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": false,
+          "agent": false,
+          "model_tier": true,
+          "requires_approval": false
+        },
+        "score": 1,
+        "total": 4,
+        "percentage": 25.0,
+        "passed": false
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092642608",
+        "routing": {
+          "classification": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 54688,
+            "truncated": false
+          },
+          "model": "tier2",
+          "routing_decision": {
+            "action": "handle_direct",
+            "agent": "direct",
+            "domain": "general"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 35,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "direct_response",
+          "agent": "dvorah_direct",
+          "response_type": "conversational",
+          "requires_approval": false,
+          "routing_reason": "No specific pattern matched - general routing",
+          "confidence": 0.3,
+          "response_ready": true,
+          "metadata": {
+            "model_tier": "tier2",
+            "context_files": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "direct_processing": true
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 54688,
+                "max_chars": 160000,
+                "usage_ratio": 0.3418,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": false,
+              "details": "Status: True, Content: False",
+              "blocking": true
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Complete response before sending"
+          ],
+          "blocking_issues": [
+            "response_completeness"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "response_completeness"
+          ],
+          "recommendations": [
+            "Complete response before sending"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092642608",
+          "timestamp": "2026-03-24T09:21:01.386295",
+          "message": "תכיני פוסט לטיקטוק על הווילה בליתוס",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context_status": {
+            "chars": 54688,
+            "max_chars": 160000,
+            "usage_ratio": 0.3418,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "direct_response",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 9,
+        "name": "Fitness Complex",
+        "message": "אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל",
+        "channel": "direct",
+        "expected": {
+          "domain": "fitness",
+          "agent": "dana",
+          "model_tier": "tier1",
+          "requires_approval": false,
+          "file_update": "state/fitness_tracker.md"
+        }
+      },
+      "actual": {
+        "domain": "fitness",
+        "agent": "dana",
+        "model_tier": "tier1",
+        "confidence": 1.0,
+        "qa_passed": true,
+        "qa_score": 1.0,
+        "approval_required": false,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "state/fitness_tracker.md"
+        ],
+        "context_size": 62656,
+        "execution_status": "completed",
+        "cost_estimate": 0.157874,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_476499056",
+        "routing": {
+          "classification": {
+            "domain": "fitness",
+            "confidence": 1.0,
+            "agent": "dana",
+            "reason": "Pattern match: fitness (score: 0.50)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "state/fitness_tracker.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 62656,
+            "truncated": false
+          },
+          "model": "tier1",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "dana",
+            "domain": "fitness"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 57,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "executed",
+          "agent": "דנה",
+          "domain": "fitness",
+          "action_taken": "Updated meal data",
+          "data_logged": {
+            "type": "meal",
+            "description": "אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל",
+            "timestamp": "2026-03-24T09:21:01.386632",
+            "parsed": true
+          },
+          "file_updated": "state/fitness_tracker.md",
+          "execution_details": {
+            "model_used": "anthropic/claude-sonnet-4-20250514",
+            "tier": "tier1",
+            "cost_usd": 0.0021
+          },
+          "summary": "רשמתי אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל במעקב הכושר"
+        },
+        "qa_result": {
+          "passed": true,
+          "score": 1.0,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 62656,
+                "max_chars": 160000,
+                "usage_ratio": 0.3916,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [],
+          "blocking_issues": []
+        },
+        "execution_result": {
+          "status": "completed",
+          "action": "fitness_data_logged",
+          "details": "רשמתי אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל במעקב הכושר",
+          "file_updated": "state/fitness_tracker.md"
+        },
+        "response_result": {
+          "status": "response_ready",
+          "text": "רשמתי אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל במעקב הכושר",
+          "note": "Response prepared but no valid channel/sender"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_476499056",
+          "timestamp": "2026-03-24T09:21:01.386469",
+          "message": "אכלתי ארוחת בוקר: 3 ביצים, לחם מלא, אבוקדו. בערך 500 קק\"ל",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "fitness",
+            "confidence": 1.0,
+            "agent": "dana",
+            "reason": "Pattern match: fitness (score: 0.50)"
+          },
+          "context_status": {
+            "chars": 62656,
+            "max_chars": 160000,
+            "usage_ratio": 0.3916,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "executed",
+          "qa_passed": true,
+          "action_executed": "completed",
+          "response_sent": "response_ready",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 10,
+        "name": "Legal - Brief Query",
+        "message": "זה חוזה תקין?",
+        "channel": "direct",
+        "expected": {
+          "domain": "legal",
+          "agent": "masha",
+          "model_tier": "tier3",
+          "requires_approval": true
+        }
+      },
+      "actual": {
+        "domain": "legal",
+        "agent": "masha",
+        "model_tier": "tier3",
+        "confidence": 0.5,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "policies/EXTERNAL_ACTIONS_POLICY.md"
+        ],
+        "context_size": 69606,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.872772,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092896336",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 0.5,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.25)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 69606,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 13,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:21:01.387084"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 69606,
+                "max_chars": 160000,
+                "usage_ratio": 0.4350375,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092896336",
+          "timestamp": "2026-03-24T09:21:01.386896",
+          "message": "זה חוזה תקין?",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 0.5,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.25)"
+          },
+          "context_status": {
+            "chars": 69606,
+            "max_chars": 160000,
+            "usage_ratio": 0.4350375,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 11,
+        "name": "Group - Direct Mention",
+        "message": "דבורה, מה דעתך על הנושא?",
+        "channel": "whatsapp",
+        "group_id": "work_group",
+        "expected": {
+          "domain": "whatsapp_group",
+          "agent": "odya",
+          "model_tier": "tier1",
+          "requires_approval": true,
+          "high_response_confidence": true
+        }
+      },
+      "actual": {
+        "domain": "whatsapp_group",
+        "agent": "odya",
+        "model_tier": "tier1",
+        "confidence": 0.9,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 75857,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.189557,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092798528",
+        "routing": {
+          "classification": {
+            "domain": "whatsapp_group",
+            "confidence": 0.9,
+            "agent": "odya",
+            "reason": "WhatsApp group message (channel=whatsapp, group=work_group)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 75857,
+            "truncated": false
+          },
+          "model": "tier1",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "odya",
+            "domain": "whatsapp_group"
+          },
+          "metadata": {
+            "channel": "whatsapp",
+            "group_id": "work_group",
+            "message_length": 24,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "analysis_ready",
+          "agent": "אודיה",
+          "domain": "whatsapp_group",
+          "analysis": {
+            "should_respond": true,
+            "confidence": 0.7,
+            "message_type": "question",
+            "mentions_dvorah": true,
+            "group_id": null,
+            "analysis_timestamp": "2026-03-24T09:21:01.387319"
+          },
+          "requires_approval": true,
+          "approval_reason": "Group response requires review before sending",
+          "execution_details": {
+            "model_used": "anthropic/claude-sonnet-4-20250514",
+            "tier": "tier1",
+            "cost_usd": 0.0039
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 75857,
+                "max_chars": 160000,
+                "usage_ratio": 0.47410625,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": false,
+              "details": "Response requires approval but no reason provided",
+              "blocking": true
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Group message - moderate risk",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Add approval reason before proceeding"
+          ],
+          "blocking_issues": [
+            "approval_required"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "approval_required"
+          ],
+          "recommendations": [
+            "Add approval reason before proceeding"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092798528",
+          "timestamp": "2026-03-24T09:21:01.387211",
+          "message": "דבורה, מה דעתך על הנושא?",
+          "channel": "whatsapp",
+          "group_id": "work_group",
+          "routing": {
+            "domain": "whatsapp_group",
+            "confidence": 0.9,
+            "agent": "odya",
+            "reason": "WhatsApp group message (channel=whatsapp, group=work_group)"
+          },
+          "context_status": {
+            "chars": 75857,
+            "max_chars": 160000,
+            "usage_ratio": 0.47410625,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "analysis_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 12,
+        "name": "System Status",
+        "message": "מה סטטוס המערכת?",
+        "channel": "direct",
+        "expected": {
+          "domain": "automation",
+          "agent": "eti",
+          "model_tier": "tier1",
+          "requires_approval": false
+        }
+      },
+      "actual": {
+        "domain": "general",
+        "agent": "direct",
+        "model_tier": "tier2",
+        "confidence": 0.3,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 82108,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.204559,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": false,
+          "agent": false,
+          "model_tier": false,
+          "requires_approval": false
+        },
+        "score": 0,
+        "total": 4,
+        "percentage": 0.0,
+        "passed": false
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073092896432",
+        "routing": {
+          "classification": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 82108,
+            "truncated": false
+          },
+          "model": "tier2",
+          "routing_decision": {
+            "action": "handle_direct",
+            "agent": "direct",
+            "domain": "general"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 16,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "direct_response",
+          "agent": "dvorah_direct",
+          "response_type": "conversational",
+          "requires_approval": false,
+          "routing_reason": "No specific pattern matched - general routing",
+          "confidence": 0.3,
+          "response_ready": true,
+          "metadata": {
+            "model_tier": "tier2",
+            "context_files": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "direct_processing": true
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 82108,
+                "max_chars": 160000,
+                "usage_ratio": 0.513175,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": false,
+              "details": "Status: True, Content: False",
+              "blocking": true
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Complete response before sending"
+          ],
+          "blocking_issues": [
+            "response_completeness"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "response_completeness"
+          ],
+          "recommendations": [
+            "Complete response before sending"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073092896432",
+          "timestamp": "2026-03-24T09:21:01.387446",
+          "message": "מה סטטוס המערכת?",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context_status": {
+            "chars": 82108,
+            "max_chars": 160000,
+            "usage_ratio": 0.513175,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "direct_response",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 13,
+        "name": "Mixed Domain - Fitness + Legal",
+        "message": "אכלתי ארוחה והקחתי חוזה עבודה לבדיקה",
+        "channel": "direct",
+        "expected": {
+          "domain": "legal",
+          "agent": "masha",
+          "model_tier": "tier3",
+          "requires_approval": true
+        }
+      },
+      "actual": {
+        "domain": "legal",
+        "agent": "masha",
+        "model_tier": "tier3",
+        "confidence": 0.5,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "policies/EXTERNAL_ACTIONS_POLICY.md"
+        ],
+        "context_size": 89058,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 1.106196,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073094094624",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 0.5,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.25)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 89058,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 36,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:21:01.387778"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 89058,
+                "max_chars": 160000,
+                "usage_ratio": 0.5566125,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073094094624",
+          "timestamp": "2026-03-24T09:21:01.387604",
+          "message": "אכלתי ארוחה והקחתי חוזה עבודה לבדיקה",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 0.5,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.25)"
+          },
+          "context_status": {
+            "chars": 89058,
+            "max_chars": 160000,
+            "usage_ratio": 0.5566125,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 14,
+        "name": "Empty/Minimal Input",
+        "message": "היי",
+        "channel": "direct",
+        "expected": {
+          "domain": "general",
+          "agent": "direct",
+          "model_tier": "tier2",
+          "requires_approval": false
+        }
+      },
+      "actual": {
+        "domain": "general",
+        "agent": "direct",
+        "model_tier": "tier2",
+        "confidence": 0.3,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md"
+        ],
+        "context_size": 95309,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 0.236242,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": false
+        },
+        "score": 3,
+        "total": 4,
+        "percentage": 75.0,
+        "passed": false
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_136073093091760",
+        "routing": {
+          "classification": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 95309,
+            "truncated": false
+          },
+          "model": "tier2",
+          "routing_decision": {
+            "action": "handle_direct",
+            "agent": "direct",
+            "domain": "general"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 3,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "direct_response",
+          "agent": "dvorah_direct",
+          "response_type": "conversational",
+          "requires_approval": false,
+          "routing_reason": "No specific pattern matched - general routing",
+          "confidence": 0.3,
+          "response_ready": true,
+          "metadata": {
+            "model_tier": "tier2",
+            "context_files": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md"
+            ],
+            "direct_processing": true
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 95309,
+                "max_chars": 160000,
+                "usage_ratio": 0.59568125,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": false,
+              "details": "Status: True, Content: False",
+              "blocking": true
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": true,
+              "details": "Low risk domain",
+              "blocking": false
+            }
+          },
+          "recommendations": [
+            "Complete response before sending"
+          ],
+          "blocking_issues": [
+            "response_completeness"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "response_completeness"
+          ],
+          "recommendations": [
+            "Complete response before sending"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_136073093091760",
+          "timestamp": "2026-03-24T09:21:01.387897",
+          "message": "היי",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "general",
+            "confidence": 0.3,
+            "agent": "direct",
+            "reason": "No specific pattern matched - general routing"
+          },
+          "context_status": {
+            "chars": 95309,
+            "max_chars": 160000,
+            "usage_ratio": 0.59568125,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "direct_response",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": 15,
+        "name": "Long Complex Message",
+        "message": "שלום דבורה, אני צריך עזרה עם כמה דברים: ראשית, אכלתי היום ארוחת צהריים עם דג סלמון וירקות, שנית יש לי חוזה עבודה שצריך בדיקה משפטית, ושלישית רציתי לשאול אותך מה דעתך על המצב הכלכלי בעולם",
+        "channel": "direct",
+        "expected": {
+          "domain": "legal",
+          "agent": "masha",
+          "model_tier": "tier3",
+          "requires_approval": true
+        }
+      },
+      "actual": {
+        "domain": "legal",
+        "agent": "masha",
+        "model_tier": "tier3",
+        "confidence": 1.0,
+        "qa_passed": false,
+        "qa_score": 0.75,
+        "approval_required": true,
+        "context_files": [
+          "IDENTITY.md",
+          "SOUL.md",
+          "USER.md",
+          "policies/EXTERNAL_ACTIONS_POLICY.md"
+        ],
+        "context_size": 102259,
+        "execution_status": "blocked_by_qa",
+        "cost_estimate": 1.264608,
+        "duration_ms": 0
+      },
+      "validation": {
+        "validations": {
+          "domain": true,
+          "agent": true,
+          "model_tier": true,
+          "requires_approval": true
+        },
+        "score": 4,
+        "total": 4,
+        "percentage": 100.0,
+        "passed": true
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092101_476462736",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 102259,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 186,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:21:01.388258"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 102259,
+                "max_chars": 160000,
+                "usage_ratio": 0.63911875,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 5
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092101_476462736",
+          "timestamp": "2026-03-24T09:21:01.388045",
+          "message": "שלום דבורה, אני צריך עזרה עם כמה דברים: ראשית, אכלתי היום ארוחת צהריים עם דג סלמון וירקות, שנית יש ל...",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context_status": {
+            "chars": 102259,
+            "max_chars": 160000,
+            "usage_ratio": 0.63911875,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 5
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    }
+  ],
+  "recommendations": [
+    "Fix 5 failing scenarios for full system reliability",
+    "Consider cost optimization - several high-cost scenarios detected"
+  ]
+}

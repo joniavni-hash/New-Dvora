@@ -12,16 +12,17 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 
-from .router import route_message
-from .context_guard import context_status, emergency_compact
-from .agent_executor import execute_agent_task
-from .action_executor import execute_if_approved, send_response_if_ready
+from router import route_message
+from context_guard import context_status, emergency_compact
+from agent_executor import AgentExecutor
+from action_executor import execute_if_approved, send_response_if_ready
 
 class ExecutionPipeline:
     def __init__(self, workspace_path: str = None):
         self.workspace = Path(workspace_path or os.environ.get("DVORAH_WORKSPACE", 
                                                              Path.home() / ".openclaw" / "workspace"))
         self.execution_log = []
+        self.agent_executor = AgentExecutor(workspace_path)
         
     def execute(self, message: str, channel: str = None, 
                group_id: str = None, metadata: Dict = None) -> Dict:
@@ -46,7 +47,7 @@ class ExecutionPipeline:
             else:
                 # Use real agent executor instead of dummy responses
                 agent_name = routing_result["routing_decision"]["agent"]
-                result = execute_agent_task(agent_name, message, routing_result, 
+                result = self.agent_executor.execute_agent_task(agent_name, message, routing_result, 
                                           {**(metadata or {}), "execution_id": execution_id})
             
             # Step 4: QA Check

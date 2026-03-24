@@ -1,0 +1,575 @@
+{
+  "timestamp": "2026-03-24T09:22:52.170691",
+  "validation_summary": {
+    "total_scenarios": 3,
+    "routing_accuracy": 100.0,
+    "qa_pass_rate": 0.0,
+    "approval_rate": 100.0,
+    "total_estimated_cost": 0.7254,
+    "average_cost_per_scenario": 0.2418,
+    "average_processing_time": 0.003
+  },
+  "analysis_quality_breakdown": {
+    "structured": 3
+  },
+  "scenario_results": [
+    {
+      "scenario": {
+        "id": "L1",
+        "name": "Employment Contract Review",
+        "document": "\nחוזה עבודה\nבין: חברת טכנולוגיה בע\"מ (המעסיק)\nלבין: יוחנן כהן (העובד)\n\nסעיף 3: שכר והטבות\n3.1 השכר החודשי יהיה 15,000 ש\"ח ברוטו\n3.2 העובד יהיה זכאי לרכב חברה לשימוש פרטי\n3.3 העובד יקבל 20 ימי חופשה בשנה\n\nסעיף 4: תקופת ההתחייבות  \n4.1 העובד מתחייב לעבוד לפחות שנתיים\n4.2 בפרישה מוקדמת, יחזיר העובד 50% מהשכר שקיבל בשנה האחרונה\n\nסעיף 5: סודיות\n5.1 העובד לא יגלה מידע רגיש על החברה\n        ",
+        "query": "בדקי את החוזה מבחינת חוקיות וסיכונים",
+        "expected_issues": [
+          "תקופת התחייבות של שנתיים יכולה להיחשב בלתי סבירה",
+          "החזר 50% מהשכר בפרישה מוקדמת בעייתי",
+          "סעיף הסודיות כללי מדי"
+        ]
+      },
+      "analysis": {
+        "scenario_id": "L1",
+        "routing_correct": true,
+        "execution_status": "draft_ready",
+        "qa_passed": false,
+        "requires_approval": true,
+        "cost_estimate": 0.1584,
+        "processing_time": 0.007,
+        "context_size": 6950,
+        "model_used": "tier3_opus",
+        "analysis_quality": "structured"
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092252_186800592",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 6950,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 438,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:22:52.169310"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 6950,
+                "max_chars": 160000,
+                "usage_ratio": 0.0434375,
+                "status": "ok",
+                "tokens_estimate": 3,
+                "files_loaded": 4
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092252_186800592",
+          "timestamp": "2026-03-24T09:22:52.162438",
+          "message": "בדקי את החוזה מבחינת חוקיות וסיכונים\n\nמסמך לבדיקה:\n\nחוזה עבודה\nבין: חברת טכנולוגיה בע\"מ (המעסיק)\nלבי...",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context_status": {
+            "chars": 6950,
+            "max_chars": 160000,
+            "usage_ratio": 0.0434375,
+            "status": "ok",
+            "tokens_estimate": 3,
+            "files_loaded": 4
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 7
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": "L2",
+        "name": "Rental Agreement Analysis",
+        "document": "\nחוזה השכרה - דירת מגורים\nמושכר: יוסי לוי\nמשכיר: שרה כהן\n\nתנאי השכירות:\n- דמי שכירות: 4,500 ש\"ח לחודש + ועד בית\n- פיקדון: 13,500 ש\"ח (3 חודשי שכירות)\n- תקופת השכירות: שנה אחת עם אופציה להארכה\n- הדירה מועברת ללא מכשירי חשמל\n- האחריות לתיקונים על השוכר\n\nסעיפי מיוחדים:\n- אסור להכניס חיות מחמד\n- אסור לעשות שינויים בדירה ללא אישור\n- הפסקת חוזה מוקדמת - דמי פיצוי של 2 חודשי שכירות\n        ",
+        "query": "מה הסיכונים עבור השוכר?",
+        "expected_issues": [
+          "פיקדון גבוה (3 חודשים)",
+          "כל האחריות לתיקונים על השוכר",
+          "דמי פיצוי גבוהים על הפסקה מוקדמת"
+        ]
+      },
+      "analysis": {
+        "scenario_id": "L2",
+        "routing_correct": true,
+        "execution_status": "draft_ready",
+        "qa_passed": false,
+        "requires_approval": true,
+        "cost_estimate": 0.2418,
+        "processing_time": 0.001,
+        "context_size": 13900,
+        "model_used": "tier3_opus",
+        "analysis_quality": "structured"
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092252_186819760",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 13900,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 424,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:22:52.169994"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 13900,
+                "max_chars": 160000,
+                "usage_ratio": 0.086875,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 4
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092252_186819760",
+          "timestamp": "2026-03-24T09:22:52.169561",
+          "message": "מה הסיכונים עבור השוכר?\n\nמסמך לבדיקה:\n\nחוזה השכרה - דירת מגורים\nמושכר: יוסי לוי\nמשכיר: שרה כהן\n\nתנאי...",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context_status": {
+            "chars": 13900,
+            "max_chars": 160000,
+            "usage_ratio": 0.086875,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 4
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    },
+    {
+      "scenario": {
+        "id": "L3",
+        "name": "Service Agreement Review",
+        "document": "\nהסכם לבצוע שירותים\nנותן השירות: דני מחשבים בע\"מ\nמזמין השירות: רשת חנויות XYZ\n\nהיקף העבודה:\n- תחזוקת מערכת מחשבים של הרשת\n- זמינות 24/7 לקריאות חירום\n- עדכוני תוכנה חודשיים\n\nתנאים כלכליים:\n- דמי התחזוקה: 8,000 ש\"ח לחודש\n- דמי קריאת חירום: 300 ש\"ח לשעה\n- תשלום בתוך 60 יום מתאריך החשבונית\n\nאחריות וביטוח:\n- נותן השירות אחראי לנזקים הנגרמים עקב רשלנות\n- על נותן השירות לקיים ביטוח אחריות מקצועית\n        ",
+        "query": "האם התנאים מאוזנים בין הצדדים?",
+        "expected_issues": [
+          "זמינות 24/7 יכולה להיות בעייתי ללא הגדרת זמני תגובה",
+          "תשלום בתוך 60 יום ארוך יחסית",
+          "אחריות נותן השירות רק ברשלנות - יכול להיות בעייתי"
+        ]
+      },
+      "analysis": {
+        "scenario_id": "L3",
+        "routing_correct": true,
+        "execution_status": "draft_ready",
+        "qa_passed": false,
+        "requires_approval": true,
+        "cost_estimate": 0.3252,
+        "processing_time": 0.001,
+        "context_size": 20850,
+        "model_used": "tier3_opus",
+        "analysis_quality": "structured"
+      },
+      "raw_result": {
+        "status": "success",
+        "execution_id": "exec_20260324_092252_186837168",
+        "routing": {
+          "classification": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context": {
+            "files_loaded": [
+              "IDENTITY.md",
+              "SOUL.md",
+              "USER.md",
+              "policies/EXTERNAL_ACTIONS_POLICY.md"
+            ],
+            "integrations_activated": [],
+            "context_size": 20850,
+            "truncated": false
+          },
+          "model": "tier3",
+          "routing_decision": {
+            "action": "route_to_agent",
+            "agent": "masha",
+            "domain": "legal"
+          },
+          "metadata": {
+            "channel": "direct",
+            "group_id": null,
+            "message_length": 447,
+            "timestamp": "2026-03-24T07:54:00"
+          }
+        },
+        "agent_result": {
+          "status": "draft_ready",
+          "agent": "מאשה",
+          "task_type": "contract_review",
+          "analysis": {
+            "document_type": "contract",
+            "review_status": "preliminary_analysis_complete",
+            "key_findings": [
+              "חוזה זוהה ומחכה לניתוח מפורט",
+              "דרוש מסמך המקור לביצוע ניתוח מלא",
+              "המתחיל בדבורה לאישור לפני שליחה"
+            ],
+            "risk_level": "pending_document_review",
+            "recommendations": [
+              "לוודא שהמסמך המקורי זמין",
+              "לבדוק תנאי תשלום",
+              "לזהות סעיפי אחריות"
+            ]
+          },
+          "draft_actions": {
+            "requires_approval": true,
+            "approval_reason": "Legal analysis requires review before sending",
+            "suggested_next_steps": [
+              "לבדוק מסמך המקור",
+              "לבצע ניתוח סיכונים מפורט",
+              "להכין סיכום למזמין העבודה"
+            ]
+          },
+          "metadata": {
+            "model_tier_used": "tier3",
+            "confidence": 0.8,
+            "requires_human_review": true,
+            "timestamp": "2026-03-24T09:22:52.170532"
+          },
+          "execution_details": {
+            "model_used": "anthropic/claude-opus-4-20250514",
+            "tier": "tier3",
+            "cost_usd": 0.102,
+            "execution_type": "structured_analysis"
+          }
+        },
+        "qa_result": {
+          "passed": false,
+          "score": 0.75,
+          "checks": {
+            "context_overflow": {
+              "name": "context_overflow",
+              "passed": true,
+              "details": {
+                "chars": 20850,
+                "max_chars": 160000,
+                "usage_ratio": 0.1303125,
+                "status": "ok",
+                "tokens_estimate": 4,
+                "files_loaded": 4
+              },
+              "blocking": false
+            },
+            "approval_required": {
+              "name": "approval_required",
+              "passed": true,
+              "details": "Approval: not required",
+              "blocking": false
+            },
+            "response_completeness": {
+              "name": "response_completeness",
+              "passed": true,
+              "details": "Status: True, Content: True",
+              "blocking": false
+            },
+            "risk_assessment": {
+              "name": "risk_assessment",
+              "passed": false,
+              "details": "Legal response - approval required",
+              "blocking": true
+            }
+          },
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ],
+          "blocking_issues": [
+            "risk_assessment"
+          ]
+        },
+        "execution_result": {
+          "status": "blocked_by_qa",
+          "reason": "QA checks failed",
+          "blocking_issues": [
+            "risk_assessment"
+          ],
+          "recommendations": [
+            "Add approval gate for high-risk response"
+          ]
+        },
+        "response_result": {
+          "status": "no_response_sent",
+          "reason": "Execution status: blocked_by_qa"
+        },
+        "execution_summary": {
+          "execution_id": "exec_20260324_092252_186837168",
+          "timestamp": "2026-03-24T09:22:52.170153",
+          "message": "האם התנאים מאוזנים בין הצדדים?\n\nמסמך לבדיקה:\n\nהסכם לבצוע שירותים\nנותן השירות: דני מחשבים בע\"מ\nמזמין ...",
+          "channel": "direct",
+          "group_id": null,
+          "routing": {
+            "domain": "legal",
+            "confidence": 1.0,
+            "agent": "masha",
+            "reason": "Pattern match: legal (score: 0.50)"
+          },
+          "context_status": {
+            "chars": 20850,
+            "max_chars": 160000,
+            "usage_ratio": 0.1303125,
+            "status": "ok",
+            "tokens_estimate": 4,
+            "files_loaded": 4
+          },
+          "agent_response": "draft_ready",
+          "qa_passed": false,
+          "action_executed": "blocked_by_qa",
+          "response_sent": "no_response_sent",
+          "duration_ms": 0
+        }
+      },
+      "status": "completed"
+    }
+  ],
+  "recommendations": [
+    "Consider cost optimization - average cost per legal analysis is high"
+  ]
+}

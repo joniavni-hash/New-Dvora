@@ -14,7 +14,7 @@ import os
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-from .context_guard import safe_read_file, context_status
+from context_guard import safe_read_file, context_status
 
 class Router:
     def __init__(self, workspace_path: str = None):
@@ -42,9 +42,21 @@ class Router:
             ],
             "research": [
                 r"תחקרי|חקרי|research|investigate",
-                r"בדקי|check|מצאי|find",
-                r"מה.*עם|what.*about",
-                r"איך.*עובד|how.*works"
+                r"בדקי|check|מצאי|find|חפשי",
+                r"מה.*עם|what.*about|השוק|market",
+                r"איך.*עובד|how.*works|ניתוח|analysis"
+            ],
+            "marketing": [
+                r"פוסט|post|תוכן|content",
+                r"טיקטוק|tiktok|instagram|social",
+                r"שיווק|marketing|פרסום|advertising",
+                r"וילה|villa|lithos|ליתוס"
+            ],
+            "automation": [
+                r"סטטוס.*מערכת|system.*status|health.*check",
+                r"בריאות.*מערכת|system.*health",
+                r"מצב.*מערכת|system.*state",
+                r"אוטומציה|automation|monitor"
             ],
             "scheduling": [
                 r"מתי|when|תזכיר|remind",
@@ -89,7 +101,9 @@ class Router:
                 "fitness": "dana", 
                 "whatsapp_group": "odya",
                 "research": "tzofit",
-                "scheduling": "direct"
+                "scheduling": "eti",
+                "marketing": "tali",
+                "automation": "eti"
             }
             
             return {
@@ -186,6 +200,8 @@ class Router:
             "whatsapp_group": "tier1",  # Usually simple
             "fitness": "tier1",  # Mostly data entry
             "research": "tier2",  # Needs analysis capability
+            "marketing": "tier2",  # Creative content needs good model
+            "automation": "tier1",  # System status is straightforward
             "scheduling": "tier1",  # Simple logic
             "general": "tier2"  # Default to mid-tier
         }
@@ -227,5 +243,5 @@ class IntegrationRegistry:
 router = Router()
 
 def route_message(message: str, channel: str = None, group_id: str = None) -> Dict:
-    """Global routing function"""
+    """Global routing function - called by execution pipeline"""
     return router.route_message(message, channel, group_id)

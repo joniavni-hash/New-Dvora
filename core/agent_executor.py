@@ -16,7 +16,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 
-from .model_selector import select_model_for_tier, log_model_usage
+from model_selector import ModelSelector
 
 class AgentExecutor:
     def __init__(self, workspace_path: str = None):
@@ -56,7 +56,8 @@ class AgentExecutor:
         
         # Get model selection
         tier = routing.get("model", "tier3")  # Legal defaults to tier3
-        model_selection = select_model_for_tier(tier, routing["context"])
+        model_selector = ModelSelector()
+        model_selection = model_selector.select_model(tier, routing["context"])
         
         # Import מאשה
         from agents.masha.masha_agent import handle_legal_task
@@ -73,7 +74,7 @@ class AgentExecutor:
             # For now, we enhance the structured response
             
             # Log model usage (simulated for now)
-            usage_record = log_model_usage(
+            usage_record = ModelSelector().log_actual_usage(
                 model_selection,
                 {"input": 800, "output": 1200},  # Simulated
                 metadata.get("execution_id")
@@ -93,7 +94,7 @@ class AgentExecutor:
         
         # Get model selection - fitness usually tier1
         tier = routing.get("model", "tier1")
-        model_selection = select_model_for_tier(tier, routing["context"])
+        model_selection = ModelSelector().select_model(tier, routing["context"])
         
         # Parse fitness data from message
         fitness_data = self._parse_fitness_message(message)
@@ -103,7 +104,7 @@ class AgentExecutor:
             update_result = self._update_fitness_tracker(fitness_data)
             
             # Log model usage (minimal for data entry)
-            usage_record = log_model_usage(
+            usage_record = ModelSelector().log_actual_usage(
                 model_selection,
                 {"input": 200, "output": 100},  # Simple task
                 metadata.get("execution_id")
@@ -136,7 +137,7 @@ class AgentExecutor:
         
         # Get model selection - groups usually tier1 
         tier = routing.get("model", "tier1")
-        model_selection = select_model_for_tier(tier, routing["context"])
+        model_selection = ModelSelector().select_model(tier, routing["context"])
         
         group_id = metadata.get("group_id") if metadata else None
         
@@ -144,7 +145,7 @@ class AgentExecutor:
         analysis = self._analyze_group_message(message, group_id)
         
         # Log model usage
-        usage_record = log_model_usage(
+        usage_record = ModelSelector().log_actual_usage(
             model_selection,
             {"input": 300, "output": 200},
             metadata.get("execution_id")
@@ -169,7 +170,7 @@ class AgentExecutor:
         
         # Get model selection - research usually tier2
         tier = routing.get("model", "tier2")
-        model_selection = select_model_for_tier(tier, routing["context"])
+        model_selection = ModelSelector().select_model(tier, routing["context"])
         
         # Extract research query
         research_query = self._extract_research_query(message)
@@ -177,7 +178,7 @@ class AgentExecutor:
         # TODO: Add actual web search here
         # For now, return structured response
         
-        usage_record = log_model_usage(
+        usage_record = ModelSelector().log_actual_usage(
             model_selection,
             {"input": 500, "output": 800},
             metadata.get("execution_id")
