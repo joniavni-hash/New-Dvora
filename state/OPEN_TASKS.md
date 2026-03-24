@@ -8,12 +8,12 @@
 - content: בחינה משפטית של טופס החתמת עובדים על יתרת חופשה שלילית
 - result: נשלחה תשובה ליעל עם 3 הערות (סיום העסקה, מצב ביטחוני, תקרת צבירה). הטופס תקין, אושר להתקדם.
 
-### 🟡 תיקון מזגן — עמית גובאני (אייקון)
+### ✅ תיקון מזגן — עמית גובאני (אייקון)
 - opened: 19.3.2026
+- completed: 24.3.2026
 - content: תיקון מזגן עם עמית גובאני, השוכר באייקון
-- status: נקבע ליום שלישי 24.3.2026
-- reminder: 25.3.2026 (רביעי) — לבדוק עם יוני אם טופל ותוקן
-- followup: once (רביעי)
+- status: ✅ טופל בהצלחה
+- result: המזגן תוקן כמתוכנן
 
 ### ✅ אבירן וייסלר — פארק הייטק צפון (ברלב)
 - opened: 18.3.2026
@@ -51,9 +51,9 @@
 ### 🟢 מאשה - Legal Domain Agent
 - opened: 23.3.2026  
 - content: סוכנת דומיין משפטית מלאה - contract review, risk analysis, clause extraction, draft response, compare versions
-- status: MVP מוכן ופעיל - intent detection + workflows + output formats + risk rubric
+- status: MVP מוכן ופעיל - כעת מנתחת הסכם מיגונית (first legal task!)
 - capabilities: legal intent classification (0.8+ confidence), structured legal analysis, draft-first approach
-- integration: orchestrator_flow מעודכן, agent_contract מעודכן
+- current_task: contract review הסכם מיגונית לחן
 - followup: autonomous legal work
 
 ### ✅ שאלון אנשי קשר אינטראקטיבי

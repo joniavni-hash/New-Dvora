@@ -104,7 +104,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('📱 Larry\\'s Marketing Experiments - TikTok Poster\\n');
+  console.log('📱 Larry\'s Marketing Experiments - TikTok Poster\\n');
 
   const config = loadConfig(configPath);
 
@@ -112,8 +112,10 @@ async function main() {
   const finalSlides = fs.readdirSync(dir)
     .filter(file => file.startsWith('final-') && file.endsWith('.png'))
     .sort((a, b) => {
-      const numA = parseInt(a.match(/final-(\\d+)/)[1]);
-      const numB = parseInt(b.match(/final-(\\d+)/)[1]);
+      const matchA = a.match(/final-(\d+)/);
+      const matchB = b.match(/final-(\d+)/);
+      const numA = matchA ? parseInt(matchA[1]) : 0;
+      const numB = matchB ? parseInt(matchB[1]) : 0;
       return numA - numB;
     })
     .map(file => path.join(dir, file));
@@ -139,7 +141,7 @@ async function main() {
     
     console.log('\\n⚠️  IMPORTANT: Posts are uploaded as DRAFTS');
     console.log('🎵 Go to your TikTok inbox and add trending music before publishing');
-    console.log('🎯 Music is the #1 factor for TikTok reach - don\\'t skip this step!');
+    console.log('🎯 Music is the #1 factor for TikTok reach - don\'t skip this step!');
     
     console.log('\\n📊 Track performance:');
     console.log('   node scripts/check-analytics.js --connect (after 2+ hours)');

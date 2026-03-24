@@ -1,70 +1,161 @@
 {
+  "version": "1.0",
+  "last_updated": "2026-03-24T15:46:30.062714Z",
   "integrations": {
-    "whatsapp": {
-      "triggers": ["channel=whatsapp", "group_message", "dm_message"],
-      "required_files": [
-        "state/KNOWN_GROUPS.md",
-        "state/GROUP_MEMBERS.md",
-        "policies/GROUP_BEHAVIOR_POLICY.md"
+    "outlook": {
+      "enabled": true,
+      "connected": true,
+      "last_ok_at": "2026-03-24T15:46:29.179317",
+      "last_check_at": "2026-03-24T15:46:29.179317",
+      "required_scopes": [
+        "Mail.Read",
+        "Mail.Send",
+        "Calendars.ReadWrite"
       ],
-      "capabilities": ["send_message", "group_analysis", "member_lookup"],
-      "auto_load": true
+      "degraded_reason": null,
+      "degraded_details": null,
+      "auth_type": "client_credentials",
+      "tenant_id": "f3f1de48-2393-431e-a506-bd5008c40298",
+      "client_id": "846b39a9-c440-4468-9bae-51e2774a914b",
+      "user_email": "Yoni@grit-mind.com",
+      "capabilities": [
+        "read_emails",
+        "send_emails",
+        "read_calendar",
+        "write_calendar"
+      ],
+      "fallback_behavior": "notify_user_missing_connection"
+    },
+    "whatsapp": {
+      "enabled": true,
+      "connected": true,
+      "last_ok_at": "2026-03-24T15:46:29.973327",
+      "last_check_at": "2026-03-24T15:46:29.973327",
+      "required_scopes": [
+        "send_messages",
+        "read_messages"
+      ],
+      "degraded_reason": null,
+      "degraded_details": null,
+      "auth_type": "gateway",
+      "capabilities": [
+        "send_messages",
+        "read_messages",
+        "send_media"
+      ],
+      "fallback_behavior": "queue_for_later"
     },
     "telegram": {
-      "triggers": ["channel=telegram"],
-      "required_files": [],
-      "capabilities": ["send_message"],
-      "auto_load": true
-    },
-    "legal": {
-      "triggers": ["legal_task", "contract", "חוזה", "משפטי", "דין"],
-      "required_files": [
-        "agents/legal-agent/",
-        "policies/EXTERNAL_ACTIONS_POLICY.md"
+      "enabled": true,
+      "connected": true,
+      "last_ok_at": "2026-03-24T15:46:29.973465",
+      "last_check_at": "2026-03-24T15:46:29.973465",
+      "required_scopes": [
+        "send_messages",
+        "read_messages"
       ],
-      "capabilities": ["contract_analysis", "risk_assessment", "legal_draft"],
-      "auto_load": false,
-      "agent": "masha"
-    },
-    "email": {
-      "triggers": ["email", "מייל", "outlook"],
-      "required_files": [
-        "state/OPEN_TASKS.md",
-        "runbooks/EMAIL_REVIEW.md"
+      "degraded_reason": null,
+      "degraded_details": null,
+      "auth_type": "bot_token",
+      "capabilities": [
+        "send_messages",
+        "read_messages",
+        "send_media",
+        "inline_buttons"
       ],
-      "capabilities": ["send_email", "read_inbox", "email_analysis"],
-      "auto_load": false
+      "fallback_behavior": "continue_degraded"
     },
-    "fitness": {
-      "triggers": ["אכלתי", "שקילה", "משקל", "קלוריות", "דיאטה"],
-      "required_files": [
-        "state/fitness_tracker.md"
+    "google_ads": {
+      "enabled": true,
+      "connected": false,
+      "last_ok_at": null,
+      "last_check_at": "2026-03-24T15:46:29.973532",
+      "required_scopes": [
+        "adwords"
       ],
-      "capabilities": ["calorie_tracking", "weight_logging", "nutrition_analysis"],
-      "auto_load": false,
-      "agent": "dana"
+      "degraded_reason": "not_implemented",
+      "degraded_details": {
+        "error": "Check not implemented"
+      },
+      "auth_type": "oauth2",
+      "capabilities": [
+        "campaign_management",
+        "reporting"
+      ],
+      "fallback_behavior": "skip_with_warning"
     },
-    "research": {
-      "triggers": ["תחקרי", "מחקר", "research", "בדקי"],
-      "required_files": [],
-      "capabilities": ["web_search", "document_analysis", "data_collection"],
-      "auto_load": false,
-      "agent": "tzofit"
+    "brave_search": {
+      "enabled": true,
+      "connected": false,
+      "last_ok_at": null,
+      "last_check_at": "2026-03-24T15:46:29.973644",
+      "required_scopes": [
+        "api_access"
+      ],
+      "degraded_reason": "missing_api_key",
+      "degraded_details": {
+        "required": [
+          "BRAVE_API_KEY"
+        ],
+        "setup_hint": "Add BRAVE_API_KEY to secrets/.env"
+      },
+      "auth_type": "api_key",
+      "capabilities": [
+        "web_search"
+      ],
+      "fallback_behavior": "use_tavily_fallback"
+    },
+    "gog_cli": {
+      "enabled": true,
+      "connected": true,
+      "last_ok_at": "2026-03-24T15:46:29.973722",
+      "last_check_at": "2026-03-24T15:46:29.973722",
+      "required_scopes": [
+        "gmail",
+        "calendar",
+        "drive"
+      ],
+      "degraded_reason": null,
+      "degraded_details": null,
+      "auth_type": "oauth2_cli",
+      "version": "v0.12.0",
+      "capabilities": [
+        "gmail",
+        "calendar",
+        "drive",
+        "contacts"
+      ],
+      "fallback_behavior": "continue_degraded"
+    },
+    "tailscale": {
+      "enabled": true,
+      "connected": false,
+      "last_ok_at": "2026-03-24T08:00:00Z",
+      "last_check_at": "2026-03-24T15:46:30.062693",
+      "required_scopes": [
+        "network_access"
+      ],
+      "degraded_reason": "not_implemented",
+      "degraded_details": {
+        "error": "Check not implemented"
+      },
+      "auth_type": "vpn_client",
+      "capabilities": [
+        "secure_networking"
+      ],
+      "fallback_behavior": "use_direct_connection"
     }
   },
-  "rules": {
-    "channel_based_loading": {
-      "whatsapp": ["whatsapp"],
-      "telegram": ["telegram"]
-    },
-    "keyword_based_loading": {
-      "auto_trigger_threshold": 2,
-      "min_confidence": 0.7
-    },
-    "fallback": {
-      "unknown_domain": "general",
-      "context_overflow": "truncate_and_retry",
-      "integration_failure": "continue_without"
-    }
+  "health_summary": {
+    "total_integrations": 7,
+    "connected": 4,
+    "degraded": 3,
+    "unknown": 0,
+    "critical_failures": [],
+    "warnings": [
+      "google_ads",
+      "brave_search",
+      "tailscale"
+    ]
   }
 }

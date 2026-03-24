@@ -17,6 +17,19 @@ python3 /home/jonia/.openclaw/workspace/scripts/health_check.py
 
 ---
 
+## 🔬 Tzofit Research — 08:00
+
+**בכל heartbeat אחרי 08:00 (לפני 10:00):**
+```bash
+python3 /home/jonia/.openclaw/workspace/core/research_scheduler.py run-scheduled
+```
+- 3+ משימות מחקר → דווחי תמצית קצרה
+- התראות דחופות → הודעה מיידית
+- הכל שקט → דלגי
+- פעם ביום בלבד
+
+---
+
 ## ⚖️ שקילה שבועית — ראשון 08:00
 
 **בכל heartbeat ביום ראשון אחרי 08:00:**
@@ -161,6 +174,18 @@ python3 /home/jonia/.openclaw/workspace/scripts/x_feed.py
 python3 /home/jonia/.openclaw/workspace/scripts/metrics.py
 ```
 סיכום קצר ליוני.
+
+### 🔬 Intelligence Briefing שבועי — ראשון 09:00
+**בכל heartbeat ביום ראשון אחרי 09:00 (לפני 11:00):**
+```bash
+python3 /home/jonia/.openclaw/workspace/core/research_scheduler.py message-briefing 168
+```
+שלחי briefing מלא עם:
+- מחקר השבוע
+- הזדמנויות שזוהו  
+- התראות פעילות
+- פעולות מומלצות
+**פעם בשבוע בלבד**
 
 ## ⚖️ תזכורת שקילה — כל ראשון ב-8:00
 

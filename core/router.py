@@ -7,12 +7,14 @@ Replaces the manual classification in AGENTS.md with automatic:
 2. Integration detection
 3. Context loading 
 4. Agent routing
+5. Connection validation (NEW)
 """
 
 import json
 import os
 import re
 from pathlib import Path
+from typing import Dict, Any, Optional, Tuple
 from typing import Dict, List, Optional, Tuple
 from context_guard import safe_read_file, context_status
 
@@ -21,6 +23,13 @@ class Router:
         self.workspace = Path(workspace_path or os.environ.get("DVORAH_WORKSPACE", 
                                                              Path.home() / ".openclaw" / "workspace"))
         self.registry = IntegrationRegistry(str(self.workspace))
+        
+        # Integration health monitoring
+        try:
+            from core.integration_health import IntegrationHealthMonitor
+            self.health_monitor = IntegrationHealthMonitor(str(self.workspace))
+        except ImportError:
+            self.health_monitor = None
         
         # Classification patterns
         self.patterns = {

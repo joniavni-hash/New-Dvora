@@ -1,0 +1,151 @@
+[
+  {
+    "id": "high_value_investment",
+    "name": "High Value Investment Opportunity",
+    "rule_type": "threshold",
+    "conditions": {
+      "funding_amount_min": 10000000,
+      "keywords": [
+        "Series A",
+        "Series B",
+        "AI",
+        "Israeli startup"
+      ],
+      "relevance_threshold": 0.8
+    },
+    "alert_template": {
+      "alert_type": "opportunity",
+      "title": "High-Value Investment Opportunity Detected",
+      "urgency": "high",
+      "actionable_items": [
+        "Research company background",
+        "Analyze market opportunity",
+        "Schedule due diligence call"
+      ]
+    },
+    "enabled": true,
+    "created_at": "2026-03-24T16:43:20.794816",
+    "last_triggered": null
+  },
+  {
+    "id": "ai_breakthrough",
+    "name": "AI Technology Breakthrough",
+    "rule_type": "keyword",
+    "conditions": {
+      "keywords": [
+        "breakthrough",
+        "state-of-the-art",
+        "surpasses",
+        "benchmark"
+      ],
+      "domains": [
+        "AI",
+        "machine learning",
+        "Claude",
+        "GPT"
+      ],
+      "confidence_min": 0.7
+    },
+    "alert_template": {
+      "alert_type": "trend",
+      "title": "Significant AI Breakthrough Detected",
+      "urgency": "medium",
+      "actionable_items": [
+        "Assess impact on AI investment thesis",
+        "Review portfolio implications",
+        "Consider strategic adjustments"
+      ]
+    },
+    "enabled": true,
+    "created_at": "2026-03-24T16:43:20.794826",
+    "last_triggered": null
+  },
+  {
+    "id": "competitive_threat",
+    "name": "Competitive Threat Alert",
+    "rule_type": "pattern",
+    "conditions": {
+      "competitor_keywords": [
+        "linear motors",
+        "automation",
+        "motion control"
+      ],
+      "threat_indicators": [
+        "funding",
+        "partnership",
+        "acquisition",
+        "IPO"
+      ],
+      "market_overlap_threshold": 0.6
+    },
+    "alert_template": {
+      "alert_type": "risk",
+      "title": "Competitive Threat Identified",
+      "urgency": "medium",
+      "actionable_items": [
+        "Analyze competitive positioning",
+        "Review product roadmap",
+        "Consider strategic response"
+      ]
+    },
+    "enabled": true,
+    "created_at": "2026-03-24T16:43:20.794828",
+    "last_triggered": null
+  },
+  {
+    "id": "legal_deadline_approaching",
+    "name": "Legal Deadline Alert",
+    "rule_type": "time_based",
+    "conditions": {
+      "days_before_deadline": 7,
+      "task_types": [
+        "legal",
+        "compliance",
+        "contract"
+      ],
+      "priority_threshold": "medium"
+    },
+    "alert_template": {
+      "alert_type": "deadline",
+      "title": "Legal Deadline Approaching",
+      "urgency": "high",
+      "actionable_items": [
+        "Review task status",
+        "Allocate resources if needed",
+        "Confirm completion timeline"
+      ]
+    },
+    "enabled": true,
+    "created_at": "2026-03-24T16:43:20.794831",
+    "last_triggered": null
+  },
+  {
+    "id": "market_volatility",
+    "name": "Market Volatility Alert",
+    "rule_type": "threshold",
+    "conditions": {
+      "volatility_threshold": 0.15,
+      "markets": [
+        "NASDAQ",
+        "TASE"
+      ],
+      "sectors": [
+        "technology",
+        "AI"
+      ]
+    },
+    "alert_template": {
+      "alert_type": "risk",
+      "title": "Significant Market Volatility Detected",
+      "urgency": "medium",
+      "actionable_items": [
+        "Review portfolio exposure",
+        "Consider position adjustments",
+        "Monitor key holdings"
+      ]
+    },
+    "enabled": true,
+    "created_at": "2026-03-24T16:43:20.794833",
+    "last_triggered": null
+  }
+]

@@ -18,11 +18,12 @@
     "note": "Villa Lithos uses REAL property photos, not AI-generated. Photos stored in villa config and Facebook album."
   },
   "postiz": {
-    "apiKey": "POSTIZ_API_KEY_HERE",
+    "apiKey": "YOUR_POSTIZ_API_KEY_HERE",
     "integrationIds": {
-      "tiktok": "TIKTOK_INTEGRATION_ID",
-      "instagram": "INSTAGRAM_INTEGRATION_ID",
-      "youtube": "YOUTUBE_INTEGRATION_ID"
+      "tiktok": "cmn4rugfx0e56pb0yn0tyvil3",
+      "instagram": "cmn4rshvr0e4xpb0yx8rwkgrb",
+      "facebook": "cmn4rv4i60e8opb0y2yncyc7i",
+      "pinterest": "cmn4rwivz0e8wpb0yvfykswih"
     },
     "baseUrl": "https://api.postiz.com"
   },
