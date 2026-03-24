@@ -2,7 +2,7 @@
 <!-- Status: Active -->
 <!-- Purpose: Legal analysis, contract review, risk assessment -->
 <!-- Authority: Source of truth for legal workflows -->
-<!-- Architecture: Multi-Model (Masha Advanced v1) — since 2026-03-23 -->
+<!-- Architecture: Multi-Model (Masha Advanced v2 LIVE) — since 2026-03-23 -->
 
 ## ארכיטקטורה — Multi-Model Pipeline
 

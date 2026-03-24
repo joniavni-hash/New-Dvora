@@ -18,6 +18,18 @@
 **Fix:** Villa Lithos is 15 min from Athens International Airport (El. Venizelos), Greece
 **Impact:** Could have caused serious marketing problems
 
+## Capability Assumption Error - 2026-03-23
+**Issue:** Claimed "אין סקריפט email_check זמין" without following proper discovery
+**Problem:** Didn't follow CAPABILITY_INDEX.md + integrations/ + runbooks/ discovery flow
+**Root cause:** Jumped to "no access" conclusion after superficial file search
+**Fix:** ALWAYS follow capability discovery flow:
+1. Check CAPABILITY_INDEX.md first
+2. Load relevant integrations/*.md file  
+3. Load relevant runbooks/*.md file
+4. Try multiple search patterns
+5. ONLY then claim "no access"
+**Rule:** Before saying "אין גישה/מידע" - COMPLETE discovery process
+
 ## Model Routing - 2026-03-23
 **Issue:** Using Opus when Sonnet should be default
 **Problem:** Wasting computational resources unnecessarily  

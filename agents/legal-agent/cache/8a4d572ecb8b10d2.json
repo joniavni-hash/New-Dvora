@@ -1,0 +1,36 @@
+{
+  "cache_key": "8a4d572ecb8b10d2",
+  "task_type": "contract_review",
+  "document_hash": "18f0c4b2ebf6",
+  "query_hash": "e2cfe1367ba5",
+  "result": {
+    "decision": "analysis",
+    "confidence": 0.8,
+    "reasoning": "Risk level high for contract_review",
+    "draft": {
+      "type": "contract_review",
+      "content": "# דוח ביקורת חוזה 📋\n\n**תאריך הדוח:** [לא צוין]  \n**מסמך נבדק:** [לא צוין]  \n**רמת ביטחון:** 95% (חילוץ נתונים), 80% (ניתוח)\n\n---\n\n## 🔍 סיכום ביצועים\n\n| פרמטר | סטטוס |\n|--------|--------|\n| חילוץ נתונים | ✅ הושלם |\n| זיהוי עמימות | ❌ לא זוהתה |\n| דרישת הסלמה | ❌ לא נדרשת |\n| ביקורת Opus | ❌ לא נדרשת |\n\n---\n\n## 🚨 נושאים מדגישים שזוהו\n\n### 🔴 סיכון גבוה\n*לא זוהו*\n\n### 🟡 סיכון בינוני\n1. **חובות הלקוח לא מפורטות במפורש** - חוסר איזון פוטנציאלי בחוזה\n2. **זכות ביטול נוחות חד-צדדית** - רק ללקוח יש זכות ביטול מנימוקי נוחות\n3. **חלוקת הוצאות לא מוגדרת** - אין התייחסות להקצאת עלויות\n4. **הוראות סיום לא מפורטות** - חסרות הוראות ספציפיות לתהליך סיום\n\n### ⚫ לתשומת לב\n*לא זוהו*\n\n---\n\n## 📊 תוצאות חילוץ נתונים\n\n**סטטוס:** לא זוהו תוצאות חילוץ ספציפיות במסמך המקורי\n\n---\n\n## 🔧 תוצאות ניתוח מפורט\n\n**סטטוס:** נתוני הניתוח המפורט לא זמינים במסמך המקורי\n\n---\n\n## ⚠️ המלצות לטיפול\n\n1. **דרוש הבהרה** לגבי חובות הלקוח הספציפיות\n2. **שקול איזון** בזכויות הביטול בין הצדדים\n3. **הגדר במפורש** את חלוקת ההוצאות והעלויות\n4. **פרט הוראות** לתהליך סיום ופירוק החוזה\n\n---\n\n## 📝 הערות נוספות\n\n- הדוח מבוסס על נתונים חלקיים\n- נדרש השלמת מידע נוסף לביקורת מקיפה\n- מומלץ לבצע ביקורת נוספת עם המסמך המלא\n\n---\n\n**הוכן על ידי:** מאשה (Masha) - עוזרת ניתוח משפטי  \n**עבור:** יוני אבני, עו\"ד"
+    },
+    "legalRisk": "high",
+    "riskFactors": [
+      "client_obligations - Client obligations not explicitly stated, potential imbalance",
+      "termination_for_convenience - Only Client has convenience termination right, imbalanced",
+      "expenses - No mention of expense allocation",
+      "post_termination - No specific post-termination wind-down provisions"
+    ],
+    "memoryDelta": null,
+    "stateDelta": null,
+    "qaResult": "pass",
+    "qaDetails": [],
+    "suggestedActions": [],
+    "requiresApproval": true,
+    "modelTier": "tier2",
+    "costUsd": 0.1048
+  },
+  "model_tier": "tier2",
+  "cost_usd": 0.104841,
+  "created_at": 1774293296.7438893,
+  "ttl_hours": 168,
+  "hit_count": 0,
+  "tags": []
+}

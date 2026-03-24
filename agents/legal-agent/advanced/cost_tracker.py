@@ -198,6 +198,28 @@ class CostTracker:
     # RECORDING
     # ============================================================
 
+    def record_from_response(
+        self,
+        task_type: str,
+        pipeline_stage: str,
+        model_tier: str,
+        response,  # ModelResponse from model_client
+        escalated_from: Optional[str] = None,
+        notes: str = "",
+    ) -> "CostRecord":
+        """Record from a real ModelResponse object (live API usage)."""
+        return self.record(
+            task_type=task_type,
+            pipeline_stage=pipeline_stage,
+            model_tier=model_tier,
+            model_id=response.model,
+            input_tokens=response.input_tokens,
+            output_tokens=response.output_tokens,
+            was_cached=False,
+            escalated_from=escalated_from,
+            notes=notes,
+        )
+
     def record(
         self,
         task_type: str,
@@ -209,7 +231,7 @@ class CostTracker:
         was_cached: bool = False,
         escalated_from: Optional[str] = None,
         notes: str = "",
-    ) -> CostRecord:
+    ) -> "CostRecord":
         """Record a model invocation."""
         cost = 0.0 if was_cached else self.estimate_cost(input_tokens, output_tokens, model_tier)
 

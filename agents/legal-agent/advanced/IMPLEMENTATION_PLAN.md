@@ -1,7 +1,7 @@
 # מאשה Advanced — Implementation Plan
 
 ## Phase 1: Foundation (Done ✅)
-**Status: Complete**
+**Status: Complete — 2026-03-23**
 
 ### Delivered:
 1. ✅ `ARCHITECTURE.md` — Full system design with cost projections
@@ -13,135 +13,78 @@
 7. ✅ `pipeline_engine.py` — Multi-stage pipeline with 7 workflow designs
 8. ✅ `masha_advanced.py` — Main entry point (backward-compatible with masha_mvp.py)
 
-### Test Results:
-- Router correctly routes: simple→Tier1, medium→Tier2, critical→Tier3
-- Cost estimation: 80% savings vs all-Opus for standard tasks
-- Pipeline executes 5-7 stages per workflow
-- Cache stores and retrieves results
-- All 7 workflow pipelines designed
+---
+
+## Phase 2: Live API Integration (Done ✅)
+**Status: Complete — 2026-03-23**
+
+### Delivered:
+1. ✅ `model_client.py` — Direct Anthropic API client
+   - Reads auth from OpenClaw `auth-profiles.json` (no env vars needed)
+   - Tier 1/2 (Sonnet) and Tier 3 (Opus) model calls
+   - Retry with exponential backoff (429 rate limit, 5xx server errors)
+   - `ModelResponse` with real token counts from API
+   - JSON extraction helper for structured responses
+   - Cost calculation from actual usage
+
+2. ✅ Pipeline wired to real model calls
+   - All stages (`extract`, `analyze`, `format`, `qa`) make real API calls
+   - Tier escalation works (Tier 1→2 on risk, Tier 2→3 on complexity)
+   - Graceful degradation: if a stage fails, pipeline continues with available data
+   - Opus refinement stage fires only when lower tiers flag escalation
+
+3. ✅ Cache integration verified
+   - First call: real model execution, results cached
+   - Second call: $0 cost from cache hit
+   - Cache stats tracking estimated savings
+
+4. ✅ Cost tracking with real data
+   - Actual token counts from Anthropic API responses
+   - Real cost calculation per-call
+   - Daily JSONL logs in `cost_logs/`
+   - Session + daily reports working
+
+5. ✅ Orchestrator integration
+   - `orchestrator.py` routes legal→MashaAdvanced
+   - `masha_mvp.py` wrapper delegates to MashaAdvanced
+   - Backward compatibility maintained
+
+### Test Results (Phase 2):
+| Test | Tiers Used | Cost | Savings vs Opus | Duration |
+|------|-----------|------|-----------------|----------|
+| Clause extraction | T1+T2 | $0.10 | 80% | ~96s |
+| Legal summary | T1+T2 | $0.08 | 80% | ~92s |
+| Cache hit (repeat) | cache | $0.00 | 100% | 0ms |
+
+### Cost Distribution:
+- Tier 1: 88% of calls
+- Tier 2: 12% of calls
+- Tier 3: 0% (correctly reserved for complex/critical only)
 
 ---
 
-## Phase 2: Integration (Next)
+## Phase 3: Optimization & Polish (Next)
 
-### 2.1 Wire to Actual Model API
-**Priority: High | Effort: Medium**
+### 3.1 Prompt Optimization
+- Fine-tune tier prompts based on real output quality
+- Reduce token waste in extraction prompts (currently some checklist items redundant for simple tasks)
+- Improve JSON parsing reliability (some responses need fallback extraction)
 
-The pipeline currently builds prompts but returns placeholders. To go live:
+### 3.2 Parallel Stage Execution
+- Stages that don't depend on each other could run in parallel
+- E.g., formatting + QA could overlap
 
-1. Create `model_client.py` — wrapper around OpenClaw's model invocation
-2. Replace placeholder returns in `pipeline_engine.py` stage methods with actual API calls
-3. Parse JSON responses from models
-4. Handle API errors, timeouts, retries
+### 3.3 Template Library
+- Build up `templates/` and `precedents/` with real legal patterns
+- Better retrieval-first results = fewer model calls
 
-```python
-# model_client.py sketch
-class ModelClient:
-    async def invoke(self, model: str, system: str, user: str) -> Dict:
-        # Use sessions_spawn or direct API call
-        pass
-```
+### 3.4 Monitoring Dashboard
+- Real-time cost tracking visualization
+- Tier distribution trends
+- Cache hit rate over time
+- Alert when approaching budget limits
 
-### 2.2 Update Orchestrator Integration
-**Priority: High | Effort: Low**
-
-Update `scripts/orchestrator.py` to use MashaAdvanced instead of spawning single-model agent:
-
-```python
-# In orchestrator.py, replace:
-# agent = "legal_agent" → spawn with Opus prompt
-# With:
-from agents.legal_agent.advanced.masha_advanced import MashaAdvanced
-masha = MashaAdvanced()
-result = masha.analyze(task=message, document_text=doc_text, context=ctx)
-```
-
-### 2.3 Document Parsing
-**Priority: Medium | Effort: Medium**
-
-Add PDF/DOCX text extraction for attached documents:
-- Use `pdftotext` or `pymupdf` for PDFs
-- Use `python-docx` for DOCX
-- Pass extracted text to `pipeline.execute(document_text=...)`
-
----
-
-## Phase 3: Optimization
-
-### 3.1 Template Library
-**Priority: Medium | Effort: Low**
-
-Populate `templates/` and `precedents/` directories with:
-- Standard contract review templates (service, NDA, employment, lease)
-- Common clause templates (liability caps, termination, IP)
-- Negotiation playbooks for common scenarios
-
-### 3.2 Memory Integration
-**Priority: Medium | Effort: Low**
-
-Connect cache system to `LEGAL_MEMORY_RULES.md`:
-- Auto-store Yoni's preferences from corrections
-- Store counterparty patterns from completed analyses
-- Feed into retrieval context for future analyses
-
-### 3.3 Embedding-Based Retrieval
-**Priority: Low | Effort: High**
-
-Replace keyword-based retrieval with vector embeddings:
-- Embed all templates and precedents
-- Use similarity search for retrieval
-- Significantly improve retrieval quality
-
-### 3.4 Parallel Stage Execution
-**Priority: Low | Effort: Medium**
-
-For workflows like `compare_versions`, run extraction on both documents in parallel:
-- Use asyncio for parallel API calls
-- Reduce total latency by ~40% for multi-document tasks
-
----
-
-## Phase 4: Monitoring & Tuning
-
-### 4.1 Quality Benchmarking
-- Compare multi-model output quality against single-Opus baseline
-- Track QA pass rates by tier
-- Identify workflows where Tier 1 quality is insufficient
-
-### 4.2 Routing Tuning
-- Collect real routing decisions and outcomes
-- Tune complexity thresholds based on actual escalation patterns
-- Add A/B testing: run same task through Tier 1 and Tier 3, compare
-
-### 4.3 Cost Dashboard
-- Daily/weekly cost reports via `masha_advanced.py --cost-report`
-- Track tier distribution over time
-- Alert if Opus usage exceeds 10% threshold
-
----
-
-## Risk Mitigation
-
-| Risk | Mitigation |
-|------|-----------|
-| Tier 1 quality insufficient | Automatic escalation + QA stage catches issues |
-| Over-reliance on cache | TTL-based expiration + invalidation on document change |
-| Routing errors (wrong tier) | Conservative bias (escalate when uncertain) |
-| Model API failures | Retry logic + fallback to next tier |
-| Prompt injection in documents | Checklist-based extraction limits model freedom |
-
----
-
-## Migration Path
-
-### From masha_mvp.py to masha_advanced.py:
-
-1. **Phase 1 (Current):** Both systems exist, advanced is tested standalone
-2. **Phase 2:** Route 10% of requests through advanced, compare quality
-3. **Phase 3:** Route 50% through advanced, monitor costs
-4. **Phase 4:** Full cutover, deprecate masha_mvp.py
-
-### Backward Compatibility:
-- `MashaAdvanced.can_handle()` has same interface as `MashaMVP.can_handle()`
-- `MashaAdvanced.analyze()` returns same JSON structure
-- New fields (`modelTier`, `costUsd`) are additive — won't break existing consumers
+### 3.5 Edge Cases
+- Very long documents (>50K words) — chunking strategy
+- Hebrew-only contracts — prompt optimization
+- Multi-document workflows (compare versions with real files)

@@ -29,6 +29,7 @@ from pipeline_engine import PipelineEngine, PipelineResult
 from legal_cache import LegalCache
 from cost_tracker import CostTracker
 from legal_checklists import get_checklist_for_workflow
+from model_client import ModelCallError
 
 # Import the original classifier for backward compatibility
 try:

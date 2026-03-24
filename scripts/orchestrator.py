@@ -55,10 +55,13 @@ def intake(message: str, source: str, metadata: dict = None) -> dict:
 
 # Domain detection keywords
 DOMAIN_KEYWORDS = {
-    "fitness": ["דיאטה", "משקל", "קלוריות", "אימון", "diet", "weight", "workout", "שקילה", "שקלתי"],
+    "fitness": ["דיאטה", "משקל", "קלוריות", "אימון", "diet", "weight", "workout", "שקילה", "שקלתי", "אכלתי", "חלבון"],
     "email": ["מייל", "אימייל", "email", "outlook", "inbox", "דוא\"ל"],
     "legal": ["חוזה", "הסכם", "משפטי", "עו\"ד", "legal", "contract", "סעיף"],
     "travel": ["טיסה", "מלון", "flight", "hotel", "booking", "הזמנה", "נסיעה"],
+    "marketing": ["villa", "וילה", "lithos", "ליתוס", "tiktok", "טיקטוק", "instagram", "postiz", "hook", "שיווק"],
+    "automation": ["אוטומציה", "automation", "health check", "בריאות מערכת", "בריאות המערכת", "monitor", "סטטוס מערכת", "סטטוס המערכת"],
+    "research": ["חקרי", "תחקרי", "research", "השוואה", "מחקר", "ניתוח שוק", "סקירה", "survey"],
 }
 
 # Intent detection patterns
@@ -101,7 +104,11 @@ def classify(request: dict) -> dict:
     if source == "group":
         domain = "group"
     else:
-        for d, keywords in DOMAIN_KEYWORDS.items():
+        # Priority domains: research intent overrides content domains (travel, etc.)
+        # Check high-priority domains first
+        priority_order = ["research", "fitness", "legal", "marketing", "automation", "email", "travel"]
+        for d in priority_order:
+            keywords = DOMAIN_KEYWORDS.get(d, [])
             if any(kw in message for kw in keywords):
                 domain = d
                 break
@@ -148,26 +155,36 @@ def classify(request: dict) -> dict:
 
 ROUTING_TABLE = {
     "group": {
-        "agent": "WhatsAppGroupAgent",
-        "prompt_file": "agents/group_agent_prompt.md",
-        "model": "sonnet",
+        "agent": "אודיה",
+        "prompt_file": "agents/odya-whatsapp/odya_prompt.md",
+        "model": "multi-tier",  # Tier 1/2/3 via domain agent
     },
     "legal": {
-        "agent": "MashaAdvanced",
+        "agent": "מאשה",
         "prompt_file": "agents/legal-agent/advanced/",
         "model": "multi-tier",  # Tier 1/2/3 via model_router
     },
     "research": {
-        "agent": "ResearchAgent",
-        "prompt_file": "agents/research_agent_prompt.md",
-        "model": "sonnet",
-    },
-    "general": {
-        "agent": "direct",
-        "prompt_file": None,
-        "model": None,
+        "agent": "צופית",
+        "prompt_file": "agents/tzofit-research/tzofit_prompt.md",
+        "model": "multi-tier",
     },
     "fitness": {
+        "agent": "דנה",
+        "prompt_file": "agents/dana-fitness/dana_prompt.md",
+        "model": "multi-tier",
+    },
+    "marketing": {
+        "agent": "טלי",
+        "prompt_file": "agents/tali-marketing/tali_prompt.md",
+        "model": "multi-tier",
+    },
+    "automation": {
+        "agent": "אתי",
+        "prompt_file": "agents/eti-automation/eti_prompt.md",
+        "model": "multi-tier",
+    },
+    "general": {
         "agent": "direct",
         "prompt_file": None,
         "model": None,
@@ -190,10 +207,12 @@ def route(classification: dict) -> dict:
     domain = classification["domain"]
     routing = ROUTING_TABLE.get(domain, ROUTING_TABLE["general"])
     
-    # Simple requests → direct (Dvorah handles)
-    if classification["intent"] in ["conversation", "question"] and domain in ["general", "fitness"]:
+    # Simple conversation with no specific domain → direct (Dvorah handles)
+    if classification["intent"] == "conversation" and domain == "general":
         return {"agent": "direct", "prompt_file": None, "model": None}
     
+    # Domain agents handle their domains (fitness, marketing, etc.)
+    # Even for questions — the domain agent provides context-aware answers
     return routing
 
 
