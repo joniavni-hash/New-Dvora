@@ -1,0 +1,1 @@
+{"execution_id": "exec_20260324_080311_127209314896560", "timestamp": "2026-03-24T08:03:11.617109", "tier": "tier1", "model_id": "anthropic/claude-sonnet-4-20250514", "estimated_cost": 0.02244, "actual_cost": 0.0021, "estimated_tokens": {"input": 6480, "output": 200}, "actual_tokens": {"input": 200, "output": 100}, "cost_difference": -0.02034}

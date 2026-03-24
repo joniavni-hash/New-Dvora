@@ -1,0 +1,70 @@
+{
+  "integrations": {
+    "whatsapp": {
+      "triggers": ["channel=whatsapp", "group_message", "dm_message"],
+      "required_files": [
+        "state/KNOWN_GROUPS.md",
+        "state/GROUP_MEMBERS.md",
+        "policies/GROUP_BEHAVIOR_POLICY.md"
+      ],
+      "capabilities": ["send_message", "group_analysis", "member_lookup"],
+      "auto_load": true
+    },
+    "telegram": {
+      "triggers": ["channel=telegram"],
+      "required_files": [],
+      "capabilities": ["send_message"],
+      "auto_load": true
+    },
+    "legal": {
+      "triggers": ["legal_task", "contract", "חוזה", "משפטי", "דין"],
+      "required_files": [
+        "agents/legal-agent/",
+        "policies/EXTERNAL_ACTIONS_POLICY.md"
+      ],
+      "capabilities": ["contract_analysis", "risk_assessment", "legal_draft"],
+      "auto_load": false,
+      "agent": "masha"
+    },
+    "email": {
+      "triggers": ["email", "מייל", "outlook"],
+      "required_files": [
+        "state/OPEN_TASKS.md",
+        "runbooks/EMAIL_REVIEW.md"
+      ],
+      "capabilities": ["send_email", "read_inbox", "email_analysis"],
+      "auto_load": false
+    },
+    "fitness": {
+      "triggers": ["אכלתי", "שקילה", "משקל", "קלוריות", "דיאטה"],
+      "required_files": [
+        "state/fitness_tracker.md"
+      ],
+      "capabilities": ["calorie_tracking", "weight_logging", "nutrition_analysis"],
+      "auto_load": false,
+      "agent": "dana"
+    },
+    "research": {
+      "triggers": ["תחקרי", "מחקר", "research", "בדקי"],
+      "required_files": [],
+      "capabilities": ["web_search", "document_analysis", "data_collection"],
+      "auto_load": false,
+      "agent": "tzofit"
+    }
+  },
+  "rules": {
+    "channel_based_loading": {
+      "whatsapp": ["whatsapp"],
+      "telegram": ["telegram"]
+    },
+    "keyword_based_loading": {
+      "auto_trigger_threshold": 2,
+      "min_confidence": 0.7
+    },
+    "fallback": {
+      "unknown_domain": "general",
+      "context_overflow": "truncate_and_retry",
+      "integration_failure": "continue_without"
+    }
+  }
+}
