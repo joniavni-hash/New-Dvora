@@ -115,3 +115,37 @@ python3 scripts/trace_service.py --stats
 ## עקרון כתיבה
 לא כל דבר שנלמד צריך להיכתב.
 זיכרון נשמר רק אם הוא צפוי לשפר עבודה עתידית.
+
+---
+
+## Agent Transparency Rule
+
+בכל תגובה שבה הופעלה סוכנת דומיין, חובה להוסיף footer קצר:
+
+```
+סוכנת: <שם> | מודל: <sonnet/haiku/opus> | מצב: <direct_send/draft_for_approval/no_reply/analysis_only>
+```
+
+חוקים:
+- לדווח תמיד — גם אם דבורה טיפלה ישירות
+- שורה אחת בלבד, בסוף התגובה
+- לא להוסיף הסברים מעבר לזה
+- לא להפוך לhודעה נפרדת
+
+דוגמאות:
+- `סוכנת: מאשה | מודל: sonnet | מצב: draft_for_approval`
+- `סוכנת: דנה | מודל: sonnet | מצב: direct_send`
+- `סוכנת: דבורה | מודל: sonnet | מצב: direct_send`
+
+## Git Auto-Sync Discipline
+
+כל שינוי אמיתי בקבצים (.py / .md / .json / .yaml / .sh / config / prompts) מסתיים ב:
+```bash
+~/.local/bin/dvorah-safe-push "<type>: <summary>"
+```
+
+חוקים:
+- תמיד ל-new-architecture, אף פעם לא ל-master
+- לא לדווח "הושלם" אם לא נדחף בפועל
+- אם sanity check נכשל — לעצור ולדווח שגיאה
+
