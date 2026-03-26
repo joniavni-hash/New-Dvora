@@ -1,117 +1,174 @@
 #!/usr/bin/env python3
 """
-Execution Pipeline - Main orchestrator that replaces manual AGENTS.md flow.
+Execution Pipeline — PR1: Cost + Output Enforcement
 
-Flow: message → router → context → agent → QA → response
-Ensures consistent execution with overflow protection.
+Changes:
+- single_message_mode: one response only, no progress messages
+- output enforced to MAX_OUTPUT_TOKENS per tier
+- NO_REPLY fast-path exits before any model work
+- Daily cost check at pipeline entry
+- No simulated cost logging
 """
 
 import json
 import os
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional
 from datetime import datetime
 
 from router import route_message
 from context_guard import context_status, emergency_compact
 from agent_executor import AgentExecutor
 from action_executor import execute_if_approved, send_response_if_ready
+from model_selector import (
+    ModelSelector, MAX_OUTPUT_TOKENS, MAX_DAILY_COST_USD,
+    DailyCostExceededError
+)
+
+# ── PR1 output enforcement ────────────────────────────────────────────────────
+SINGLE_MESSAGE_MODE: bool = True   # never send more than one message per turn
+NO_PROGRESS_MESSAGES: bool = True  # never send "processing..." style messages
+
+
+def enforce_output_length(text: str, tier: str) -> str:
+    """Truncate output to MAX_OUTPUT_TOKENS estimate (chars ≈ tokens * 4)."""
+    if not text or tier == "none":
+        return text
+    max_tokens = MAX_OUTPUT_TOKENS.get(tier, 400)
+    max_chars = max_tokens * 4   # rough char→token ratio
+    if len(text) <= max_chars:
+        return text
+    return text[:max_chars].rstrip() + " [קוצר]"
+
 
 class ExecutionPipeline:
     def __init__(self, workspace_path: str = None):
-        self.workspace = Path(workspace_path or os.environ.get("DVORAH_WORKSPACE", 
-                                                             Path.home() / ".openclaw" / "workspace"))
+        self.workspace = Path(workspace_path or os.environ.get(
+            "DVORAH_WORKSPACE", Path.home() / ".openclaw" / "workspace"))
         self.execution_log = []
         self.agent_executor = AgentExecutor(workspace_path)
-        
-    def execute(self, message: str, channel: str = None, 
-               group_id: str = None, metadata: Dict = None) -> Dict:
-        """Main execution function - replaces AGENTS.md manual flow"""
-        
-        start_time = datetime.now()
-        execution_id = f"exec_{start_time.strftime('%Y%m%d_%H%M%S')}_{id(message)}"
-        
+
+    def execute(self, message: str, channel: str = None,
+                group_id: str = None, metadata: Dict = None) -> Dict:
+        """
+        Main execution.
+
+        PR1 order:
+        1. Daily cost gate (hard stop)
+        2. Route (includes NO_REPLY fast-path)
+        3. NO_REPLY → return immediately, $0
+        4. Execute agent
+        5. Enforce output length
+        6. Single-message QA
+        7. Log
+        """
+        start = datetime.now()
+        execution_id = f"exec_{start.strftime('%Y%m%d_%H%M%S')}_{id(message)}"
+        metadata = metadata or {}
+
         try:
-            # Step 1: Route message 
-            routing_result = route_message(message, channel, group_id)
-            
-            # Step 2: Check context status
-            ctx_status = context_status()
-            if ctx_status["status"] == "critical":
+            # ── 1. Daily cost gate ────────────────────────────────────────────
+            ms = ModelSelector(str(self.workspace))
+            today_cost = ms._get_today_cost()
+            if today_cost >= MAX_DAILY_COST_USD:
+                record = self._make_record(execution_id, start, message,
+                                           channel, group_id,
+                                           status="blocked_daily_cost")
+                self._log_execution(record)
+                return {
+                    "status": "blocked",
+                    "execution_id": execution_id,
+                    "reason": f"Daily cost cap ${MAX_DAILY_COST_USD} reached "
+                              f"(today=${today_cost:.4f})",
+                    "pr1_enforcement": "daily_cost_cap",
+                }
+
+            # ── 2. Route ──────────────────────────────────────────────────────
+            routing = route_message(message, channel, group_id)
+
+            # ── 3. NO_REPLY fast-path ─────────────────────────────────────────
+            if routing["routing_decision"]["action"] == "no_reply":
+                record = self._make_record(execution_id, start, message,
+                                           channel, group_id,
+                                           status="no_reply", cost=0.0,
+                                           tier="none")
+                self._log_execution(record)
+                return {
+                    "status": "no_reply",
+                    "execution_id": execution_id,
+                    "routing": routing,
+                    "cost_usd": 0.0,
+                    "pr1_enforcement": "no_reply_fast_path",
+                    "execution_summary": record,
+                }
+
+            # ── Context guard ─────────────────────────────────────────────────
+            ctx = context_status()
+            if ctx["status"] == "critical":
                 emergency_compact()
-                ctx_status = context_status()
-            
-            # Step 3: Execute based on routing decision
-            if routing_result["routing_decision"]["action"] == "handle_direct":
-                result = self._handle_direct(message, routing_result, metadata)
+                ctx = context_status()
+
+            # ── 4. Execute agent ──────────────────────────────────────────────
+            if routing["routing_decision"]["action"] == "handle_direct":
+                result = self._handle_direct(message, routing, metadata)
             else:
-                # Use real agent executor instead of dummy responses
-                agent_name = routing_result["routing_decision"]["agent"]
-                result = self.agent_executor.execute_agent_task(agent_name, message, routing_result, 
-                                          {**(metadata or {}), "execution_id": execution_id})
-            
-            # Step 4: QA Check
-            qa_result = self._qa_check(result, routing_result)
-            
-            # Step 5: Execute approved actions
-            execution_result = execute_if_approved(result, qa_result, channel)
-            
-            # Step 6: Send response if ready
-            response_result = send_response_if_ready(execution_result, channel, 
-                                                   metadata.get("sender_id") if metadata else None)
-            
-            # Step 7: Log execution
-            execution_record = {
-                "execution_id": execution_id,
-                "timestamp": start_time.isoformat(),
-                "message": message[:100] + "..." if len(message) > 100 else message,
-                "channel": channel,
-                "group_id": group_id,
-                "routing": routing_result["classification"],
-                "context_status": ctx_status,
-                "agent_response": result.get("status", "unknown"),
-                "qa_passed": qa_result["passed"],
-                "action_executed": execution_result.get("status", "unknown"),
-                "response_sent": response_result.get("status", "unknown"),
-                "duration_ms": int((datetime.now() - start_time).total_seconds() * 1000)
-            }
-            
-            self._log_execution(execution_record)
-            
+                agent_name = routing["routing_decision"]["agent"]
+                result = self.agent_executor.execute_agent_task(
+                    agent_name, message, routing,
+                    {**metadata, "execution_id": execution_id}
+                )
+
+            # ── 5. Output length enforcement ──────────────────────────────────
+            tier = routing.get("model", "tier2")
+            if "summary" in result:
+                result["summary"] = enforce_output_length(result["summary"], tier)
+            if "response" in result:
+                result["response"] = enforce_output_length(result["response"], tier)
+
+            # ── 6. QA ─────────────────────────────────────────────────────────
+            qa_result = self._qa_check(result, routing)
+
+            # ── 7. Action + response ──────────────────────────────────────────
+            exec_result = execute_if_approved(result, qa_result, channel)
+            resp_result = send_response_if_ready(
+                exec_result, channel, metadata.get("sender_id")
+            )
+
+            cost = result.get("execution_details", {}).get("cost_usd", 0.0)
+            record = self._make_record(execution_id, start, message,
+                                       channel, group_id,
+                                       status="success", cost=cost,
+                                       tier=tier,
+                                       agent=routing["routing_decision"].get("agent"),
+                                       qa_passed=qa_result["passed"])
+            self._log_execution(record)
+
             return {
                 "status": "success",
                 "execution_id": execution_id,
-                "routing": routing_result,
+                "routing": routing,
                 "agent_result": result,
                 "qa_result": qa_result,
-                "execution_result": execution_result,
-                "response_result": response_result,
-                "execution_summary": execution_record
+                "execution_result": exec_result,
+                "response_result": resp_result,
+                "execution_summary": record,
             }
-            
+
         except Exception as e:
-            error_record = {
-                "execution_id": execution_id,
-                "timestamp": start_time.isoformat(),
-                "status": "error",
-                "error": str(e),
-                "message": message[:100] + "..." if len(message) > 100 else message,
-                "channel": channel
-            }
-            
-            self._log_execution(error_record)
-            
+            record = self._make_record(execution_id, start, message,
+                                       channel, group_id,
+                                       status="error", error=str(e))
+            self._log_execution(record)
             return {
                 "status": "error",
                 "execution_id": execution_id,
                 "error": str(e),
-                "fallback_action": "manual_review_required",
-                "execution_summary": error_record
+                "execution_summary": record,
             }
-    
+
+    # ── Direct handler ────────────────────────────────────────────────────────
+
     def _handle_direct(self, message: str, routing: Dict, metadata: Dict) -> Dict:
-        """Handle messages that go directly to Dvorah (no agent)"""
-        
         return {
             "status": "direct_response",
             "agent": "dvorah_direct",
@@ -123,224 +180,116 @@ class ExecutionPipeline:
             "metadata": {
                 "model_tier": routing["model"],
                 "context_files": routing["context"]["files_loaded"],
-                "direct_processing": True
-            }
+                "direct_processing": True,
+            },
         }
-    
-    def _route_to_agent(self, message: str, routing: Dict, metadata: Dict) -> Dict:
-        """Route message to specific domain agent"""
-        
-        agent_name = routing["routing_decision"]["agent"]
-        domain = routing["routing_decision"]["domain"]
-        
-        # Load appropriate agent
-        if agent_name == "masha":
-            import sys
-            sys.path.insert(0, str(self.workspace))
-            from agents.masha.masha_agent import handle_legal_task
-            return handle_legal_task(message, {
-                "routing": routing,
-                "metadata": metadata
-            })
-        
-        elif agent_name == "dana":
-            # Fitness agent - for now return structured response
-            return {
-                "status": "agent_response_ready",
-                "agent": "dana",
-                "domain": "fitness",
-                "response_type": "fitness_tracking",
-                "requires_approval": False,
-                "confidence": routing["classification"]["confidence"],
-                "suggested_action": "log_meal_data",
-                "metadata": {
-                    "model_tier": routing["model"],
-                    "specialization": "nutrition_tracking"
-                }
-            }
-        
-        elif agent_name == "odya":
-            # WhatsApp group agent
-            return {
-                "status": "agent_response_ready", 
-                "agent": "odya",
-                "domain": "whatsapp_group",
-                "response_type": "group_analysis",
-                "requires_approval": True,  # Group messages need approval
-                "confidence": routing["classification"]["confidence"],
-                "suggested_action": "analyze_group_context",
-                "metadata": {
-                    "model_tier": routing["model"],
-                    "specialization": "group_communication"
-                }
-            }
-        
-        elif agent_name == "tzofit":
-            # Research agent
-            return {
-                "status": "agent_response_ready",
-                "agent": "tzofit", 
-                "domain": "research",
-                "response_type": "research_analysis",
-                "requires_approval": False,
-                "confidence": routing["classification"]["confidence"],
-                "suggested_action": "conduct_research",
-                "metadata": {
-                    "model_tier": routing["model"],
-                    "specialization": "information_gathering"
-                }
-            }
-        
-        else:
-            # Unknown agent - fallback to direct
-            return {
-                "status": "fallback_to_direct",
-                "original_agent": agent_name,
-                "reason": f"Agent {agent_name} not implemented yet",
-                "requires_approval": False,
-                "fallback_action": "handle_as_general"
-            }
-    
+
+    # ── QA ────────────────────────────────────────────────────────────────────
+
     def _qa_check(self, agent_result: Dict, routing: Dict) -> Dict:
-        """Quality assurance check before final response"""
-        
         checks = {
-            "context_overflow": self._check_context_overflow(),
-            "approval_required": self._check_approval_requirements(agent_result),
-            "response_completeness": self._check_response_completeness(agent_result),
-            "risk_assessment": self._check_risk_level(agent_result, routing)
+            "context_overflow":       self._check_context_overflow(),
+            "approval_required":      self._check_approval(agent_result),
+            "response_completeness":  self._check_completeness(agent_result),
+            "risk_assessment":        self._check_risk(agent_result, routing),
+            "single_message":         self._check_single_message(agent_result),
         }
-        
-        passed_checks = sum(1 for check in checks.values() if check["passed"])
-        total_checks = len(checks)
-        
-        overall_passed = passed_checks == total_checks
-        
+        passed = sum(1 for c in checks.values() if c["passed"])
+        total = len(checks)
+
+        blocking = [n for n, c in checks.items()
+                    if not c["passed"] and c.get("blocking")]
+        recommendations = [
+            f"Fix: {n}" for n, c in checks.items()
+            if not c["passed"]
+        ]
         return {
-            "passed": overall_passed,
-            "score": passed_checks / total_checks,
+            "passed": passed == total,
+            "score": passed / total,
             "checks": checks,
-            "recommendations": self._generate_qa_recommendations(checks),
-            "blocking_issues": [name for name, check in checks.items() 
-                              if not check["passed"] and check.get("blocking", False)]
+            "blocking_issues": blocking,
+            "recommendations": recommendations,
         }
-    
+
     def _check_context_overflow(self) -> Dict:
-        """Check for context overflow issues"""
-        status = context_status()
-        
-        return {
-            "name": "context_overflow",
-            "passed": status["status"] != "critical",
-            "details": status,
-            "blocking": status["status"] == "critical"
-        }
-    
-    def _check_approval_requirements(self, agent_result: Dict) -> Dict:
-        """Check if response requires approval"""
-        
-        requires_approval = agent_result.get("requires_approval", False)
-        has_approval_reason = bool(agent_result.get("draft_actions", {}).get("approval_reason"))
-        
-        if requires_approval and not has_approval_reason:
-            return {
-                "name": "approval_required",
-                "passed": False,
-                "details": "Response requires approval but no reason provided",
-                "blocking": True
-            }
-        
-        return {
-            "name": "approval_required",
-            "passed": True,
-            "details": f"Approval: {'required' if requires_approval else 'not required'}",
-            "blocking": False
-        }
-    
-    def _check_response_completeness(self, agent_result: Dict) -> Dict:
-        """Check if response is complete and ready"""
-        
-        has_status = "status" in agent_result
-        has_content = any(key in agent_result for key in ["response", "analysis", "draft_actions", "summary", "data_logged", "action_taken"])
-        
-        complete = has_status and has_content
-        
-        return {
-            "name": "response_completeness",
-            "passed": complete,
-            "details": f"Status: {has_status}, Content: {has_content}",
-            "blocking": not complete
-        }
-    
-    def _check_risk_level(self, agent_result: Dict, routing: Dict) -> Dict:
-        """Assess risk level of response"""
-        
+        s = context_status()
+        return {"name": "context_overflow", "passed": s["status"] != "critical",
+                "details": s, "blocking": s["status"] == "critical"}
+
+    def _check_approval(self, r: Dict) -> Dict:
+        req = r.get("requires_approval", False)
+        has_reason = bool(r.get("draft_actions", {}).get("approval_reason"))
+        ok = not req or has_reason
+        return {"name": "approval_required", "passed": ok,
+                "details": f"approval={'required' if req else 'not required'}",
+                "blocking": not ok}
+
+    def _check_completeness(self, r: Dict) -> Dict:
+        has_status = "status" in r
+        has_content = any(k in r for k in
+                          ["response", "analysis", "draft_actions", "summary",
+                           "data_logged", "action_taken"])
+        ok = has_status and has_content
+        return {"name": "response_completeness", "passed": ok,
+                "details": f"status={has_status}, content={has_content}",
+                "blocking": not ok}
+
+    def _check_risk(self, r: Dict, routing: Dict) -> Dict:
         domain = routing["classification"]["domain"]
-        agent = routing["routing_decision"]["agent"]
-        
-        # Legal responses are always high risk
-        if domain == "legal" or agent == "masha":
-            return {
-                "name": "risk_assessment",
-                "passed": agent_result.get("requires_approval", False),
-                "details": "Legal response - approval required",
-                "blocking": not agent_result.get("requires_approval", False)
-            }
-        
-        # Group messages need review
-        if domain == "whatsapp_group":
-            return {
-                "name": "risk_assessment", 
-                "passed": True,
-                "details": "Group message - moderate risk",
-                "blocking": False
-            }
-        
-        # Low risk domains
+        if domain == "legal":
+            ok = r.get("requires_approval", False)
+            return {"name": "risk_assessment", "passed": ok,
+                    "details": "legal — approval required", "blocking": not ok}
+        return {"name": "risk_assessment", "passed": True,
+                "details": "low risk", "blocking": False}
+
+    def _check_single_message(self, r: Dict) -> Dict:
+        """PR1: response must not contain multiple messages."""
+        if not SINGLE_MESSAGE_MODE:
+            return {"name": "single_message", "passed": True, "details": "disabled"}
+        chunks = r.get("_chunks", [])
+        ok = len(chunks) <= 1
+        return {"name": "single_message", "passed": ok,
+                "details": f"chunks={len(chunks)}", "blocking": False}
+
+    # ── Logging ───────────────────────────────────────────────────────────────
+
+    def _make_record(self, execution_id: str, start: datetime,
+                     message: str, channel: str, group_id: str,
+                     status: str = "unknown", cost: float = 0.0,
+                     tier: str = "unknown", agent: str = None,
+                     qa_passed: bool = None, error: str = None) -> Dict:
         return {
-            "name": "risk_assessment",
-            "passed": True, 
-            "details": "Low risk domain",
-            "blocking": False
+            "execution_id": execution_id,
+            "timestamp": start.isoformat(),
+            "message": message[:80] + "…" if len(message) > 80 else message,
+            "channel": channel,
+            "group_id": group_id,
+            "status": status,
+            "tier": tier,
+            "agent": agent,
+            "cost_usd": cost,
+            "qa_passed": qa_passed,
+            "error": error,
+            "duration_ms": int((datetime.now() - start).total_seconds() * 1000),
         }
-    
-    def _generate_qa_recommendations(self, checks: Dict) -> List[str]:
-        """Generate actionable recommendations based on QA results"""
-        
-        recommendations = []
-        
-        for check_name, check_result in checks.items():
-            if not check_result["passed"]:
-                if check_name == "context_overflow":
-                    recommendations.append("Run emergency context compaction")
-                elif check_name == "approval_required":
-                    recommendations.append("Add approval reason before proceeding")  
-                elif check_name == "response_completeness":
-                    recommendations.append("Complete response before sending")
-                elif check_name == "risk_assessment":
-                    recommendations.append("Add approval gate for high-risk response")
-        
-        return recommendations
-    
+
     def _log_execution(self, record: Dict):
-        """Log execution record"""
         self.execution_log.append(record)
-        
-        # Also write to trace file
-        trace_file = self.workspace / "state" / "traces" / f"execution_{datetime.now().strftime('%Y-%m-%d')}.jsonl"
+        trace_file = (self.workspace / "state" / "traces" /
+                      f"execution_{datetime.now().strftime('%Y-%m-%d')}.jsonl")
         trace_file.parent.mkdir(exist_ok=True)
-        
         try:
             with open(trace_file, "a", encoding="utf-8") as f:
                 f.write(json.dumps(record, ensure_ascii=False) + "\n")
-        except Exception as e:
-            # Fail silently - don't break execution for logging issues
+        except Exception:
             pass
 
-# Global pipeline instance
+
+# ── Global singleton ──────────────────────────────────────────────────────────
 pipeline = ExecutionPipeline()
 
-def execute_message(message: str, channel: str = None, 
-                   group_id: str = None, metadata: Dict = None) -> Dict:
-    """Global execution function"""
+
+def execute_message(message: str, channel: str = None,
+                    group_id: str = None, metadata: Dict = None) -> Dict:
     return pipeline.execute(message, channel, group_id, metadata)

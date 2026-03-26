@@ -1,188 +1,234 @@
 #!/usr/bin/env python3
 """
-Smart Router - Routes messages to appropriate domain agents with context loading.
+Smart Router — PR1: Cost + Output Enforcement
 
-Replaces the manual classification in AGENTS.md with automatic:
-1. Message classification
-2. Integration detection
-3. Context loading 
-4. Agent routing
-5. Connection validation (NEW)
+Changes from PR1:
+- legal domain: tier2 by default (NOT tier3/Opus)
+- group messages: tier1 always, NO_REPLY fast-path before any model call
+- NO_REPLY classification exits before expensive routing
+- Opus escalation only via explicit justification
 """
 
 import json
 import os
 import re
 from pathlib import Path
-from typing import Dict, Any, Optional, Tuple
 from typing import Dict, List, Optional, Tuple
 from context_guard import safe_read_file, context_status
 
+
+# ── NO_REPLY fast-path patterns ───────────────────────────────────────────────
+# If a group message matches these, classify as NO_REPLY immediately.
+# No model call, no agent call, cost = $0.
+NO_REPLY_PATTERNS = [
+    r"^\s*👍|❤️|😂|🙏|✅|🔥|😊",          # emoji-only
+    r"^[\U0001F300-\U0001FFFF\s]+$",          # all emoji
+    r"^\s*ok\s*$|^\s*כן\s*$|^\s*אוקי\s*$",   # single-word ack
+    r"^\s*\+1\s*$",
+    r"^.{1,4}$",                               # very short (≤4 chars)
+]
+
+
+def is_no_reply_candidate(message: str, channel: str = None,
+                           group_id: str = None) -> bool:
+    """
+    Returns True if message is trivially not worth responding to.
+    Called BEFORE any model or agent routing to avoid wasteful cost.
+    """
+    if not (channel == "whatsapp" and group_id):
+        return False   # Only applies to group messages
+
+    msg = message.strip()
+    for pattern in NO_REPLY_PATTERNS:
+        if re.match(pattern, msg, re.IGNORECASE | re.UNICODE):
+            return True
+    return False
+
+
 class Router:
     def __init__(self, workspace_path: str = None):
-        self.workspace = Path(workspace_path or os.environ.get("DVORAH_WORKSPACE", 
-                                                             Path.home() / ".openclaw" / "workspace"))
+        self.workspace = Path(workspace_path or os.environ.get(
+            "DVORAH_WORKSPACE", Path.home() / ".openclaw" / "workspace"))
         self.registry = IntegrationRegistry(str(self.workspace))
-        
-        # Integration health monitoring
+
         try:
             from core.integration_health import IntegrationHealthMonitor
             self.health_monitor = IntegrationHealthMonitor(str(self.workspace))
         except ImportError:
             self.health_monitor = None
-        
-        # Classification patterns
+
         self.patterns = {
             "legal": [
                 r"חוזה|הסכם|contract|legal",
                 r"משפטי|דין|law|clause",
                 r"סיכום.{0,10}חוזה|contract.{0,10}review",
-                r"סעיף|תנאי|terms|condition"
+                r"סעיף|תנאי|terms|condition",
             ],
             "fitness": [
                 r"אכלתי|ארוחה|meal|ate",
                 r"שקילה|משקל|weight|שקלתי",
                 r"קלוריות|קק\"ל|calories|kcal",
-                r"דיאטה|diet|תזונה|nutrition"
+                r"דיאטה|diet|תזונה|nutrition",
             ],
             "whatsapp_group": [
                 r"group_message",
-                r"שלום.*קבוצה|hello.*group"
+                r"שלום.*קבוצה|hello.*group",
             ],
             "research": [
                 r"תחקרי|חקרי|research|investigate",
                 r"בדקי|check|מצאי|find|חפשי",
                 r"מה.*עם|what.*about|השוק|market",
-                r"איך.*עובד|how.*works|ניתוח|analysis"
+                r"איך.*עובד|how.*works|ניתוח|analysis",
             ],
             "marketing": [
                 r"פוסט|post|תוכן|content",
                 r"טיקטוק|tiktok|instagram|social",
                 r"שיווק|marketing|פרסום|advertising",
-                r"וילה|villa|lithos|ליתוס"
+                r"וילה|villa|lithos|ליתוס",
             ],
             "automation": [
                 r"סטטוס.*מערכת|system.*status|health.*check",
                 r"בריאות.*מערכת|system.*health",
                 r"מצב.*מערכת|system.*state",
-                r"אוטומציה|automation|monitor"
+                r"אוטומציה|automation|monitor",
             ],
             "scheduling": [
                 r"מתי|when|תזכיר|remind",
                 r"פגישה|meeting|appointment",
-                r"יומן|calendar|schedule"
-            ]
+                r"יומן|calendar|schedule",
+            ],
         }
-    
-    def classify_message(self, message: str, channel: str = None, 
-                        group_id: str = None) -> Dict:
-        """Classify message to determine domain and agent"""
-        
-        # Channel-based classification
+
+    # ── Model tier selection ──────────────────────────────────────────────────
+    # PR1 rule: Opus (tier3) is NEVER selected here.
+    # Legal uses tier2 by default.  Escalation to tier3 must go through
+    # agent_executor with an explicit justification.
+    DOMAIN_TIERS: Dict[str, str] = {
+        "legal":          "tier2",   # PR1: was tier3 — downgraded
+        "whatsapp_group": "tier1",   # always cheap
+        "fitness":        "tier1",
+        "research":       "tier2",
+        "marketing":      "tier2",
+        "automation":     "tier1",
+        "scheduling":     "tier1",
+        "general":        "tier2",
+    }
+
+    def classify_message(self, message: str, channel: str = None,
+                         group_id: str = None) -> Dict:
         if channel == "whatsapp" and group_id:
             return {
                 "domain": "whatsapp_group",
                 "confidence": 0.9,
                 "agent": "odya",
-                "reason": f"WhatsApp group message (channel={channel}, group={group_id})"
+                "reason": f"WhatsApp group message (channel={channel}, group={group_id})",
             }
-        
-        # Content-based classification
+
         message_lower = message.lower()
-        scores = {}
-        
+        scores: Dict[str, float] = {}
+
         for domain, patterns in self.patterns.items():
-            score = 0
-            for pattern in patterns:
-                if re.search(pattern, message_lower, re.IGNORECASE):
-                    score += 1
-            
+            score = sum(1 for p in patterns
+                        if re.search(p, message_lower, re.IGNORECASE))
             if score > 0:
-                scores[domain] = score / len(patterns)  # Normalize
-        
-        # Return highest scoring domain
+                scores[domain] = score / len(patterns)
+
         if scores:
-            best_domain = max(scores, key=scores.get)
-            confidence = min(scores[best_domain] * 2, 1.0)  # Scale to 0-1
-            
+            best = max(scores, key=scores.get)
+            confidence = min(scores[best] * 2, 1.0)
             agent_map = {
-                "legal": "masha",
-                "fitness": "dana", 
+                "legal":          "masha",
+                "fitness":        "dana",
                 "whatsapp_group": "odya",
-                "research": "tzofit",
-                "scheduling": "eti",
-                "marketing": "tali",
-                "automation": "eti"
+                "research":       "tzofit",
+                "scheduling":     "eti",
+                "marketing":      "tali",
+                "automation":     "eti",
             }
-            
             return {
-                "domain": best_domain,
+                "domain": best,
                 "confidence": confidence,
-                "agent": agent_map.get(best_domain, "direct"),
-                "reason": f"Pattern match: {best_domain} (score: {scores[best_domain]:.2f})"
+                "agent": agent_map.get(best, "direct"),
+                "reason": f"Pattern match: {best} (score: {scores[best]:.2f})",
             }
-        
-        # Fallback to general
+
         return {
             "domain": "general",
             "confidence": 0.3,
             "agent": "direct",
-            "reason": "No specific pattern matched - general routing"
+            "reason": "No specific pattern matched — general routing",
         }
-    
-    def load_context(self, domain: str, message: str, 
-                    channel: str = None, group_id: str = None) -> Dict:
-        """Load relevant context files for domain"""
-        
+
+    def load_context(self, domain: str, message: str,
+                     channel: str = None, group_id: str = None) -> Dict:
         context = {
             "files_loaded": [],
             "integrations_activated": [],
             "context_size": 0,
-            "truncated": False
+            "truncated": False,
         }
-        
-        # Always load essentials
+
         essentials = ["IDENTITY.md", "SOUL.md", "USER.md"]
-        for file in essentials:
-            content = safe_read_file(file)
+        for f in essentials:
+            content = safe_read_file(f)
             if content and not content.startswith("[ERROR"):
-                context["files_loaded"].append(file)
-        
-        # Load domain-specific context
-        integration_files = self.registry.get_required_files(domain)
-        for file in integration_files:
-            content = safe_read_file(file, max_lines=100)  # Limit large files
+                context["files_loaded"].append(f)
+
+        for f in self.registry.get_required_files(domain):
+            content = safe_read_file(f, max_lines=100)
             if content and not content.startswith("[ERROR"):
-                context["files_loaded"].append(file)
+                context["files_loaded"].append(f)
                 if "[TRUNCATED" in content:
                     context["truncated"] = True
-        
-        # Check context status
+
         status = context_status()
         context["context_size"] = status["chars"]
-        
+
         if status["status"] == "warning":
             context["warning"] = "Approaching context limit"
         elif status["status"] == "critical":
-            context["error"] = "Context limit exceeded - files truncated"
-        
+            context["error"] = "Context limit exceeded"
+
         return context
-    
-    def route_message(self, message: str, channel: str = None, 
-                     group_id: str = None) -> Dict:
-        """Main routing function - classify message and prepare context"""
-        
-        # Step 1: Classify
+
+    def route_message(self, message: str, channel: str = None,
+                      group_id: str = None) -> Dict:
+        """
+        Main routing function.
+
+        PR1: NO_REPLY fast-path runs FIRST.
+        If matched → returns no_reply decision with tier=none (cost=$0).
+        """
+        # ── PR1: NO_REPLY fast-path ───────────────────────────────────────────
+        if is_no_reply_candidate(message, channel, group_id):
+            return {
+                "classification": {
+                    "domain": "whatsapp_group",
+                    "confidence": 1.0,
+                    "agent": "no_reply",
+                    "reason": "NO_REPLY fast-path: trivial group message, cost=$0",
+                },
+                "context": {"files_loaded": [], "context_size": 0},
+                "model": "none",                       # no model call
+                "routing_decision": {
+                    "action": "no_reply",
+                    "agent": "no_reply",
+                    "domain": "whatsapp_group",
+                },
+                "metadata": {
+                    "channel": channel,
+                    "group_id": group_id,
+                    "message_length": len(message),
+                    "timestamp": __import__("datetime").datetime.now().isoformat(),
+                    "pr1_enforcement": "no_reply_fast_path",
+                },
+            }
+
+        # ── Normal routing ────────────────────────────────────────────────────
         classification = self.classify_message(message, channel, group_id)
-        
-        # Step 2: Load context
-        context = self.load_context(classification["domain"], message, 
-                                  channel, group_id)
-        
-        # Step 3: Select model tier
-        model_tier = self._select_model_tier(classification["domain"], 
-                                           classification["confidence"])
-        
+        context = self.load_context(classification["domain"], message, channel, group_id)
+        model_tier = self.DOMAIN_TIERS.get(classification["domain"], "tier2")
+
         return {
             "classification": classification,
             "context": context,
@@ -190,71 +236,38 @@ class Router:
             "routing_decision": {
                 "action": "route_to_agent" if classification["agent"] != "direct" else "handle_direct",
                 "agent": classification["agent"],
-                "domain": classification["domain"]
+                "domain": classification["domain"],
             },
             "metadata": {
                 "channel": channel,
                 "group_id": group_id,
                 "message_length": len(message),
-                "timestamp": "2026-03-24T07:54:00"
-            }
+                "timestamp": __import__("datetime").datetime.now().isoformat(),
+            },
         }
-    
-    def _select_model_tier(self, domain: str, confidence: float) -> str:
-        """Select appropriate model tier based on domain and confidence"""
-        
-        # Domain-based model selection
-        domain_tiers = {
-            "legal": "tier3",  # Always use Opus for legal
-            "whatsapp_group": "tier1",  # Usually simple
-            "fitness": "tier1",  # Mostly data entry
-            "research": "tier2",  # Needs analysis capability
-            "marketing": "tier2",  # Creative content needs good model
-            "automation": "tier1",  # System status is straightforward
-            "scheduling": "tier1",  # Simple logic
-            "general": "tier2"  # Default to mid-tier
-        }
-        
-        base_tier = domain_tiers.get(domain, "tier2")
-        
-        # Don't downgrade marketing and research - they need good models
-        if domain in ["marketing", "research"]:
-            return base_tier
-        
-        # Adjust based on confidence for other domains
-        if confidence < 0.5 and base_tier == "tier1":
-            return "tier2"  # Uncertain simple tasks -> mid tier
-        elif confidence > 0.8 and base_tier == "tier2":
-            return "tier1"  # High confidence mid tasks -> cheap tier
-        
-        return base_tier
 
-# Integration with existing system
+
+# ── IntegrationRegistry (unchanged) ──────────────────────────────────────────
 class IntegrationRegistry:
     def __init__(self, workspace_path: str):
         self.workspace = Path(workspace_path)
         registry_file = self.workspace / "core" / "integration_registry.json"
-        
         try:
-            with open(registry_file, 'r', encoding='utf-8') as f:
+            with open(registry_file, "r", encoding="utf-8") as f:
                 self.config = json.load(f)
         except Exception:
-            # Fallback minimal config
             self.config = {"integrations": {}, "rules": {}}
-    
-    def get_required_files(self, domain: str) -> List[str]:
-        """Get files required for a domain"""
-        integration = self.config.get("integrations", {}).get(domain, {})
-        return integration.get("required_files", [])
-    
-    def get_capabilities(self, domain: str) -> List[str]:
-        """Get capabilities available for a domain"""
-        integration = self.config.get("integrations", {}).get(domain, {})
-        return integration.get("capabilities", [])
 
-# Global router instance
+    def get_required_files(self, domain: str) -> List[str]:
+        return self.config.get("integrations", {}).get(domain, {}).get("required_files", [])
+
+    def get_capabilities(self, domain: str) -> List[str]:
+        return self.config.get("integrations", {}).get(domain, {}).get("capabilities", [])
+
+
+# ── Global singleton ──────────────────────────────────────────────────────────
 router = Router()
 
+
 def route_message(message: str, channel: str = None, group_id: str = None) -> Dict:
-    """Global routing function - called by execution pipeline"""
     return router.route_message(message, channel, group_id)
