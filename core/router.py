@@ -64,6 +64,15 @@ class Router:
                 r"סיכום.{0,10}חוזה|contract.{0,10}review",
                 r"סעיף|תנאי|terms|condition",
             ],
+            # PR3: group_retrieval — DM asking *about* a group (not a group message itself)
+            "group_retrieval": [
+                r"קבוצה.{0,20}(של|ב|מ)",
+                r"שיעורי.{0,10}בית",
+                r"מה.{0,15}(כתבו|היה|פספסתי|הלך).{0,15}קבוצה",
+                r"תסכמי.{0,15}קבוצה",
+                r"(כיתה|גן).{0,10}(של|ב)",
+                r"מה.{0,10}(קורה|היה).{0,10}(אלון|ניב|ילדים)",
+            ],
             "fitness": [
                 r"אכלתי|ארוחה|meal|ate",
                 r"שקילה|משקל|weight|שקלתי",
@@ -104,14 +113,15 @@ class Router:
     # Legal uses tier2 by default.  Escalation to tier3 must go through
     # agent_executor with an explicit justification.
     DOMAIN_TIERS: Dict[str, str] = {
-        "legal":          "tier2",   # PR1: was tier3 — downgraded
-        "whatsapp_group": "tier1",   # always cheap
-        "fitness":        "tier1",
-        "research":       "tier2",
-        "marketing":      "tier2",
-        "automation":     "tier1",
-        "scheduling":     "tier1",
-        "general":        "tier2",
+        "legal":            "tier2",   # PR1: was tier3 — downgraded
+        "whatsapp_group":   "tier1",   # always cheap
+        "group_retrieval":  "tier1",   # retrieval is cheap
+        "fitness":          "tier1",
+        "research":         "tier2",
+        "marketing":        "tier2",
+        "automation":       "tier1",
+        "scheduling":       "tier1",
+        "general":          "tier2",
     }
 
     def classify_message(self, message: str, channel: str = None,
@@ -137,13 +147,14 @@ class Router:
             best = max(scores, key=scores.get)
             confidence = min(scores[best] * 2, 1.0)
             agent_map = {
-                "legal":          "masha",
-                "fitness":        "dana",
-                "whatsapp_group": "odya",
-                "research":       "tzofit",
-                "scheduling":     "eti",
-                "marketing":      "tali",
-                "automation":     "eti",
+                "legal":            "masha",
+                "fitness":          "dana",
+                "whatsapp_group":   "odya",
+                "group_retrieval":  "odya",   # DM asking about a group → odya retrieves
+                "research":         "tzofit",
+                "scheduling":       "eti",
+                "marketing":        "tali",
+                "automation":       "eti",
             }
             return {
                 "domain": best,

@@ -74,10 +74,44 @@ class OdyaAgent(DomainAgent):
             reason=f"Group-related query (score: {score:.2f})",
         )
     
+    # ── Group name → group_id map (from WHATSAPP_GROUPS.md) ─────────────────
+    GROUP_NAME_MAP = {
+        "אלון":     "120363418497534459@g.us",
+        "כיתה":     "120363418497534459@g.us",
+        "ב3":       "120363418497534459@g.us",
+        "ב׳":       "120363418497534459@g.us",
+        "האלופה":   "120363418497534459@g.us",
+        "שני":      "120363425514726135@g.us",
+        "משפחה":    "120363425514726135@g.us",
+        "מתן":      "120363425249923804@g.us",
+    }
+
+    GROUP_ID_TO_NAME = {
+        "120363418497534459@g.us": "כיתה ב׳-3 האלופה",
+        "120363425514726135@g.us": "Yoni <> Shani <> Dvora",
+        "120363425249923804@g.us": "קבוצה עם מתן",
+    }
+
+    def _identify_group(self, message: str) -> Optional[str]:
+        """Map group name mentioned in message to group_id."""
+        msg = message.lower()
+        for keyword, gid in self.GROUP_NAME_MAP.items():
+            if keyword in msg:
+                return gid
+        return None
+
     def execute(self, message: str, context: Dict, attachments: List[str] = None) -> FinalPayload:
-        """PR2: returns FinalPayload."""
+        """PR2: returns FinalPayload.
+        Retrieval-first: if domain=group_retrieval, fetch messages before any denial.
+        """
         self._start_timer()
-        
+
+        # ── Group retrieval path (DM asking about a group) ────────────────────
+        routing = context.get("routing", {})
+        domain = routing.get("classification", {}).get("domain", "")
+        if domain == "group_retrieval":
+            return self._execute_group_retrieval(message, context)
+
         tier = self._assess_tier(message, context)
         role = context.get("role", "active")
         group_id = context.get("group_id", "unknown")
@@ -116,6 +150,87 @@ class OdyaAgent(DomainAgent):
                 "group_id":     group_id,
                 "role":         role,
                 "duration_ms":  self._elapsed_ms(),
+            },
+        )
+
+    def _execute_group_retrieval(self, message: str, context: Dict) -> FinalPayload:
+        """
+        Retrieval-first path for DM queries about a group.
+        Tries to fetch cached messages. Returns what was found — never silent denial.
+        """
+        import subprocess
+        group_id   = self._identify_group(message)
+        group_name = self.GROUP_ID_TO_NAME.get(group_id, "הקבוצה") if group_id else "הקבוצה"
+
+        if not group_id:
+            return FinalPayload(
+                status="ok",
+                agent=self.AGENT_NAME,
+                final_text=(
+                    "לא הצלחתי לזהות על איזו קבוצה מדובר.\n"
+                    "קבוצות מוכרות: כיתה ב׳-3 (אלון), משפחה (שני), מתן."
+                ),
+                should_send=True,
+                requires_approval=False,
+                metadata={"model_used": "none", "model_reason": "group not identified",
+                          "output_mode": "direct_send"},
+            )
+
+        # Try to fetch messages via group_messages.py
+        try:
+            ws = str(WORKSPACE)
+            result = subprocess.run(
+                ["python3", f"{ws}/scripts/group_messages.py", group_id, "--days", "3"],
+                capture_output=True, text=True, timeout=10, cwd=ws
+            )
+            raw = result.stdout.strip()
+        except Exception as e:
+            raw = f"ERROR: {e}"
+
+        if not raw or raw == "NO_MESSAGES_FOUND":
+            # Check GROUP_MEMORY.md for cached summary
+            mem_file = WORKSPACE / "state" / "GROUP_MEMORY.md"
+            cached = ""
+            if mem_file.exists():
+                content = mem_file.read_text(encoding="utf-8")
+                # Extract section for this group
+                for line in content.split("\n"):
+                    if group_name in line or group_id in line:
+                        cached = "יש מידע חלקי ב-GROUP_MEMORY.md אך אין הודעות שמורות מ-3 הימים האחרונים."
+                        break
+
+            final_text = (
+                f"בדקתי את {group_name}.\n"
+                f"{cached or 'אין הודעות שמורות מ-3 הימים האחרונים.'}\n\n"
+                "כדי לקבל עדכון עתידי — ודא שדבורה חברה בקבוצה "
+                f"(group_id: {group_id})."
+            )
+        else:
+            # Got messages — format as summary
+            lines = [l for l in raw.split("\n") if l.strip()][:20]
+            hw_lines = [l for l in lines if any(w in l.lower() for w in
+                        ["שיעורי בית", "שיעורים", "לחינוך", "להביא", "מחר", "לקרוא", "לכתוב"])]
+
+            if hw_lines:
+                final_text = f"שיעורי בית מ-{group_name}:\n" + "\n".join(f"• {l}" for l in hw_lines)
+            else:
+                final_text = (
+                    f"הודעות אחרונות מ-{group_name} ({len(lines)} הודעות):\n"
+                    + "\n".join(f"• {l}" for l in lines[:8])
+                    + "\n\nלא זיהיתי שיעורי בית ספציפיים."
+                )
+
+        return FinalPayload(
+            status="ok",
+            agent=self.AGENT_NAME,
+            final_text=final_text,
+            should_send=True,
+            requires_approval=False,
+            metadata={
+                "model_used":   "none",
+                "model_reason": f"group_retrieval/{group_name} — tier1",
+                "output_mode":  "direct_send",
+                "group_id":     group_id,
             },
         )
 
