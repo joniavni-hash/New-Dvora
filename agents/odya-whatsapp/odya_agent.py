@@ -24,7 +24,7 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "_shared"))
 from domain_agent_base import (
-    DomainAgent, AgentOutput, RoutingResult, ModelTier, WORKSPACE
+    DomainAgent, AgentOutput, FinalPayload, RoutingResult, ModelTier, WORKSPACE
 )
 
 
@@ -74,35 +74,75 @@ class OdyaAgent(DomainAgent):
             reason=f"Group-related query (score: {score:.2f})",
         )
     
-    def process(self, message: str, context: Dict, attachments: List[str] = None) -> AgentOutput:
-        """Process group message — prepare for spawning with prompt."""
+    def execute(self, message: str, context: Dict, attachments: List[str] = None) -> FinalPayload:
+        """PR2: returns FinalPayload."""
         self._start_timer()
         
         tier = self._assess_tier(message, context)
         role = context.get("role", "active")
         group_id = context.get("group_id", "unknown")
-        
-        return AgentOutput(
-            decision="complete",
-            confidence=0.85,
-            domain=self.DOMAIN,
-            agent_name=self.AGENT_NAME,
-            model_tier=tier.value,
-            cost_usd=self.estimate_cost(tier),
-            summary=f"Group message processed for {group_id} (role: {role})",
-            details="",
-            draft={
-                "type": "group_response",
-                "prompt_file": "agents/odya-whatsapp/odya_prompt.md",
-                "tier": tier.value,
-                "group_id": group_id,
-                "role": role,
-                "prepare_cmd": f'python3 agents/whatsapp_group_agent.py --prepare --group-id "{group_id}"',
+
+        # Build actual response decision text
+        should_respond, reason = self._decide_response(message, context)
+        if not should_respond:
+            return FinalPayload(
+                status="no_reply",
+                agent=self.AGENT_NAME,
+                final_text="",
+                should_send=False,
+                requires_approval=False,
+                metadata={
+                    "model_used":   "none",
+                    "model_reason": reason,
+                    "output_mode":  "no_reply",
+                    "group_id":     group_id,
+                    "role":         role,
+                    "duration_ms":  self._elapsed_ms(),
+                },
+            )
+
+        final_text = self._build_group_response(message, context, tier)
+        return FinalPayload(
+            status="needs_approval",
+            agent=self.AGENT_NAME,
+            final_text=final_text,
+            should_send=False,          # group responses always need approval
+            requires_approval=True,
+            metadata={
+                "model_used":   TIER_TO_MODEL.get(tier, "anthropic/claude-sonnet-4-20250514")
+                                if False else "anthropic/claude-sonnet-4-20250514",
+                "model_reason": f"group/{role} — {tier.value}",
+                "output_mode":  "draft_for_approval",
+                "group_id":     group_id,
+                "role":         role,
+                "duration_ms":  self._elapsed_ms(),
             },
-            tools_used=[],
-            duration_ms=self._elapsed_ms(),
-            qa_result="pass",
         )
+
+    def _decide_response(self, message: str, context: Dict):
+        """Decide whether to respond at all in the group."""
+        msg = message.lower()
+        role = context.get("role", "active")
+
+        if role == "observer":
+            return False, "observer mode — silent"
+
+        mentions_dvorah = any(w in msg for w in ["דבורה", "דבי", "dvorah"])
+        is_question = "?" in message
+        is_direct_task = any(w in msg for w in ["תשלחי", "תבדקי", "תעשי"])
+
+        if mentions_dvorah or is_question or is_direct_task:
+            return True, "direct mention / question / task"
+        return False, "no trigger — group noise"
+
+    def _build_group_response(self, message: str, context: Dict,
+                               tier: ModelTier) -> str:
+        role = context.get("role", "active")
+        group_id = context.get("group_id", "")
+        prefix = f"[טיוטה ← אודיה 📱 | {group_id}]\n"
+        if "?" in message:
+            return prefix + f"תגובה לשאלה: {message}\n(ממתין לעיבוד מודל)"
+        return prefix + f"הודעה שהתקבלה בקבוצה — ממתין להחלטת תגובה.\n{message}"
     
     def _assess_tier(self, message: str, context: Dict) -> ModelTier:
         """Assess which tier is needed based on message + context."""

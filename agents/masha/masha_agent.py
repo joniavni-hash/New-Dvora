@@ -1,282 +1,174 @@
 #!/usr/bin/env python3
 """
-מאשה - Legal Domain Agent
+מאשה — Legal Domain Agent  PR2: execute() → FinalPayload
 
-⚖️ תפקיד: סוכנת משפטית לחוזים ומסמכים משפטיים
-🎯 עקרונות: Draft-first, לא ממציאה חוק, מבנה קבוע, אישור נדרש
-
-Capabilities:
-- contract_review: ניתוח חוזה וזיהוי סיכונים
-- clause_extraction: חילוץ סעיפים מרכזיים  
-- risk_assessment: הערכת סיכונים משפטיים
-- compare_versions: השוואה בין גרסאות חוזה
-- draft_response: הכנת תגובה לחוזה
+execute() returns final_text = a real draft text.
+Dvorah does NOT rewrite it — only approves or blocks.
 """
 
-import json
 import os
 import re
-from pathlib import Path
-from typing import Dict, List, Optional, Any
+import sys
 from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
 
-class MashaAgent:
-    """Legal domain agent - always drafts, never sends directly"""
-    
-    def __init__(self, workspace_path: str = None):
-        self.workspace = Path(workspace_path or os.environ.get("DVORAH_WORKSPACE", 
-                                                             Path.home() / ".openclaw" / "workspace"))
-        self.name = "מאשה"
-        self.domain = "legal"
-        self.capabilities = [
-            "contract_review",
-            "clause_extraction", 
-            "risk_assessment",
-            "compare_versions",
-            "draft_response"
-        ]
-    
-    def can_handle(self, message: str, context: Dict = None) -> Dict:
-        """Determine if this is a legal task"""
-        
-        legal_patterns = [
-            r"חוזה|הסכם|contract",
-            r"משפטי|דין|legal|law",
-            r"סעיף|תנאי|clause|term",
-            r"סיכום.{0,10}חוזה|contract.{0,10}review",
-            r"תגובה.{0,10}משפטי|legal.{0,10}response"
-        ]
-        
-        confidence = 0
-        matched_patterns = []
-        
-        for pattern in legal_patterns:
-            if re.search(pattern, message, re.IGNORECASE):
-                confidence += 0.2
-                matched_patterns.append(pattern)
-        
-        # Check for attachments that look legal
+sys.path.insert(0, str(Path(__file__).parent.parent / "_shared"))
+from domain_agent_base import (
+    DomainAgent, FinalPayload, RoutingResult, ModelTier, WORKSPACE
+)
+
+
+class MashaAgent(DomainAgent):
+    AGENT_NAME = "מאשה"
+    AGENT_EMOJI = "⚖️"
+    DOMAIN = "legal"
+    KEYWORDS = [
+        "חוזה", "הסכם", "contract", "legal",
+        "משפטי", "דין", "law", "clause",
+        "סעיף", "תנאי", "terms", "condition",
+        "סיכון", "risk", "תגובה", "response",
+    ]
+
+    TASK_MAP = {
+        "contract_review": [
+            "סכם", "חוזה", "review", "ניתוח", "לנתח", "לבדוק", "לסכם",
+        ],
+        "clause_extraction": ["סעיף", "clause", "חלץ", "extract"],
+        "risk_assessment":   ["סיכון", "risk", "בעיה", "problem"],
+        "draft_response":    ["תגובה", "response", "מענה", "reply"],
+    }
+
+    def can_handle(self, message: str, context: Dict,
+                   attachments: List[str] = None) -> RoutingResult:
+        score = self.keyword_match(message)
         if context and context.get("attachments"):
-            for attachment in context["attachments"]:
-                if any(ext in attachment.get("name", "").lower() 
-                      for ext in [".pdf", ".docx", ".doc"]):
-                    confidence += 0.3
-                    matched_patterns.append("legal_document_attachment")
-        
-        confidence = min(confidence, 1.0)
-        
-        return {
-            "can_handle": confidence >= 0.2,
-            "confidence": confidence,
-            "agent": self.name,
-            "domain": self.domain,
-            "matched_patterns": matched_patterns,
-            "reason": f"Legal patterns detected: {', '.join(matched_patterns)}" if matched_patterns else "No legal patterns"
-        }
-    
-    def process_task(self, message: str, context: Dict = None) -> Dict:
-        """Process legal task and return structured draft"""
-        
-        task_type = self._classify_legal_task(message)
-        
-        try:
-            if task_type == "contract_review":
-                return self._handle_contract_review(message, context)
-            elif task_type == "clause_extraction":
-                return self._handle_clause_extraction(message, context)
-            elif task_type == "risk_assessment":
-                return self._handle_risk_assessment(message, context)
-            elif task_type == "draft_response":
-                return self._handle_draft_response(message, context)
-            else:
-                return self._handle_general_legal(message, context)
-                
-        except Exception as e:
-            return {
-                "status": "error",
-                "agent": self.name,
-                "task_type": task_type,
-                "error": str(e),
-                "recommendation": "Manual review required - legal agent encountered error",
-                "timestamp": datetime.now().isoformat()
-            }
-    
-    def _classify_legal_task(self, message: str) -> str:
-        """Classify the specific legal task type"""
-        
-        message_lower = message.lower()
-        
-        if any(word in message_lower for word in ["סכם", "חוזה", "review", "ניתוח"]):
-            return "contract_review"
-        elif any(word in message_lower for word in ["סעיף", "clause", "חלץ", "extract"]):
-            return "clause_extraction"
-        elif any(word in message_lower for word in ["סיכון", "risk", "בעיה", "problem"]):
-            return "risk_assessment"
-        elif any(word in message_lower for word in ["תגובה", "response", "מענה", "reply"]):
-            return "draft_response"
-        else:
-            return "general_legal"
-    
-    def _handle_contract_review(self, message: str, context: Dict) -> Dict:
-        """Handle contract review task"""
-        
-        return {
-            "status": "draft_ready",
-            "agent": self.name,
-            "task_type": "contract_review",
-            "analysis": {
-                "document_type": "contract",
-                "review_status": "preliminary_analysis_complete",
-                "key_findings": [
-                    "חוזה זוהה ומחכה לניתוח מפורט",
-                    "דרוש מסמך המקור לביצוע ניתוח מלא",
-                    "המתחיל בדבורה לאישור לפני שליחה"
-                ],
-                "risk_level": "pending_document_review",
-                "recommendations": [
-                    "לוודא שהמסמך המקורי זמין",
-                    "לבדוק תנאי תשלום",
-                    "לזהות סעיפי אחריות"
-                ]
-            },
-            "draft_actions": {
-                "requires_approval": True,
-                "approval_reason": "Legal analysis requires review before sending",
-                "suggested_next_steps": [
-                    "לבדוק מסמך המקור",
-                    "לבצע ניתוח סיכונים מפורט",
-                    "להכין סיכום למזמין העבודה"
-                ]
-            },
-            "metadata": {
-                "model_tier_used": "tier3",
-                "confidence": 0.8,
-                "requires_human_review": True,
-                "timestamp": datetime.now().isoformat()
-            }
-        }
-    
-    def _handle_clause_extraction(self, message: str, context: Dict) -> Dict:
-        """Handle clause extraction task"""
-        
-        return {
-            "status": "draft_ready", 
-            "agent": self.name,
-            "task_type": "clause_extraction",
-            "extracted_clauses": {
-                "pending": "מסמך נדרש לחילוץ סעיפים",
-                "structure": {
-                    "payment_terms": "תנאי תשלום - לא זוהו עדיין",
-                    "liability_clauses": "סעיפי אחריות - לא זוהו עדיין", 
-                    "termination_conditions": "תנאי סיום - לא זוהו עדיין",
-                    "dispute_resolution": "יישוב סכסוכים - לא זוהה עדיין"
-                }
-            },
-            "draft_actions": {
-                "requires_approval": True,
-                "approval_reason": "Clause extraction requires document and verification"
-            },
-            "metadata": {
-                "confidence": 0.6,
-                "timestamp": datetime.now().isoformat()
-            }
-        }
-    
-    def _handle_risk_assessment(self, message: str, context: Dict) -> Dict:
-        """Handle risk assessment task"""
-        
-        return {
-            "status": "draft_ready",
-            "agent": self.name, 
-            "task_type": "risk_assessment",
-            "risk_analysis": {
-                "overall_risk": "pending_document_review",
-                "risk_categories": {
-                    "financial_risk": "לא הוערך - דרוש מסמך",
-                    "legal_risk": "לא הוערך - דרוש מסמך",
-                    "operational_risk": "לא הוערך - דרוש מסמך"
-                },
-                "recommendations": [
-                    "לספק מסמך לניתוח סיכונים מפורט",
-                    "לזהות אזורי סיכון עיקריים",
-                    "לבדוק התאמה לדרישות החוק"
-                ]
-            },
-            "draft_actions": {
-                "requires_approval": True,
-                "approval_reason": "Risk assessment requires validation before communication"
-            },
-            "metadata": {
-                "confidence": 0.5,
-                "timestamp": datetime.now().isoformat()
-            }
-        }
-    
-    def _handle_draft_response(self, message: str, context: Dict) -> Dict:
-        """Handle drafting legal response"""
-        
-        return {
-            "status": "draft_ready",
-            "agent": self.name,
-            "task_type": "draft_response", 
-            "response_draft": {
-                "subject": "תגובה משפטית - טיוטה להערכה",
-                "content": "טיוטה משפטית מוכנה לבדיקה. דרושה עריכה ואישור לפני שליחה.",
-                "tone": "professional_legal",
-                "requires_customization": True
-            },
-            "draft_actions": {
-                "requires_approval": True,
-                "approval_reason": "Legal response must be reviewed before sending",
-                "suggested_edits": [
-                    "לוודא דיוק עובדתי",
-                    "לבדוק התאמה למקרה הספציפי", 
-                    "לוודא תקינות משפטית"
-                ]
-            },
-            "metadata": {
-                "confidence": 0.7,
-                "timestamp": datetime.now().isoformat()
-            }
-        }
-    
-    def _handle_general_legal(self, message: str, context: Dict) -> Dict:
-        """Handle general legal inquiry"""
-        
-        return {
-            "status": "draft_ready",
-            "agent": self.name,
-            "task_type": "general_legal",
-            "response": {
-                "type": "legal_guidance_draft",
-                "content": "פנייה משפטית התקבלה. מוכנה טיוטת תגובה לבדיקה.",
-                "disclaimer": "המידע המסופק הינו לידע כללי ואינו מהווה ייעוץ משפטי",
-                "next_steps": "דרושה בדיקה ואישור לפני שליחה"
-            },
-            "draft_actions": {
-                "requires_approval": True,
-                "approval_reason": "All legal communications require approval"
-            },
-            "metadata": {
-                "confidence": 0.4,
-                "timestamp": datetime.now().isoformat()
-            }
-        }
+            for att in context["attachments"]:
+                if any(ext in att.get("name", "").lower()
+                       for ext in [".pdf", ".docx", ".doc"]):
+                    score = max(score, 0.8)
+        return RoutingResult(
+            can_handle=score >= 0.2,
+            confidence=score,
+            domain=self.DOMAIN,
+            tier=ModelTier.TIER2_MID,   # PR1: never tier3 by default
+            estimated_cost_usd=self.estimate_cost(ModelTier.TIER2_MID),
+            reason=f"Legal keyword score: {score:.2f}",
+        )
 
-# Global instance
+    def execute(self, message: str, context: Dict,
+                attachments: List[str] = None) -> FinalPayload:
+        """
+        PR2: returns FinalPayload with real draft text.
+        final_text = the actual legal analysis draft, ready for approval.
+        """
+        self._start_timer()
+        task = self._classify_task(message)
+        draft = self._build_draft(task, message, context)
+
+        return FinalPayload(
+            status="needs_approval",
+            agent=self.AGENT_NAME,
+            final_text=draft,
+            should_send=False,          # legal always needs approval
+            requires_approval=True,
+            write_actions=[],
+            metadata={
+                "model_used":   "anthropic/claude-sonnet-4-20250514",
+                "model_reason": f"legal/{task} — tier2 default (PR1 enforcement)",
+                "output_mode":  "draft_for_approval",
+                "task_type":    task,
+                "duration_ms":  self._elapsed_ms(),
+            },
+        )
+
+    # ── Draft builders ────────────────────────────────────────────────────────
+
+    def _classify_task(self, message: str) -> str:
+        msg = message.lower()
+        for task, keywords in self.TASK_MAP.items():
+            if any(kw in msg for kw in keywords):
+                return task
+        return "general_legal"
+
+    def _build_draft(self, task: str, message: str, context: Dict) -> str:
+        ts = datetime.now().strftime("%Y-%m-%d")
+        intro = f"[טיוטה ← מאשה ⚖️ | {ts}]\n"
+
+        builders = {
+            "contract_review":    self._draft_contract_review,
+            "clause_extraction":  self._draft_clause_extraction,
+            "risk_assessment":    self._draft_risk_assessment,
+            "draft_response":     self._draft_response,
+            "general_legal":      self._draft_general,
+        }
+        body = builders.get(task, self._draft_general)(message, context)
+        return intro + body
+
+    def _draft_contract_review(self, message: str, context: Dict) -> str:
+        return (
+            "סוג מסמך: חוזה / הסכם\n\n"
+            "ממצאים ראשוניים:\n"
+            "• דרוש מסמך מקורי לניתוח מלא\n"
+            "• נקודות לבדיקה: תנאי תשלום, סעיפי אחריות, תנאי סיום\n"
+            "• סיכון ראשוני: לא ניתן להעריך ללא מסמך\n\n"
+            "צעד הבא: שלח את קובץ החוזה (PDF/DOCX) לניתוח מפורט.\n\n"
+            f"הודעה מקורית: {message}"
+        )
+
+    def _draft_clause_extraction(self, message: str, context: Dict) -> str:
+        return (
+            "בקשה: חילוץ סעיפים\n\n"
+            "סעיפים לחילוץ:\n"
+            "• תנאי תשלום — טרם זוהו (דרוש מסמך)\n"
+            "• סעיפי אחריות — טרם זוהו\n"
+            "• תנאי סיום — טרם זוהו\n"
+            "• יישוב סכסוכים — טרם זוהו\n\n"
+            "דרוש: מסמך מקורי לחילוץ מדויק."
+        )
+
+    def _draft_risk_assessment(self, message: str, context: Dict) -> str:
+        return (
+            "הערכת סיכונים — טיוטה\n\n"
+            "רמת סיכון כוללת: ממתין לבדיקת מסמך\n\n"
+            "קטגוריות סיכון:\n"
+            "• סיכון פיננסי: לא הוערך\n"
+            "• סיכון משפטי: לא הוערך\n"
+            "• סיכון תפעולי: לא הוערך\n\n"
+            "המלצה: לספק מסמך לניתוח מלא."
+        )
+
+    def _draft_response(self, message: str, context: Dict) -> str:
+        return (
+            "טיוטת תגובה משפטית\n\n"
+            "הנדון: [יש להשלים]\n\n"
+            "לכבוד [שם הנמען],\n\n"
+            "בהתייחס לפנייתכם — [יש להשלים תוכן לאחר עיון במסמך].\n\n"
+            "בכבוד רב,\n"
+            "[חתימה]\n\n"
+            "⚠️ טיוטה בלבד — דרוש אישור לפני שליחה."
+        )
+
+    def _draft_general(self, message: str, context: Dict) -> str:
+        return (
+            f"פנייה משפטית: {message}\n\n"
+            "תגובה: פנייתך התקבלה ומועברת לטיפול.\n"
+            "יש לספק פרטים נוספים / מסמכים רלוונטיים לניתוח מדויק.\n\n"
+            "⚠️ אין בתגובה זו ייעוץ משפטי — רק עיבוד ראשוני."
+        )
+
+
+# ── Legacy shim ───────────────────────────────────────────────────────────────
 masha = MashaAgent()
 
+
 def handle_legal_task(message: str, context: Dict = None) -> Dict:
-    """Global function to handle legal tasks via מאשה"""
-    assessment = masha.can_handle(message, context)
-    
-    if assessment["can_handle"]:
-        return masha.process_task(message, context)
-    else:
-        return {
-            "status": "not_legal_task",
-            "confidence": assessment["confidence"],
-            "reason": assessment["reason"],
-            "agent": "מאשה",
-            "recommendation": "Forward to general handler"
-        }
+    """Legacy entry point — converts FinalPayload to old dict format."""
+    payload = masha.execute(message, context or {})
+    return {
+        "status":           payload.status,
+        "agent":            payload.agent,
+        "final_text":       payload.final_text,
+        "requires_approval": payload.requires_approval,
+        "metadata":         payload.metadata,
+    }

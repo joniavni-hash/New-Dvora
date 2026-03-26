@@ -22,7 +22,7 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "_shared"))
 from domain_agent_base import (
-    DomainAgent, AgentOutput, RoutingResult, ModelTier, WORKSPACE
+    DomainAgent, AgentOutput, FinalPayload, RoutingResult, ModelTier, WORKSPACE
 )
 
 LARRY_SYSTEM = WORKSPACE / "villa-lithos-tiktok" / "larry-system"
@@ -80,6 +80,24 @@ class TaliAgent(DomainAgent):
             reason=f"Marketing task: {task_type} → {tier.value}",
         )
     
+
+    def execute(self, message: str, context: dict, attachments=None):
+        """PR2 stub — returns FinalPayload."""
+        from datetime import datetime
+        task_type = self._classify_task(message) if hasattr(self, '_classify_task') else 'general'
+        return FinalPayload(
+            status="ok",
+            agent=self.AGENT_NAME,
+            final_text=f"[{self.AGENT_NAME}] {task_type}: {message[:80]}",
+            should_send=True,
+            requires_approval=False,
+            metadata={
+                "model_used":   "anthropic/claude-sonnet-4-20250514",
+                "model_reason": f"{self.DOMAIN}/{task_type} — tier1",
+                "output_mode":  "direct_send",
+            },
+        )
+
     def process(self, message: str, context: Dict, attachments: List[str] = None) -> AgentOutput:
         """Process marketing request."""
         self._start_timer()

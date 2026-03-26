@@ -21,7 +21,7 @@ from typing import Dict, List, Optional
 # Add shared module
 sys.path.insert(0, str(Path(__file__).parent.parent / "_shared"))
 from domain_agent_base import (
-    DomainAgent, AgentOutput, RoutingResult, ModelTier, WORKSPACE
+    DomainAgent, AgentOutput, FinalPayload, RoutingResult, ModelTier, WORKSPACE
 )
 
 TRACKER_PATH = WORKSPACE / "state" / "fitness_tracker.md"
@@ -81,17 +81,71 @@ class DanaAgent(DomainAgent):
             reason=f"Fitness task: {task_type} → {tier.value}",
         )
     
-    def process(self, message: str, context: Dict, attachments: List[str] = None) -> AgentOutput:
-        """Process fitness request."""
+    def execute(self, message: str, context: Dict,
+                attachments: List[str] = None) -> FinalPayload:
+        """PR2: returns FinalPayload with real final_text."""
         self._start_timer()
-        
+        task_type   = self._classify_task(message)
+        tier        = self._get_tier_for_task(task_type)
+        tracker_data = self._load_tracker()
+        final_text  = self._build_final_text(task_type, message, tracker_data)
+        write_acts  = self._build_write_actions(task_type, message)
+
+        return FinalPayload(
+            status="ok",
+            agent=self.AGENT_NAME,
+            final_text=final_text,
+            should_send=True,
+            requires_approval=False,
+            write_actions=write_acts,
+            metadata={
+                "model_used":   "anthropic/claude-sonnet-4-20250514",
+                "model_reason": f"fitness/{task_type} — {tier.value}",
+                "output_mode":  "direct_send",
+                "task_type":    task_type,
+                "duration_ms":  self._elapsed_ms(),
+            },
+        )
+
+    def _build_final_text(self, task_type: str, message: str,
+                          tracker_data: Optional[str]) -> str:
+        from datetime import datetime
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+        if task_type == "weight_log":
+            # extract number if present
+            m = re.search(r'(\d+[\.,]?\d*)', message)
+            kg = m.group(1).replace(',', '.') if m else "?"
+            return f"✅ שקילה נרשמה: {kg} ק\"ג ({ts})"
+        if task_type in ("meal_log", "calorie_query"):
+            return (
+                f"✅ ארוחה נרשמה ({ts})\n"
+                f"{message}\n"
+                "(קלוריות וחלבון — ממתין לחישוב מודל)"
+            )
+        if task_type == "daily_summary":
+            return "📊 סיכום יומי — ממתין לנתוני מעקב."
+        if task_type == "weekly_analysis":
+            return "📈 ניתוח שבועי — ממתין לנתוני מעקב."
+        return f"✅ {self.AGENT_NAME}: {message} ({ts})"
+
+    def _build_write_actions(self, task_type: str, message: str) -> list:
+        from datetime import datetime
+        if task_type in ("meal_log", "weight_log"):
+            ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+            return [{
+                "type":    "append_file",
+                "path":    "state/fitness_tracker.md",
+                "content": f"\n## {ts}\n{message}\n",
+            }]
+        return []
+
+    def process(self, message: str, context: Dict, attachments: List[str] = None) -> AgentOutput:
+        """Legacy — not used in PR2 pipeline."""
+        self._start_timer()
         task_type = self._classify_task(message)
         tier = self._get_tier_for_task(task_type)
         tracker_data = self._load_tracker()
-        
-        # Build prompt based on task type
         prompt = self._build_prompt(task_type, message, tracker_data, context)
-        
         return AgentOutput(
             decision="complete",
             confidence=0.85,

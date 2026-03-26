@@ -20,7 +20,7 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "_shared"))
 from domain_agent_base import (
-    DomainAgent, AgentOutput, RoutingResult, ModelTier, WORKSPACE
+    DomainAgent, AgentOutput, FinalPayload, RoutingResult, ModelTier, WORKSPACE
 )
 
 
@@ -84,38 +84,56 @@ class TzofitAgent(DomainAgent):
             reason=f"Research task: {task_type} → {tier.value}",
         )
     
-    def process(self, message: str, context: Dict, attachments: List[str] = None) -> AgentOutput:
-        """Process research request — returns prompt for spawning."""
+    def execute(self, message: str, context: Dict,
+                attachments: List[str] = None) -> FinalPayload:
+        """PR2: returns FinalPayload with real draft text."""
         self._start_timer()
-        
+        task_type = self._classify_task(message)
+        tier      = self._get_tier(task_type)
+        scope     = self.TASK_TO_SCOPE.get(task_type, "focused")
+        final_text = self._build_research_draft(task_type, scope, message)
+
+        return FinalPayload(
+            status="ok",
+            agent=self.AGENT_NAME,
+            final_text=final_text,
+            should_send=True,
+            requires_approval=False,
+            metadata={
+                "model_used":   "anthropic/claude-sonnet-4-20250514",
+                "model_reason": f"research/{task_type} — {tier.value}",
+                "output_mode":  "direct_send",
+                "task_type":    task_type,
+                "scope":        scope,
+                "duration_ms":  self._elapsed_ms(),
+            },
+        )
+
+    def _build_research_draft(self, task_type: str, scope: str,
+                               message: str) -> str:
+        from datetime import datetime
+        ts = datetime.now().strftime("%Y-%m-%d")
+        return (
+            f"[מחקר ← צופית 🔍 | {ts}]\n"
+            f"שאלה: {message}\n"
+            f"סוג: {task_type} (scope: {scope})\n\n"
+            "ממתין לחיפוש ועיבוד נתונים.\n"
+            "(web_search + web_fetch — לא מחובר בגרסה הנוכחית)"
+        )
+
+    def process(self, message: str, context: Dict, attachments: List[str] = None) -> AgentOutput:
+        """Legacy — not used in PR2 pipeline."""
+        self._start_timer()
         task_type = self._classify_task(message)
         tier = self._get_tier(task_type)
         scope = self.TASK_TO_SCOPE.get(task_type, "focused")
-        
         return AgentOutput(
-            decision="complete",
-            confidence=0.85,
-            domain=self.DOMAIN,
-            agent_name=self.AGENT_NAME,
-            model_tier=tier.value,
-            cost_usd=self.estimate_cost(tier),
+            decision="complete", confidence=0.85,
+            domain=self.DOMAIN, agent_name=self.AGENT_NAME,
+            model_tier=tier.value, cost_usd=self.estimate_cost(tier),
             summary=f"Research task: {task_type} (scope: {scope})",
-            details="",
-            draft={
-                "type": task_type,
-                "scope": scope,
-                "prompt_file": "agents/tzofit-research/tzofit_prompt.md",
-                "tier": tier.value,
-                "input": {
-                    "question": message,
-                    "context": context.get("additional_context", ""),
-                    "scope": scope,
-                    "language": "auto",
-                },
-            },
-            tools_used=[],
-            duration_ms=self._elapsed_ms(),
-            qa_result="pass",
+            details="", draft={},
+            tools_used=[], duration_ms=self._elapsed_ms(), qa_result="pass",
         )
     
     def _classify_task(self, message: str) -> str:

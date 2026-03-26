@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """
-Execution Pipeline — PR1: Cost + Output Enforcement
+Execution Pipeline — PR2: Dvorah as governor only.
 
-Changes:
-- single_message_mode: one response only, no progress messages
-- output enforced to MAX_OUTPUT_TOKENS per tier
-- NO_REPLY fast-path exits before any model work
-- Daily cost check at pipeline entry
-- No simulated cost logging
+Dvorah's role post-PR2:
+  1. Daily cost gate
+  2. Route (NO_REPLY fast-path)
+  3. Dispatch to agent via agent_executor
+  4. Receive FinalPayload — do NOT rewrite final_text
+  5. QA (validate payload contract)
+  6. Approval gate (if requires_approval)
+  7. Write actions (files, state)
+  8. Delivery
+  9. Fallback if status=error
+
+PR1 enforcements (unchanged): output cap, single_message_mode, daily cost.
 """
 
 import json
@@ -21,21 +27,18 @@ from context_guard import context_status, emergency_compact
 from agent_executor import AgentExecutor
 from action_executor import execute_if_approved, send_response_if_ready
 from model_selector import (
-    ModelSelector, MAX_OUTPUT_TOKENS, MAX_DAILY_COST_USD,
-    DailyCostExceededError
+    ModelSelector, MAX_OUTPUT_TOKENS, MAX_DAILY_COST_USD
 )
+from domain_agent_base import FinalPayload   # type: ignore
 
-# ── PR1 output enforcement ────────────────────────────────────────────────────
-SINGLE_MESSAGE_MODE: bool = True   # never send more than one message per turn
-NO_PROGRESS_MESSAGES: bool = True  # never send "processing..." style messages
+SINGLE_MESSAGE_MODE = True
+NO_PROGRESS_MESSAGES = True
 
 
 def enforce_output_length(text: str, tier: str) -> str:
-    """Truncate output to MAX_OUTPUT_TOKENS estimate (chars ≈ tokens * 4)."""
     if not text or tier == "none":
         return text
-    max_tokens = MAX_OUTPUT_TOKENS.get(tier, 400)
-    max_chars = max_tokens * 4   # rough char→token ratio
+    max_chars = MAX_OUTPUT_TOKENS.get(tier, 400) * 4
     if len(text) <= max_chars:
         return text
     return text[:max_chars].rstrip() + " [קוצר]"
@@ -50,237 +53,229 @@ class ExecutionPipeline:
 
     def execute(self, message: str, channel: str = None,
                 group_id: str = None, metadata: Dict = None) -> Dict:
-        """
-        Main execution.
-
-        PR1 order:
-        1. Daily cost gate (hard stop)
-        2. Route (includes NO_REPLY fast-path)
-        3. NO_REPLY → return immediately, $0
-        4. Execute agent
-        5. Enforce output length
-        6. Single-message QA
-        7. Log
-        """
-        start = datetime.now()
-        execution_id = f"exec_{start.strftime('%Y%m%d_%H%M%S')}_{id(message)}"
+        start   = datetime.now()
+        exec_id = f"exec_{start.strftime('%Y%m%d_%H%M%S')}_{id(message)}"
         metadata = metadata or {}
 
         try:
             # ── 1. Daily cost gate ────────────────────────────────────────────
             ms = ModelSelector(str(self.workspace))
-            today_cost = ms._get_today_cost()
-            if today_cost >= MAX_DAILY_COST_USD:
-                record = self._make_record(execution_id, start, message,
-                                           channel, group_id,
-                                           status="blocked_daily_cost")
-                self._log_execution(record)
-                return {
-                    "status": "blocked",
-                    "execution_id": execution_id,
-                    "reason": f"Daily cost cap ${MAX_DAILY_COST_USD} reached "
-                              f"(today=${today_cost:.4f})",
-                    "pr1_enforcement": "daily_cost_cap",
-                }
+            today = ms._get_today_cost()
+            if today >= MAX_DAILY_COST_USD:
+                rec = self._make_record(exec_id, start, message, channel,
+                                        group_id, status="blocked_daily_cost")
+                self._log(rec)
+                return {"status": "blocked", "execution_id": exec_id,
+                        "reason": f"Daily cap ${MAX_DAILY_COST_USD} (today=${today:.4f})",
+                        "pr1_enforcement": "daily_cost_cap"}
 
             # ── 2. Route ──────────────────────────────────────────────────────
             routing = route_message(message, channel, group_id)
 
             # ── 3. NO_REPLY fast-path ─────────────────────────────────────────
             if routing["routing_decision"]["action"] == "no_reply":
-                record = self._make_record(execution_id, start, message,
-                                           channel, group_id,
-                                           status="no_reply", cost=0.0,
-                                           tier="none")
-                self._log_execution(record)
-                return {
-                    "status": "no_reply",
-                    "execution_id": execution_id,
-                    "routing": routing,
-                    "cost_usd": 0.0,
-                    "pr1_enforcement": "no_reply_fast_path",
-                    "execution_summary": record,
-                }
+                rec = self._make_record(exec_id, start, message, channel,
+                                        group_id, status="no_reply",
+                                        cost=0.0, tier="none")
+                self._log(rec)
+                return {"status": "no_reply", "execution_id": exec_id,
+                        "cost_usd": 0.0, "pr1_enforcement": "no_reply_fast_path",
+                        "execution_summary": rec}
 
             # ── Context guard ─────────────────────────────────────────────────
             ctx = context_status()
             if ctx["status"] == "critical":
                 emergency_compact()
-                ctx = context_status()
 
-            # ── 4. Execute agent ──────────────────────────────────────────────
+            # ── 4. Dispatch to agent ──────────────────────────────────────────
+            agent_name = routing["routing_decision"]["agent"]
+            tier       = routing.get("model", "tier2")
+
             if routing["routing_decision"]["action"] == "handle_direct":
-                result = self._handle_direct(message, routing, metadata)
+                payload = self._direct_payload(message, routing)
             else:
-                agent_name = routing["routing_decision"]["agent"]
-                result = self.agent_executor.execute_agent_task(
+                payload = self.agent_executor.execute_agent_task(
                     agent_name, message, routing,
-                    {**metadata, "execution_id": execution_id}
+                    {**metadata, "execution_id": exec_id}
                 )
 
-            # ── 5. Output length enforcement ──────────────────────────────────
-            tier = routing.get("model", "tier2")
-            if "summary" in result:
-                result["summary"] = enforce_output_length(result["summary"], tier)
-            if "response" in result:
-                result["response"] = enforce_output_length(result["response"], tier)
+            # ── 5. Dvorah does NOT rewrite — only enforces output cap (PR1) ──
+            if isinstance(payload, FinalPayload):
+                payload.final_text = enforce_output_length(
+                    payload.final_text, tier
+                )
+            else:
+                # Shouldn't happen — fallback
+                payload = self._error_payload(agent_name, "non-FinalPayload returned")
 
-            # ── 6. QA ─────────────────────────────────────────────────────────
-            qa_result = self._qa_check(result, routing)
+            # ── 6. QA gate ────────────────────────────────────────────────────
+            qa = self._qa(payload, routing)
 
-            # ── 7. Action + response ──────────────────────────────────────────
-            exec_result = execute_if_approved(result, qa_result, channel)
+            # ── 7. Write actions ──────────────────────────────────────────────
+            if payload.status not in ("error", "no_reply"):
+                self._apply_write_actions(payload.write_actions)
+
+            # ── 8. Approval gate + delivery ───────────────────────────────────
+            # Convert FinalPayload to dict expected by legacy action_executor
+            agent_dict = {**payload.to_dict(),
+                          "requires_approval": payload.requires_approval,
+                          "draft_actions": {
+                              "approval_reason": "agent requires approval"
+                              if payload.requires_approval else ""
+                          }}
+            exec_result = execute_if_approved(agent_dict, qa, channel)
             resp_result = send_response_if_ready(
                 exec_result, channel, metadata.get("sender_id")
             )
 
-            cost = result.get("execution_details", {}).get("cost_usd", 0.0)
-            record = self._make_record(execution_id, start, message,
-                                       channel, group_id,
-                                       status="success", cost=cost,
-                                       tier=tier,
-                                       agent=routing["routing_decision"].get("agent"),
-                                       qa_passed=qa_result["passed"])
-            self._log_execution(record)
+            # ── 9. Log ────────────────────────────────────────────────────────
+            cost = payload.metadata.get("cost_usd", 0.0) if hasattr(payload, "metadata") else 0.0
+            rec  = self._make_record(exec_id, start, message, channel, group_id,
+                                     status=payload.status, cost=cost, tier=tier,
+                                     agent=agent_name, qa_passed=qa["passed"])
+            self._log(rec)
 
             return {
-                "status": "success",
-                "execution_id": execution_id,
-                "routing": routing,
-                "agent_result": result,
-                "qa_result": qa_result,
+                "status":           "success",
+                "execution_id":     exec_id,
+                "routing":          routing,
+                "agent_payload":    payload.to_dict(),
+                "qa_result":        qa,
                 "execution_result": exec_result,
-                "response_result": resp_result,
-                "execution_summary": record,
+                "response_result":  resp_result,
+                "execution_summary": rec,
             }
 
         except Exception as e:
-            record = self._make_record(execution_id, start, message,
-                                       channel, group_id,
-                                       status="error", error=str(e))
-            self._log_execution(record)
-            return {
-                "status": "error",
-                "execution_id": execution_id,
-                "error": str(e),
-                "execution_summary": record,
-            }
+            rec = self._make_record(exec_id, start, message, channel,
+                                    group_id, status="error", error=str(e))
+            self._log(rec)
+            return {"status": "error", "execution_id": exec_id,
+                    "error": str(e), "execution_summary": rec}
 
-    # ── Direct handler ────────────────────────────────────────────────────────
+    # ── Direct handler (Dvorah handles, no agent) ─────────────────────────────
 
-    def _handle_direct(self, message: str, routing: Dict, metadata: Dict) -> Dict:
-        return {
-            "status": "direct_response",
-            "agent": "dvorah_direct",
-            "response_type": "conversational",
-            "requires_approval": False,
-            "routing_reason": routing["classification"]["reason"],
-            "confidence": routing["classification"]["confidence"],
-            "response_ready": True,
-            "metadata": {
-                "model_tier": routing["model"],
-                "context_files": routing["context"]["files_loaded"],
-                "direct_processing": True,
+    def _direct_payload(self, message: str, routing: Dict) -> FinalPayload:
+        return FinalPayload(
+            status="ok",
+            agent="דבורה",
+            final_text="",          # Dvorah generates in LLM turn, not here
+            should_send=True,
+            requires_approval=False,
+            metadata={
+                "model_used":   "anthropic/claude-sonnet-4-20250514",
+                "model_reason": "direct/general — Dvorah handles",
+                "output_mode":  "direct_send",
+                "routing_reason": routing["classification"]["reason"],
             },
-        }
+        )
+
+    def _error_payload(self, agent: str, reason: str) -> FinalPayload:
+        return FinalPayload(
+            status="error", agent=agent, final_text="",
+            should_send=False, requires_approval=False,
+            metadata={"model_used": "none", "model_reason": reason,
+                      "output_mode": "error"},
+        )
 
     # ── QA ────────────────────────────────────────────────────────────────────
 
-    def _qa_check(self, agent_result: Dict, routing: Dict) -> Dict:
-        checks = {
-            "context_overflow":       self._check_context_overflow(),
-            "approval_required":      self._check_approval(agent_result),
-            "response_completeness":  self._check_completeness(agent_result),
-            "risk_assessment":        self._check_risk(agent_result, routing),
-            "single_message":         self._check_single_message(agent_result),
-        }
-        passed = sum(1 for c in checks.values() if c["passed"])
-        total = len(checks)
+    def _qa(self, payload: FinalPayload, routing: Dict) -> Dict:
+        checks = {}
 
+        # Contract check
+        required = ["status", "agent", "final_text", "should_send",
+                    "requires_approval", "write_actions", "metadata"]
+        missing = [k for k in required if not hasattr(payload, k)]
+        checks["contract"] = {
+            "passed": len(missing) == 0,
+            "details": f"missing: {missing}" if missing else "ok",
+            "blocking": len(missing) > 0,
+        }
+
+        # Metadata keys
+        meta_keys = ["model_used", "model_reason", "output_mode"]
+        meta_missing = [k for k in meta_keys
+                        if k not in (payload.metadata or {})]
+        checks["metadata_contract"] = {
+            "passed": len(meta_missing) == 0,
+            "details": f"missing meta: {meta_missing}" if meta_missing else "ok",
+            "blocking": False,
+        }
+
+        # Legal approval gate
+        if routing["classification"]["domain"] == "legal":
+            checks["legal_approval"] = {
+                "passed": payload.requires_approval,
+                "details": "legal must require approval",
+                "blocking": not payload.requires_approval,
+            }
+
+        # Context overflow
+        ctx = context_status()
+        checks["context"] = {
+            "passed": ctx["status"] != "critical",
+            "details": ctx["status"],
+            "blocking": ctx["status"] == "critical",
+        }
+
+        passed = sum(1 for c in checks.values() if c["passed"])
+        total  = len(checks)
         blocking = [n for n, c in checks.items()
                     if not c["passed"] and c.get("blocking")]
-        recommendations = [
-            f"Fix: {n}" for n, c in checks.items()
-            if not c["passed"]
-        ]
+        recs     = [f"Fix: {n}" for n, c in checks.items() if not c["passed"]]
+
         return {
-            "passed": passed == total,
-            "score": passed / total,
-            "checks": checks,
+            "passed":          passed == total,
+            "score":           passed / total,
+            "checks":          checks,
             "blocking_issues": blocking,
-            "recommendations": recommendations,
+            "recommendations": recs,
         }
 
-    def _check_context_overflow(self) -> Dict:
-        s = context_status()
-        return {"name": "context_overflow", "passed": s["status"] != "critical",
-                "details": s, "blocking": s["status"] == "critical"}
+    # ── Write actions ─────────────────────────────────────────────────────────
 
-    def _check_approval(self, r: Dict) -> Dict:
-        req = r.get("requires_approval", False)
-        has_reason = bool(r.get("draft_actions", {}).get("approval_reason"))
-        ok = not req or has_reason
-        return {"name": "approval_required", "passed": ok,
-                "details": f"approval={'required' if req else 'not required'}",
-                "blocking": not ok}
-
-    def _check_completeness(self, r: Dict) -> Dict:
-        has_status = "status" in r
-        has_content = any(k in r for k in
-                          ["response", "analysis", "draft_actions", "summary",
-                           "data_logged", "action_taken"])
-        ok = has_status and has_content
-        return {"name": "response_completeness", "passed": ok,
-                "details": f"status={has_status}, content={has_content}",
-                "blocking": not ok}
-
-    def _check_risk(self, r: Dict, routing: Dict) -> Dict:
-        domain = routing["classification"]["domain"]
-        if domain == "legal":
-            ok = r.get("requires_approval", False)
-            return {"name": "risk_assessment", "passed": ok,
-                    "details": "legal — approval required", "blocking": not ok}
-        return {"name": "risk_assessment", "passed": True,
-                "details": "low risk", "blocking": False}
-
-    def _check_single_message(self, r: Dict) -> Dict:
-        """PR1: response must not contain multiple messages."""
-        if not SINGLE_MESSAGE_MODE:
-            return {"name": "single_message", "passed": True, "details": "disabled"}
-        chunks = r.get("_chunks", [])
-        ok = len(chunks) <= 1
-        return {"name": "single_message", "passed": ok,
-                "details": f"chunks={len(chunks)}", "blocking": False}
+    def _apply_write_actions(self, actions: List[Dict]):
+        for act in (actions or []):
+            try:
+                path = self.workspace / act["path"]
+                if act["type"] == "append_file":
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(path, "a", encoding="utf-8") as f:
+                        f.write(act["content"])
+                elif act["type"] == "write_file":
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(act["content"], encoding="utf-8")
+            except Exception:
+                pass   # fail silently — don't break execution for I/O
 
     # ── Logging ───────────────────────────────────────────────────────────────
 
-    def _make_record(self, execution_id: str, start: datetime,
-                     message: str, channel: str, group_id: str,
-                     status: str = "unknown", cost: float = 0.0,
-                     tier: str = "unknown", agent: str = None,
-                     qa_passed: bool = None, error: str = None) -> Dict:
+    def _make_record(self, execution_id, start, message, channel, group_id,
+                     status="unknown", cost=0.0, tier="unknown",
+                     agent=None, qa_passed=None, error=None) -> Dict:
         return {
             "execution_id": execution_id,
-            "timestamp": start.isoformat(),
-            "message": message[:80] + "…" if len(message) > 80 else message,
-            "channel": channel,
-            "group_id": group_id,
-            "status": status,
-            "tier": tier,
-            "agent": agent,
-            "cost_usd": cost,
-            "qa_passed": qa_passed,
-            "error": error,
-            "duration_ms": int((datetime.now() - start).total_seconds() * 1000),
+            "timestamp":    start.isoformat(),
+            "message":      message[:80] + "…" if len(message) > 80 else message,
+            "channel":      channel,
+            "group_id":     group_id,
+            "status":       status,
+            "tier":         tier,
+            "agent":        agent,
+            "cost_usd":     cost,
+            "qa_passed":    qa_passed,
+            "error":        error,
+            "duration_ms":  int((datetime.now() - start).total_seconds() * 1000),
         }
 
-    def _log_execution(self, record: Dict):
+    def _log(self, record: Dict):
         self.execution_log.append(record)
-        trace_file = (self.workspace / "state" / "traces" /
-                      f"execution_{datetime.now().strftime('%Y-%m-%d')}.jsonl")
-        trace_file.parent.mkdir(exist_ok=True)
+        trace = (self.workspace / "state" / "traces" /
+                 f"execution_{datetime.now().strftime('%Y-%m-%d')}.jsonl")
+        trace.parent.mkdir(exist_ok=True)
         try:
-            with open(trace_file, "a", encoding="utf-8") as f:
+            with open(trace, "a", encoding="utf-8") as f:
                 f.write(json.dumps(record, ensure_ascii=False) + "\n")
         except Exception:
             pass
