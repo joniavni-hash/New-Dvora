@@ -1,0 +1,10 @@
+# Sensitive files - never commit these
+*.key
+*.pem
+*.env
+
+# Openclaw runtime
+.openclaw/agents/
+.openclaw/tasks/
+.openclaw/flows/
+.openclaw/logs/
