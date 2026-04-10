@@ -1,4 +1,4 @@
-# Gett
+# Gett Business API
 
 ## Status
 Connected
@@ -6,56 +6,53 @@ Connected
 ## Purpose
 שימוש ב-Gett Business להזמנת נסיעות, קבלת הצעות מחיר, ובדיקת סטטוס נסיעה.
 
-## Available Accounts
-### Account A
+## Account
 - Label: Dania Holdings
-- Use case: נסיעות עסקיות / משפחתיות לפי הצורך
-- Business ID: (from secrets: GETT_DANIA_BUSINESS_ID)
-- Resource UUID: (from secrets: GETT_DANIA_RESOURCE_UUID)
+- Business ID: from secrets/gett.json
+- Credentials: secrets/gett.json
 
-### Account B
-- Label: Yoni Avni
-- Use case: נסיעות עבור יוני כעוסק מורשה
-- Business ID: (from secrets: GETT_YONI_BUSINESS_ID)
-- Resource UUID: (from secrets: GETT_YONI_RESOURCE_UUID)
+## Authentication
+- OAuth2 client_credentials flow
+- POST https://business-api.gett.com/oauth/token
+- Content-Type: application/json
+- Body: {"grant_type":"client_credentials","client_id":"...","client_secret":"...","scope":"employee finance order"}
+- Token expires in ~900 seconds, refresh before each session
 
-## Allowed Actions
-- get products
-- get price estimate
-- create ride order, with explicit approval
-- get order details
-- cancel ride, with explicit approval
+## API Base
+https://business-api.gett.com/v1
+
+## Endpoints
+
+### Get Products (vehicle types)
+POST /v1/products?businessId={businessId}
+Body: {"origin":{"lat":...,"lng":...},"destination":{"lat":...,"lng":...}}
+Returns available products with product_id, name, ETA
+
+### Book a Ride
+POST /v1/orders?businessId={businessId}
+Body includes: category, product_id, scheduled_at (optional for on-demand), stops array with origin/destination, each with location (lat/lng/address) and user (name/phone)
+Phone format: international without + sign (e.g. 972552755547)
+
+### Get Order Details
+GET /v1/orders/{orderId}?businessId={businessId}
+
+### Cancel Order
+PUT /v1/orders/{orderId}/cancel?businessId={businessId}
+
+## Default Passenger
+- Name: Yoni Avni
+- Phone: 972552755547
 
 ## Approval Rules
-- Estimates and availability checks: allowed
-- Booking a ride: requires explicit approval
-- Cancelling a ride: requires explicit approval
-
-## Secret Handling
-Credentials are never stored in memory files or tracked documents.
-Load secrets only from local secure storage.
-
-Expected secret names:
-- GETT_DANIA_CLIENT_ID
-- GETT_DANIA_CLIENT_SECRET
-- GETT_DANIA_BUSINESS_ID
-- GETT_DANIA_RESOURCE_UUID
-- GETT_YONI_CLIENT_ID
-- GETT_YONI_CLIENT_SECRET
-- GETT_YONI_BUSINESS_ID
-- GETT_YONI_RESOURCE_UUID
+- Estimates and product checks: allowed without approval
+- Booking a ride: requires explicit approval from Yoni
+- Cancelling a ride: requires explicit approval from Yoni
 
 ## Trigger Terms
-- gett
-- taxi
-- cab
-- ride
-- order me a ride
-- airport ride
-- נסיעה
-- מונית
+gett, taxi, cab, ride, מונית, נסיעה, הזמיני מונית, תזמיני לי נסיעה
 
 ## Notes
-- Use this integration before asking whether ride ordering is connected.
-- If account choice is ambiguous, ask which account to use.
-- Do not print or summarize secrets.
+- Always get products first to find valid product_id for the area
+- Do not hardcode product_ids, they can change
+- For on-demand rides, omit scheduled_at
+- For pre-booked rides, use ISO8601 format with timezone

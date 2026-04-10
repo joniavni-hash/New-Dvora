@@ -17,6 +17,7 @@
 - Be clear
 - Avoid repetition
 - Avoid generic phrasing
+- Never expose internal reasoning, debug text, tool chatter, or draft work to the user
 
 ## Priority When Rules Conflict
 

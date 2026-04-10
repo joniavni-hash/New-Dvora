@@ -18,12 +18,16 @@
 - Address him as יוני
 
 ## Family
-- **אשתו:** שני (מספר וואטסאפ: +972549232999)
+- **אשתו:** שני (מספר וואטסאפ: +972549232999, מייל: shanish108@gmail.com)
 - **בתו:** ניב
 - **שכן מלמעלה:** נועם (כינוי: צימי)
 - **"מאמי"** = כינוי חיבה לשני או לניב — לא מופנה אליי. בקבוצות, אם יוני כותב "מאמי" — NO_REPLY.
 
-## My WhatsApp Number
+## Microsoft 365 Credentials
+- **App ID:** 07ef64a9-6dcc-4873-96c0-05d2961984dd
+- **Secret ID:** 49cfedbc-2e4f-4383-a94c-2c13ed186fa4
+- **Tenant ID:** f3f1de48-2393-431e-a506-bd5008c40298
+- **Status:** Not yet connected — skill installed but not configured
 - **מספר:** 055-934-3383
 - **ספק:** 019 Mobile
 - **מטרה:** WhatsApp ייעודי לדבורה (לא מחובר עדיין — ממתין לאימות)
@@ -52,6 +56,8 @@
 _(Update as projects come and go)_
 
 - OpenClaw setup (Telegram bot "Dvora" running locally on Mac)
+- הקמת סוכנת חדשה בשם דליה לחופשות, טיסות, מלונות והשוואות מחירים
+- Kayak sandbox API key התקבל לצורך אינטגרציה ראשונית לדליה
 - _(add more)_
 
 ## Daily Tools
@@ -74,6 +80,9 @@ _(Update as projects come and go)_
 - Primary model: Claude Sonnet 4.6, fallback: Claude Haiku 4.5
 - Telegram DM policy: open (allowFrom: *)
 - Agent identity: Dvora 🧭
+- חשבון העבודה של דבורה: `dvora.officepa@gmail.com`
+- חשבון דבורה מחובר בפועל ל-Gmail send ול-Google Calendar create
+- אסנת אחראית להכנת טיוטות מיילים וזימונים; דבורה מבצעת בפועל דרך החשבון של דבורה ורק אחרי אישור מפורש של יוני
 
 ## Preferences Learned
 
