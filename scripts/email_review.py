@@ -24,7 +24,19 @@ def get_access_token():
     # Method 1: Environment variables
     client_secret = os.getenv('MS_GRAPH_CLIENT_SECRET')
     
-    # Method 2: secrets/.env file (like health_check.py)
+    # Method 2: OpenClaw root .env file
+    if not client_secret:
+        openclaw_env = Path("/home/ubuntu/.openclaw/.env")
+        if openclaw_env.exists():
+            for line in openclaw_env.read_text().splitlines():
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    if k.strip() == 'MS_GRAPH_CLIENT_SECRET':
+                        client_secret = v.strip()
+                        break
+
+    # Method 3: secrets/.env file (relative to workspace)
     if not client_secret:
         secrets_file = Path(__file__).parent.parent / "secrets" / ".env"
         if secrets_file.exists():
@@ -35,8 +47,8 @@ def get_access_token():
                     if k.strip() == 'MS_GRAPH_CLIENT_SECRET':
                         client_secret = v.strip()
                         break
-    
-    # Method 3: Use temp_send_outlook.py method
+
+    # Method 4: Use temp_send_outlook.py method
     if not client_secret:
         try:
             sys.path.append(str(Path(__file__).parent.parent))

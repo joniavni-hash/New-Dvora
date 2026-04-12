@@ -21,7 +21,8 @@ When an expired secret is the cause, the Azure token endpoint returns `invalid_c
 
 ### Secret sources (checked in order)
 1. Environment variable `MS_GRAPH_CLIENT_SECRET`
-2. `secrets/.env` file (key=value format)
+2. `/home/ubuntu/.openclaw/.env` (OpenClaw root env file)
+3. `secrets/.env` file (key=value format, relative to workspace root)
 
 ### When auth fails
 1. **Always try the API live** — don't rely on cached `state/health_check.json`

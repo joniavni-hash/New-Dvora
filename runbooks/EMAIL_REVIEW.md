@@ -44,6 +44,7 @@ Outlook (Yoni@grit-mind.com) בלבד — אלא אם יוני מציין Gmail 
 Microsoft Graph API — client credentials flow
 - Tenant: f3f1de48-2393-431e-a506-bd5008c40298
 - Client ID: 846b39a9-c440-4468-9bae-51e2774a914b
+- Secret: read `MS_GRAPH_CLIENT_SECRET` from env var, or from `/home/ubuntu/.openclaw/.env`, or from `secrets/.env`
 - User: Yoni@grit-mind.com
 
 ### סימון כנקרא

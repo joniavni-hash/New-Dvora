@@ -12,18 +12,22 @@ from datetime import datetime
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+OPENCLAW_ENV = Path("/home/ubuntu/.openclaw/.env")
 SECRETS_PATH = BASE_DIR / "secrets" / ".env"
 RESULTS_PATH = BASE_DIR / "state" / "health_check.json"
 
 
 def load_secrets():
     secrets = {}
-    if SECRETS_PATH.exists():
-        for line in SECRETS_PATH.read_text().splitlines():
-            line = line.strip()
-            if line and not line.startswith('#') and '=' in line:
-                k, v = line.split('=', 1)
-                secrets[k.strip()] = v.strip()
+    # Check OpenClaw root .env first, then workspace secrets/.env
+    for env_path in [OPENCLAW_ENV, SECRETS_PATH]:
+        if env_path.exists():
+            for line in env_path.read_text().splitlines():
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    if k.strip() not in secrets:
+                        secrets[k.strip()] = v.strip()
     return secrets
 
 
