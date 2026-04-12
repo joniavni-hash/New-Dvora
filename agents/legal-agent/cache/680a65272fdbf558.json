@@ -1,0 +1,41 @@
+{
+  "cache_key": "680a65272fdbf558",
+  "task_type": "clause_extraction",
+  "document_hash": "d93e3a76bc4a",
+  "query_hash": "03090199a88f",
+  "result": {
+    "decision": "analysis",
+    "confidence": 0.7,
+    "reasoning": "Escalated from Tier 1: ",
+    "draft": {
+      "type": "clause_extraction",
+      "content": "# דוח משפטי מובנה - חילוץ סעיפים חוזיים\n\n## פרטי הניתוח\n- **תאריך הניתוח:** לא צוין\n- **מודל חילוץ:** Claude Sonnet 4 (20250514)\n- **רמת ביטחון:** 90%\n- **סטטוס:** 🔴 דורש הסלמה\n\n---\n\n## תוצאות החילוץ\n\n### סעיפים שנמצאו\n❌ **לא נמצאו סעיפים חוזיים**\n\n### 🔴 בעיות קריטיות שזוהו\n\n#### סיכונים קריטיים:\n- **הגבלת אחריות (Liability Cap)** - ❌ חסר\n- **בעלות על קניין רוחני (IP Ownership)** - ❌ חסר\n\n#### סיכונים גבוהים:\n- **הוצאת נזקים (Exclusion of Damages)** - ❌ חסר\n- **שיפוי (Indemnification)** - ❌ חסר\n- **סודיות (Confidentiality)** - ❌ חסר\n- **דין חל (Governing Law)** - ❌ חסר\n- **סמכות שיפוט (Jurisdiction)** - ❌ חסר\n\n#### בעיות נוספות:\n- **תאריך תחילה (Effective Date)** - ❌ חסר אך מוזכר במשך החוזה\n- **התחייבויות הצד השני** - ❌ חסר, יוצר חוזה לא מאוזן\n\n---\n\n## ⚠️ התראות\n\n### רמת דחיפות: 🔴 קריטית\n- **זוהתה עמימות בחוזה**\n- **נדרשת הסלמה מיידית**\n- **החוזה חסר סעיפי הגנה בסיסיים**\n\n### המלצות לטיפול מיידי:\n1. 🔴 הוספת סעיף הגבלת אחריות\n2. 🔴 הגדרת בעלות על קניין רוחני\n3. 🟡 השלמת סעיפי הגנה נוספים\n4. 🟡 איזון התחייבויות הצדדים\n\n---\n\n## סיכום ביצועים\n- **מודל ניתוח:** Claude Sonnet 4 (Tier 2)\n- **רמת ביטחון Tier 2:** 80%\n- **נדרש סקירת Opus:** ❌ לא\n- **סטטוס כללי:** 🔴 דורש התערבות מיידית\n\n---\n\n**הערה:** דוח זה מבוסס על חילוץ אוטומטי. יש לבצע סקירה משפטית מקצועית לפני קבלת החלטות."
+    },
+    "legalRisk": "medium",
+    "riskFactors": [
+      "liability_cap - missing (critical risk)",
+      "ip_ownership - missing (critical risk)",
+      "exclusion_of_damages - missing (high risk)",
+      "indemnification - missing (high risk)",
+      "confidentiality - missing (high risk)",
+      "governing_law - missing (high risk)",
+      "jurisdiction - missing (high risk)",
+      "effective_date - missing but referenced in term duration",
+      "counterparty_obligations - missing, creates imbalanced agreement"
+    ],
+    "memoryDelta": null,
+    "stateDelta": null,
+    "qaResult": "pass",
+    "qaDetails": [],
+    "suggestedActions": [],
+    "requiresApproval": true,
+    "modelTier": "tier2",
+    "costUsd": 0.0994
+  },
+  "model_tier": "tier2",
+  "cost_usd": 0.099381,
+  "created_at": 1774292883.570781,
+  "ttl_hours": 168,
+  "hit_count": 1,
+  "tags": []
+}

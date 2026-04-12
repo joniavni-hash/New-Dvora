@@ -1,0 +1,33 @@
+# Secrets - never commit
+secrets/
+*.env
+.env
+
+# Large video files
+*.MP4
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Node modules
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# Personal documents (Hebrew)
+*.doc
+*.docx
+villa-lithos/videos/
+*.part

@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+"""
+Google Ads Daily Report — Villa Lithos
+שולח דוח בוקר יומי ליוני דרך WhatsApp
+"""
+
+import json
+import urllib.request
+import urllib.parse
+from datetime import datetime, date
+import sys
+import os
+
+# Config — load from secrets/.env
+SECRETS_PATH = os.path.join(os.path.expanduser('~/.openclaw/workspace/secrets'), '.env')
+YAML_PATH = '/tmp/google_ads_mcc.yaml'
+OPENCLAW_DIR = os.path.expanduser('~/.openclaw')
+
+def _load_secrets():
+    secrets = {}
+    with open(SECRETS_PATH) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                secrets[k.strip()] = v.strip()
+    return secrets
+
+_secrets = _load_secrets()
+CUSTOMER_ID = _secrets.get('GOOGLE_ADS_CUSTOMER_ID', '5627405650')
+MCC_ID = _secrets.get('GOOGLE_ADS_MCC_ID', '7395869307')
+DEVELOPER_TOKEN = _secrets['GOOGLE_ADS_DEVELOPER_TOKEN']
+CLIENT_ID = _secrets['GOOGLE_ADS_CLIENT_ID']
+CLIENT_SECRET = _secrets['GOOGLE_ADS_CLIENT_SECRET']
+REFRESH_TOKEN = _secrets['GOOGLE_ADS_REFRESH_TOKEN']
+
+
+def write_yaml():
+    import yaml
+    config = {
+        'developer_token': DEVELOPER_TOKEN,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+        'refresh_token': REFRESH_TOKEN,
+        'login_customer_id': MCC_ID,
+        'use_proto_plus': True
+    }
+    os.makedirs('/tmp', exist_ok=True)
+    with open(YAML_PATH, 'w') as f:
+        yaml.dump(config, f)
+
+
+def get_report():
+    from google.ads.googleads.client import GoogleAdsClient
+    from google.ads.googleads.errors import GoogleAdsException
+
+    write_yaml()
+    client = GoogleAdsClient.load_from_storage(YAML_PATH)
+    ga_service = client.get_service("GoogleAdsService")
+
+    today = date.today()
+    month_start = today.replace(day=1).strftime('%Y-%m-%d')
+    yesterday = today.strftime('%Y-%m-%d')
+
+    # Month-to-date stats per campaign
+    query_mtd = f"""
+        SELECT
+            campaign.name, campaign.status,
+            metrics.impressions, metrics.clicks, metrics.cost_micros,
+            metrics.ctr, metrics.conversions
+        FROM campaign
+        WHERE segments.date BETWEEN '{month_start}' AND '{yesterday}'
+          AND campaign.status IN ('ENABLED', 'PAUSED')
+        ORDER BY metrics.clicks DESC
+    """
+
+    # Yesterday stats
+    query_yesterday = f"""
+        SELECT
+            metrics.impressions, metrics.clicks, metrics.cost_micros,
+            metrics.ctr, metrics.conversions
+        FROM customer
+        WHERE segments.date = '{yesterday}'
+    """
+
+    try:
+        mtd_rows = list(ga_service.search(customer_id=CUSTOMER_ID, query=query_mtd))
+        yday_rows = list(ga_service.search(customer_id=CUSTOMER_ID, query=query_yesterday))
+    except GoogleAdsException as ex:
+        errors = [e.message for e in ex.failure.errors]
+        return None, errors
+
+    return {
+        'mtd': mtd_rows,
+        'yesterday': yday_rows,
+        'today': today,
+        'month_start': month_start
+    }, None
+
+
+def format_report(data):
+    today = data['today']
+    month_start = data['month_start']
+
+    # Yesterday totals
+    yday_impressions = sum(r.metrics.impressions for r in data['yesterday'])
+    yday_clicks = sum(r.metrics.clicks for r in data['yesterday'])
+    yday_cost = sum(r.metrics.cost_micros for r in data['yesterday']) / 1_000_000
+    yday_conversions = sum(r.metrics.conversions for r in data['yesterday'])
+    yday_ctr = (yday_clicks / yday_impressions * 100) if yday_impressions > 0 else 0
+
+    # MTD totals (active campaigns)
+    mtd_impressions = sum(r.metrics.impressions for r in data['mtd'])
+    mtd_clicks = sum(r.metrics.clicks for r in data['mtd'])
+    mtd_cost = sum(r.metrics.cost_micros for r in data['mtd']) / 1_000_000
+    mtd_conversions = sum(r.metrics.conversions for r in data['mtd'])
+    mtd_ctr = (mtd_clicks / mtd_impressions * 100) if mtd_impressions > 0 else 0
+
+    day_num = today.day
+    month_name = today.strftime('%B')
+
+    lines = [
+        f"📊 *Google Ads — Villa Lithos*",
+        f"_{today.strftime('%d.%m.%Y')}_",
+        "",
+        f"*אתמול:*",
+        f"• חשיפות: {yday_impressions:,}",
+        f"• קליקים: {yday_clicks:,} | CTR: {yday_ctr:.1f}%",
+        f"• המרות: {yday_conversions:.0f}",
+        f"• הוצאה: {yday_cost:.0f} ₪",
+        "",
+        f"*מתחילת {month_name} ({day_num} ימים):*",
+        f"• חשיפות: {mtd_impressions:,}",
+        f"• קליקים: {mtd_clicks:,} | CTR: {mtd_ctr:.1f}%",
+        f"• המרות: {mtd_conversions:.0f}",
+        f"• הוצאה: {mtd_cost:.0f} ₪",
+    ]
+
+    # Active campaigns
+    active = [r for r in data['mtd'] if r.campaign.status.name == 'ENABLED']
+    paused = [r for r in data['mtd'] if r.campaign.status.name == 'PAUSED' and r.metrics.impressions > 0]
+
+    if active:
+        lines.append("")
+        lines.append("*קמפיינים פעילים:*")
+        for r in active:
+            cost = r.metrics.cost_micros / 1_000_000
+            lines.append(f"• {r.campaign.name}: {r.metrics.clicks:,} קליקים | {r.metrics.conversions:.0f} המרות | {cost:.0f} ₪")
+
+    lines.append("")
+    lines.append("_דבורה 🧭_")
+
+    return "\n".join(lines)
+
+
+def send_whatsapp(message):
+    """Send via openclaw CLI"""
+    import subprocess
+    result = subprocess.run(
+        ['openclaw', 'message', 'send', '--channel', 'whatsapp', '--target', '+972543333556', '--message', message],
+        capture_output=True, text=True
+    )
+    return result.returncode == 0, result.stdout, result.stderr
+
+
+def main():
+    data, errors = get_report()
+    if errors:
+        print(f"Errors: {errors}")
+        sys.exit(1)
+
+    report = format_report(data)
+    print(report)
+    print("\n--- Sending via WhatsApp ---")
+    ok, out, err = send_whatsapp(report)
+    if ok:
+        print("Sent successfully")
+    else:
+        print(f"Send failed: {err}")
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

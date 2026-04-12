@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-03-24T11:26:16.431321",
+  "checks": {
+    "outlook": {
+      "status": "missing_credentials",
+      "ok": false
+    },
+    "google_ads": {
+      "status": "missing_credentials",
+      "ok": false
+    },
+    "dashboard": {
+      "status": "ok",
+      "ok": true
+    },
+    "gog_cli": {
+      "status": "ok",
+      "ok": true,
+      "version": "v0.12.0 (c18c58c 2026-03-09T05:53:14Z)"
+    },
+    "brave_search": {
+      "status": "check_manually",
+      "ok": null,
+      "note": "Run web_search to test"
+    },
+    "cron": {
+      "status": "ok",
+      "ok": true
+    }
+  },
+  "summary": {
+    "total": 6,
+    "ok": 3,
+    "failed": 2,
+    "unknown": 1
+  }
+}

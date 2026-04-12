@@ -1,0 +1,191 @@
+{
+  "version": "1.0",
+  "created": "2026-03-24T16:11:24.076553",
+  "queue": [
+    {
+      "id": "draft_1774361484_1787",
+      "content": "בדיקת פרסום - Villa Lithos הוילה המושלמת!",
+      "platforms": [
+        "instagram",
+        "tiktok"
+      ],
+      "media_paths": [],
+      "scheduled_time": null,
+      "priority": "medium",
+      "status": "draft",
+      "created_at": "2026-03-24T16:11:24.077277",
+      "updated_at": "2026-03-24T16:11:31.430370",
+      "validation_results": {
+        "overall_status": "invalid",
+        "platforms": {
+          "instagram": {
+            "valid": false,
+            "connection_status": "missing_credentials",
+            "account_info": {},
+            "scopes": [],
+            "errors": [
+              "INSTAGRAM_ACCESS_TOKEN not configured"
+            ],
+            "fix_hints": [
+              "Set INSTAGRAM_ACCESS_TOKEN environment variable",
+              "Complete Meta for Developers app setup",
+              "Connect Instagram Business Account",
+              "Generate long-lived access token"
+            ]
+          },
+          "tiktok": {
+            "valid": false,
+            "connection_status": "missing_credentials",
+            "account_info": {},
+            "scopes": [],
+            "errors": [
+              "TIKTOK_ACCESS_TOKEN not configured"
+            ],
+            "fix_hints": [
+              "Set TIKTOK_ACCESS_TOKEN environment variable",
+              "Complete TikTok for Developers app setup",
+              "Obtain access token via OAuth2 flow"
+            ]
+          }
+        },
+        "media": {},
+        "content": {
+          "valid": true,
+          "length": 41,
+          "platforms": {
+            "instagram": {
+              "valid": true,
+              "issues": []
+            },
+            "tiktok": {
+              "valid": true,
+              "issues": []
+            }
+          },
+          "errors": [],
+          "warnings": []
+        },
+        "errors": [
+          "INSTAGRAM_ACCESS_TOKEN not configured",
+          "TIKTOK_ACCESS_TOKEN not configured"
+        ],
+        "warnings": []
+      },
+      "approval_status": null,
+      "publish_results": {},
+      "errors": []
+    },
+    {
+      "id": "draft_1774361553_7370",
+      "content": "וילה ליתוס - הנופש המושלם בפורטו רפטי! 🏖️ 4 חדרי שינה, בריכה פרטית, ונוף מדהים לים. זמין לקיץ 2026",
+      "platforms": [
+        "instagram"
+      ],
+      "media_paths": [],
+      "scheduled_time": null,
+      "priority": "medium",
+      "status": "draft",
+      "created_at": "2026-03-24T16:12:33.457027",
+      "updated_at": "2026-03-24T16:12:33.516494",
+      "validation_results": {
+        "overall_status": "invalid",
+        "platforms": {
+          "instagram": {
+            "valid": false,
+            "connection_status": "missing_credentials",
+            "account_info": {},
+            "scopes": [],
+            "errors": [
+              "INSTAGRAM_ACCESS_TOKEN not configured"
+            ],
+            "fix_hints": [
+              "Set INSTAGRAM_ACCESS_TOKEN environment variable",
+              "Complete Meta for Developers app setup",
+              "Connect Instagram Business Account",
+              "Generate long-lived access token"
+            ]
+          }
+        },
+        "media": {},
+        "content": {
+          "valid": true,
+          "length": 98,
+          "platforms": {
+            "instagram": {
+              "valid": true,
+              "issues": []
+            }
+          },
+          "errors": [],
+          "warnings": []
+        },
+        "errors": [
+          "INSTAGRAM_ACCESS_TOKEN not configured"
+        ],
+        "warnings": []
+      },
+      "approval_status": null,
+      "publish_results": {},
+      "errors": []
+    },
+    {
+      "id": "draft_1774364116_983",
+      "content": "Villa Lithos - נופש חלומי בפורטו רפטי! 🏖️ 4 חדרים, בריכה פרטית, נוף מדהים לים. #VillaLithos #Greece",
+      "platforms": [
+        "tiktok"
+      ],
+      "media_paths": [],
+      "scheduled_time": null,
+      "priority": "medium",
+      "status": "draft",
+      "created_at": "2026-03-24T16:55:16.031907",
+      "updated_at": "2026-03-24T16:55:16.091540",
+      "validation_results": {
+        "overall_status": "invalid",
+        "platforms": {
+          "tiktok": {
+            "valid": false,
+            "connection_status": "missing_credentials",
+            "account_info": {},
+            "scopes": [],
+            "errors": [
+              "TIKTOK_ACCESS_TOKEN not configured"
+            ],
+            "fix_hints": [
+              "Set TIKTOK_ACCESS_TOKEN environment variable",
+              "Complete TikTok for Developers app setup",
+              "Obtain access token via OAuth2 flow"
+            ]
+          }
+        },
+        "media": {},
+        "content": {
+          "valid": true,
+          "length": 99,
+          "platforms": {
+            "tiktok": {
+              "valid": true,
+              "issues": []
+            }
+          },
+          "errors": [],
+          "warnings": []
+        },
+        "errors": [
+          "TIKTOK_ACCESS_TOKEN not configured"
+        ],
+        "warnings": []
+      },
+      "approval_status": null,
+      "publish_results": {},
+      "errors": []
+    }
+  ],
+  "completed": [],
+  "stats": {
+    "total_published": 0,
+    "total_failed": 0,
+    "platforms": {}
+  },
+  "updated": "2026-03-24T16:55:16.091549"
+}

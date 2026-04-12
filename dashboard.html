@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דבורה 🧭 — לוח בקרה</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e4e4e7;
+    --muted: #8b8d97;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --purple: #a855f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    line-height: 1.5;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 { font-size: 24px; font-weight: 600; }
+  .header .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .header .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h2 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2 .icon { font-size: 16px; }
+
+  /* Tasks */
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .task:last-child { border-bottom: none; }
+  .task .priority {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .task .priority.red { background: var(--red); }
+  .task .priority.yellow { background: var(--yellow); }
+  .task .priority.green { background: var(--green); }
+  .task .name { font-size: 14px; font-weight: 500; }
+  .task .meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .task .age { font-size: 11px; color: var(--muted); margin-right: auto; }
+
+  /* Integrations */
+  .integration {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .integration:last-child { border-bottom: none; }
+  .integration .name { font-size: 14px; }
+  .integration .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .badge.ok { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge.warn { background: rgba(234,179,8,0.15); color: var(--yellow); }
+  .badge.err { background: rgba(239,68,68,0.15); color: var(--red); }
+  .badge.off { background: rgba(139,141,151,0.15); color: var(--muted); }
+
+  /* Stats */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .stat {
+    text-align: center;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+  }
+  .stat .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .stat .label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Cron */
+  .cron-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .cron-item:last-child { border-bottom: none; }
+  .cron-item .next { color: var(--muted); font-size: 12px; }
+
+  /* Groups */
+  .group {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .group:last-child { border-bottom: none; }
+  .group .name { font-size: 14px; font-weight: 500; }
+  .group .behavior { font-size: 12px; color: var(--muted); }
+
+  /* Cost bar */
+  .cost-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .cost-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s;
+  }
+
+  .updated {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  /* Full-width card */
+  .card.full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧭 דבורה — לוח בקרה</h1>
+  <div class="status">
+    <div class="dot"></div>
+    <span id="gateway-status">WhatsApp מחובר</span>
+    <span>•</span>
+    <span id="timestamp"></span>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- Tasks -->
+  <div class="card">
+    <h2><span class="icon">📌</span> משימות פתוחות</h2>
+    <div id="tasks">
+      <div class="task">
+        <div class="priority red"></div>
+        <div>
+          <div class="name">טופס חופשה שלילית — יעל בר</div>
+          <div class="meta">בחינה משפטית · ממתין ליוני</div>
+          <div class="age">📅 18.3 · יום 1</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="priority yellow"></div>
+        <div>
+          <div class="name">תוכן Villa Lithos</div>
+          <div class="meta">cron jobs בוטלו · ממתין ליצירה מחדש</div>
+          <div class="age">📅 12.3 · יום 7</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="priority yellow"></div>
+        <div>
+          <div class="name">אושר — סוכנת של מתן</div>
+          <div class="meta">הקמת זהות וזיכרון</div>
+          <div class="age">📅 16.3 · יום 3</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="priority yellow"></div>
+        <div>
+          <div class="name">מנורה חיצונית — Control4</div>
+          <div class="meta">צריך Composer Pro / ETS / ניתוק פיזי</div>
+          <div class="age">📅 19.3 · היום</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="priority yellow"></div>
+        <div>
+          <div class="name">טיול Oberjoch/מינכן</div>
+          <div class="meta">RFQs — דדליין עבר, ממתין לתשובות</div>
+          <div class="age">📅 15.3 · יום 4</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="priority green"></div>
+        <div>
+          <div class="name">חשבוניות לתהילה</div>
+          <div class="meta">flow שבועי פעיל</div>
+          <div class="age">📅 12.3 · שוטף</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Integrations -->
+  <div class="card">
+    <h2><span class="icon">🔌</span> אינטגרציות</h2>
+    <div class="integration">
+      <span class="name">WhatsApp</span>
+      <span class="badge ok">מחובר</span>
+    </div>
+    <div class="integration">
+      <span class="name">Gmail (gog)</span>
+      <span class="badge ok">מחובר</span>
+    </div>
+    <div class="integration">
+      <span class="name">Outlook (Graph API)</span>
+      <span class="badge ok">מחובר</span>
+    </div>
+    <div class="integration">
+      <span class="name">Control4 (pyControl4)</span>
+      <span class="badge ok">מחובר</span>
+    </div>
+    <div class="integration">
+      <span class="name">Google Ads</span>
+      <span class="badge ok">מחובר</span>
+    </div>
+    <div class="integration">
+      <span class="name">Facebook/Instagram</span>
+      <span class="badge warn">crons בוטלו</span>
+    </div>
+    <div class="integration">
+      <span class="name">Home Assistant</span>
+      <span class="badge err">לא נגיש</span>
+    </div>
+    <div class="integration">
+      <span class="name">OneDrive</span>
+      <span class="badge ok">מחובר</span>
+    </div>
+    <div class="integration">
+      <span class="name">Make.com</span>
+      <span class="badge off">לא בשימוש</span>
+    </div>
+  </div>
+
+  <!-- Performance -->
+  <div class="card">
+    <h2><span class="icon">📊</span> ביצועים (30 יום)</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="value">1,608</div>
+        <div class="label">תגובות</div>
+      </div>
+      <div class="stat">
+        <div class="value">61</div>
+        <div class="label">sessions</div>
+      </div>
+      <div class="stat">
+        <div class="value">6.2s</div>
+        <div class="label">median latency</div>
+      </div>
+      <div class="stat">
+        <div class="value">2.2</div>
+        <div class="label">tool calls/turn</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:20px"><span class="icon">💰</span> עלות</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="value" style="color:var(--yellow)">$49</div>
+        <div class="label">היום</div>
+      </div>
+      <div class="stat">
+        <div class="value" style="color:var(--yellow)">$156</div>
+        <div class="label">השבוע</div>
+      </div>
+      <div class="stat">
+        <div class="value">$301</div>
+        <div class="label">30 יום</div>
+      </div>
+      <div class="stat">
+        <div class="value">~$10</div>
+        <div class="label">ממוצע יומי</div>
+      </div>
+    </div>
+    <div class="cost-bar">
+      <div class="fill" style="width: 82%; background: linear-gradient(90deg, var(--green), var(--yellow));"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px;">
+      <span>$0</span><span>תקרה $60/יום</span>
+    </div>
+  </div>
+
+  <!-- Cron Jobs -->
+  <div class="card">
+    <h2><span class="icon">⏰</span> Cron Jobs</h2>
+    <div class="cron-item">
+      <span>💛 תזכורת שני (יום ב)</span>
+      <span class="next">בעוד 3 ימים</span>
+    </div>
+    <div class="cron-item">
+      <span>🌙 ערב זוגי (יום ד)</span>
+      <span class="next">בעוד 6 ימים</span>
+    </div>
+    <div class="cron-item">
+      <span>☀️ שבת (יום ו)</span>
+      <span class="next">בעוד 10 שעות</span>
+    </div>
+    <div class="cron-item">
+      <span>🔍 בדיקת Brave Search</span>
+      <span class="next">12.4.2026</span>
+    </div>
+  </div>
+
+  <!-- Groups -->
+  <div class="card">
+    <h2><span class="icon">💬</span> קבוצות</h2>
+    <div class="group">
+      <div class="name">כיתה ב׳-3 האלופה</div>
+      <div class="behavior">🔇 listen only · סיכום ב-17:30</div>
+    </div>
+    <div class="group">
+      <div class="name">פורטו על המפה 🌎</div>
+      <div class="behavior">💬 עונה כשפונים · מגיבה 🙏</div>
+    </div>
+    <div class="group">
+      <div class="name">Yoni ↔ Shani ↔ Dvora</div>
+      <div class="behavior">💬 תיאום משפחתי</div>
+    </div>
+    <div class="group">
+      <div class="name">Yoni ↔ Matan ↔ Dvora</div>
+      <div class="behavior">💬 עבודה טכנית</div>
+    </div>
+    <div class="group">
+      <div class="name">Yoni ↔ Rani ↔ Dvora & Alma</div>
+      <div class="behavior">🔇 requireMention</div>
+    </div>
+  </div>
+
+  <!-- Heartbeat Schedule -->
+  <div class="card">
+    <h2><span class="icon">💓</span> Heartbeat Schedule</h2>
+    <div class="cron-item">
+      <span>🔔 Proactive Followups</span>
+      <span class="next">כל heartbeat</span>
+    </div>
+    <div class="cron-item">
+      <span>📧 תזכורת מיילים 🔴</span>
+      <span class="next">12:00 יומי</span>
+    </div>
+    <div class="cron-item">
+      <span>📱 סיכום כיתה ב׳</span>
+      <span class="next">17:30 יומי</span>
+    </div>
+    <div class="cron-item">
+      <span>📋 Daily Digest</span>
+      <span class="next">20:00 יומי</span>
+    </div>
+    <div class="cron-item">
+      <span>📊 Google Ads</span>
+      <span class="next">שבועי</span>
+    </div>
+    <div class="cron-item">
+      <span>📊 מדדי ביצועים</span>
+      <span class="next">ראשון</span>
+    </div>
+    <div class="cron-item">
+      <span>📝 סיכום שבועי</span>
+      <span class="next">כש-5+ memory files</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="updated" id="footer"></div>
+
+<script>
+  const now = new Date();
+  const fmt = new Intl.DateTimeFormat('he-IL', {
+    timeZone: 'Asia/Jerusalem',
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+  document.getElementById('timestamp').textContent = fmt.format(now);
+  document.getElementById('footer').textContent = 'עודכן: ' + fmt.format(now);
+</script>
+</body>
+</html>

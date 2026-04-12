@@ -1,0 +1,12 @@
+[
+  {"message": "מה הסטטוס?", "domain": "general"},
+  {"message": "איזה יום היום?", "domain": "general"},
+  {"message": "שלום", "domain": "general"},
+  {"message": "תודה", "domain": "general"},
+  {"message": "מה יש במיילים?", "domain": "email"},
+  {"message": "איך המשימות?", "domain": "general"},
+  {"message": "כמה הזמן?", "domain": "general"},
+  {"message": "צריך לבדוק את החוזה עם מיגונית ולנתח את הסיכונים", "domain": "legal"},
+  {"message": "אפשר לשלוח מייל לליטל סלבין בנושא ההצעה?", "domain": "email"},
+  {"message": "מה הסיכום של קבוצת אלון מהיום?", "domain": "group"}
+]

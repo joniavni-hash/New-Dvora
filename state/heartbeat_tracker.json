@@ -1,0 +1,17 @@
+{
+  "last_run": {
+    "daily_digest": "2026-03-22",
+    "group_summary": "2026-03-22",
+    "email_followup": null,
+    "health_check": "2026-03-22",
+    "daily_memory": "2026-03-22",
+    "weekly_metrics": "2026-03-22",
+    "weekly_corrections": "2026-03-22",
+    "weekly_recursive_summary": "2026-03-22",
+    "x_twitter_digest": null,
+    "fitness_weigh_in": null,
+    "fitness_weekly_summary": null,
+    "google_ads_check": null
+  },
+  "note": "Track when each heartbeat task last ran to avoid duplicates"
+}

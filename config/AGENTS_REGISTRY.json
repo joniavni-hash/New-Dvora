@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "agents": {
+    "odya": {
+      "agentId": "odya-whatsapp",
+      "name": "אודיה - Groups Agent",
+      "domain": "groups",
+      "workspace": "/home/jonia/.openclaw/workspace",
+      "agentDir": "agents/odya-whatsapp",
+      "script": "agents/odya-whatsapp/odya_agent.py",
+      "defaultModel": "anthropic/claude-3-5-haiku-20241022",
+      "modelTier": "tier1",
+      "allowedActions": [
+        "whatsapp_groups",
+        "message_summarization", 
+        "group_communication",
+        "message_send"
+      ],
+      "riskLevel": "low",
+      "description": "מתאמת קבוצות WhatsApp - סיכומים, תקשורת",
+      "capabilities": {
+        "can_read_messages": true,
+        "can_send_messages": true,
+        "can_analyze_groups": true,
+        "can_schedule_tasks": false
+      }
+    },
+    "masha": {
+      "agentId": "masha",
+      "name": "מאשה - Legal Agent",
+      "domain": "legal",
+      "workspace": "/home/jonia/.openclaw/workspace", 
+      "agentDir": "agents/masha",
+      "script": "agents/masha/masha_agent.py",
+      "defaultModel": "anthropic/claude-opus-4-6",
+      "modelTier": "tier3",
+      "allowedActions": [
+        "contract_review",
+        "legal_analysis",
+        "risk_assessment",
+        "legal_drafting"
+      ],
+      "riskLevel": "medium",
+      "description": "יועצת משפטית - חוזים, ניתוח משפטי, סיכונים",
+      "capabilities": {
+        "can_read_contracts": true,
+        "can_draft_responses": true,
+        "can_assess_risk": true,
+        "can_schedule_tasks": false
+      }
+    },
+    "tali": {
+      "agentId": "tali-marketing",
+      "name": "טלי - Marketing Agent",
+      "domain": "marketing",
+      "workspace": "/home/jonia/.openclaw/workspace",
+      "agentDir": "agents/tali-marketing", 
+      "script": "agents/tali-marketing/tali_agent.py",
+      "defaultModel": "anthropic/claude-sonnet-4-20250514",
+      "modelTier": "tier2",
+      "allowedActions": [
+        "social_media_posting",
+        "content_creation",
+        "larry_marketing",
+        "tiktok_automation",
+        "message_send"
+      ],
+      "riskLevel": "medium",
+      "description": "מומחית שיווק דיגיטלי - TikTok, Instagram, פרסום",
+      "capabilities": {
+        "can_post_social": true,
+        "can_create_content": true,
+        "can_use_larry_skill": true,
+        "can_schedule_tasks": true
+      }
+    },
+    "tzofit": {
+      "agentId": "tzofit-research",
+      "name": "צופית - Research Agent",
+      "domain": "research",
+      "workspace": "/home/jonia/.openclaw/workspace",
+      "agentDir": "agents/tzofit-research",
+      "script": "agents/tzofit-research/tzofit_agent.py",
+      "defaultModel": "anthropic/claude-sonnet-4-20250514", 
+      "modelTier": "tier2",
+      "allowedActions": [
+        "market_research",
+        "competitive_analysis",
+        "intelligence_gathering",
+        "web_search",
+        "report_generation"
+      ],
+      "riskLevel": "low",
+      "description": "חוקרת - מחקר שוק, תחרותי, מודיעין עסקי",
+      "capabilities": {
+        "can_search_web": true,
+        "can_analyze_data": true,
+        "can_generate_reports": true,
+        "can_schedule_tasks": true
+      }
+    },
+    "eti": {
+      "agentId": "eti-automation", 
+      "name": "אתי - Automation Agent",
+      "domain": "automation",
+      "workspace": "/home/jonia/.openclaw/workspace",
+      "agentDir": "agents/eti-automation",
+      "script": "agents/eti-automation/eti_agent.py",
+      "defaultModel": "anthropic/claude-sonnet-4-20250514",
+      "modelTier": "tier2", 
+      "allowedActions": [
+        "workflow_automation",
+        "system_integration",
+        "process_optimization",
+        "cron_management"
+      ],
+      "riskLevel": "high",
+      "description": "מומחית אוטומציה - תהליכים, אינטגרציות",
+      "capabilities": {
+        "can_modify_system": true,
+        "can_create_workflows": true,
+        "can_manage_cron": true,
+        "can_schedule_tasks": true
+      }
+    },
+    "dana": {
+      "agentId": "dana-fitness",
+      "name": "דנה - Fitness Agent", 
+      "domain": "fitness",
+      "workspace": "/home/jonia/.openclaw/workspace",
+      "agentDir": "agents/dana-fitness",
+      "script": "agents/dana-fitness/dana_agent.py",
+      "defaultModel": "anthropic/claude-haiku-4-20250120",
+      "modelTier": "tier1",
+      "allowedActions": [
+        "fitness_tracking",
+        "nutrition_analysis", 
+        "health_monitoring",
+        "file_update"
+      ],
+      "riskLevel": "low",
+      "description": "מאמנת כושר - מעקב תזונה, יעדים, תכנון אימונים",
+      "capabilities": {
+        "can_track_fitness": true,
+        "can_analyze_nutrition": true,
+        "can_update_files": true,
+        "can_schedule_tasks": false
+      }
+    }
+  },
+  "metadata": {
+    "created": "2026-03-24T21:02:00Z",
+    "version": "1.0",
+    "total_agents": 6,
+    "risk_levels": {
+      "low": ["odya", "tzofit", "dana"],
+      "medium": ["masha", "tali"], 
+      "high": ["eti"]
+    }
+  }
+}

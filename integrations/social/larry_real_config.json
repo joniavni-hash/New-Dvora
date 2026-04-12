@@ -1,0 +1,17 @@
+{
+  "postiz": {
+    "apiKey": "YOUR_POSTIZ_API_KEY_HERE",
+    "integrationIds": {
+      "tiktok": "cmn4rugfx0e56pb0yn0tyvil3",
+      "instagram": "cmn4rshvr0e4xpb0yx8rwkgrb"
+    }
+  },
+  "posting": {
+    "privacyLevel": "SELF_ONLY",
+    "crossPost": ["tiktok"]
+  },
+  "imageGen": {
+    "provider": "existing",
+    "outputDir": "villa_slides_test"
+  }
+}

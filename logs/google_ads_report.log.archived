@@ -1,0 +1,278 @@
+📊 *Google Ads — Villa Lithos*
+_17.03.2026_
+
+*אתמול:*
+• חשיפות: 60
+• קליקים: 5 | CTR: 8.3%
+• המרות: 0
+• הוצאה: 5 ₪
+
+*מתחילת March (17 ימים):*
+• חשיפות: 7,302
+• קליקים: 563 | CTR: 7.7%
+• המרות: 28
+• הוצאה: 841 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 559 קליקים | 28 המרות | 840 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_18.03.2026_
+
+*אתמול:*
+• חשיפות: 984
+• קליקים: 46 | CTR: 4.7%
+• המרות: 2
+• הוצאה: 23 ₪
+
+*מתחילת March (18 ימים):*
+• חשיפות: 8,557
+• קליקים: 645 | CTR: 7.5%
+• המרות: 35
+• הוצאה: 911 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 641 קליקים | 35 המרות | 911 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_19.03.2026_
+
+*אתמול:*
+• חשיפות: 835
+• קליקים: 32 | CTR: 3.8%
+• המרות: 3
+• הוצאה: 23 ₪
+
+*מתחילת March (19 ימים):*
+• חשיפות: 9,886
+• קליקים: 707 | CTR: 7.2%
+• המרות: 47
+• הוצאה: 962 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 703 קליקים | 47 המרות | 961 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_20.03.2026_
+
+*אתמול:*
+• חשיפות: 1,596
+• קליקים: 65 | CTR: 4.1%
+• המרות: 6
+• הוצאה: 38 ₪
+
+*מתחילת March (20 ימים):*
+• חשיפות: 11,737
+• קליקים: 790 | CTR: 6.7%
+• המרות: 60
+• הוצאה: 1014 ₪
+
+*קמפיינים פעילים:*
+• Villa Lithos - Europe USA - Summer 2026: 786 קליקים | 60 המרות | 1013 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+📊 *Google Ads — Villa Lithos*
+_21.03.2026_
+
+*אתמול:*
+• חשיפות: 0
+• קליקים: 0 | CTR: 0.0%
+• המרות: 0
+• הוצאה: 0 ₪
+
+*מתחילת March (21 ימים):*
+• חשיפות: 12,008
+• קליקים: 810 | CTR: 6.7%
+• המרות: 65
+• הוצאה: 1028 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 163, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 147, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 172, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 155, in main
+    data, errors = get_report()
+                   ^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 46, in get_report
+    client = GoogleAdsClient.load_from_storage(YAML_PATH)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/client.py", line 317, in load_from_storage
+    kwargs: Dict[str, Any] = cls._get_client_kwargs(config_data)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/client.py", line 196, in _get_client_kwargs
+    "credentials": oauth2.get_credentials(config_data),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/oauth2.py", line 151, in get_credentials
+    return get_installed_app_credentials(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/oauth2.py", line 56, in initialize_credentials_wrapper
+    credentials.refresh(Request())
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/credentials.py", line 412, in refresh
+    ) = reauth.refresh_grant(
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/reauth.py", line 370, in refresh_grant
+    _client._handle_error_response(response_data, retryable_error)
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/_client.py", line 69, in _handle_error_response
+    raise exceptions.RefreshError(
+google.auth.exceptions.RefreshError: ('invalid_client: The OAuth client was not found.', {'error': 'invalid_client', 'error_description': 'The OAuth client was not found.'})
+📊 *Google Ads — Villa Lithos*
+_23.03.2026_
+
+*אתמול:*
+• חשיפות: 0
+• קליקים: 0 | CTR: 0.0%
+• המרות: 0
+• הוצאה: 0 ₪
+
+*מתחילת March (23 ימים):*
+• חשיפות: 11,994
+• קליקים: 810 | CTR: 6.8%
+• המרות: 65
+• הוצאה: 1028 ₪
+
+_דבורה 🧭_
+
+--- Sending via WhatsApp ---
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 184, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 175, in main
+    ok, out, err = send_whatsapp(report)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 159, in send_whatsapp
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'openclaw'
+Traceback (most recent call last):
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 184, in <module>
+    main()
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 167, in main
+    data, errors = get_report()
+                   ^^^^^^^^^^^^
+  File "/home/jonia/.openclaw/workspace/scripts/google_ads_report.py", line 58, in get_report
+    client = GoogleAdsClient.load_from_storage(YAML_PATH)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/client.py", line 317, in load_from_storage
+    kwargs: Dict[str, Any] = cls._get_client_kwargs(config_data)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/client.py", line 196, in _get_client_kwargs
+    "credentials": oauth2.get_credentials(config_data),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/oauth2.py", line 151, in get_credentials
+    return get_installed_app_credentials(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/ads/googleads/oauth2.py", line 56, in initialize_credentials_wrapper
+    credentials.refresh(Request())
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/credentials.py", line 412, in refresh
+    ) = reauth.refresh_grant(
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/reauth.py", line 370, in refresh_grant
+    _client._handle_error_response(response_data, retryable_error)
+  File "/home/jonia/.local/lib/python3.12/site-packages/google/oauth2/_client.py", line 69, in _handle_error_response
+    raise exceptions.RefreshError(
+google.auth.exceptions.RefreshError: ('invalid_grant: Token has been expired or revoked.', {'error': 'invalid_grant', 'error_description': 'Token has been expired or revoked.'})
