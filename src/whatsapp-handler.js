@@ -11,8 +11,9 @@
  * - Maintains conversation context via in-memory store (upgrade to Redis for production)
  */
 
+const path = require('path');
 const express = require('express');
-const { runAgentBackground, runAgentSDK } = require('./agent-runner');
+const { runAgentBackground, runAgentSDK, DEFAULT_ALLOWED_TOOLS } = require('./agent-runner');
 
 const app = express();
 app.use(express.json());
@@ -83,19 +84,23 @@ app.post('/webhook', async (req, res) => {
     // Build prompt with conversation context
     const prompt = buildPromptWithContext(chatId, message);
 
-    // Run agent in background mode - NO interactive approval needed
+    // Run agent in background mode - NO interactive approval needed.
+    // Explicitly pass workdir so .claude/settings.json is found,
+    // and allowedTools so sandboxed environments (OpenClaw) don't block tools.
+    const agentOpts = {
+      timeout: 60000,
+      workdir: path.resolve(__dirname, '..'),
+      allowedTools: DEFAULT_ALLOWED_TOOLS,
+    };
+
     let response;
     try {
       // Try SDK first (best option - full control over permissions)
-      response = await runAgentSDK(prompt, {
-        timeout: 60000,
-      });
+      response = await runAgentSDK(prompt, agentOpts);
     } catch (sdkErr) {
       console.error(`[webhook] SDK failed, trying CLI: ${sdkErr.message}`);
       // Fallback to CLI with --print mode
-      response = await runAgentBackground(prompt, {
-        timeout: 60000,
-      });
+      response = await runAgentBackground(prompt, agentOpts);
     }
 
     // Store response in context

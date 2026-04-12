@@ -15,6 +15,19 @@ const path = require('path');
 const DEFAULT_AGENT = process.env.DVORA_DEFAULT_AGENT || 'dvora';
 const PERMISSION_MODE = 'accept-edits-and-execution';
 
+// All tools that must be pre-approved for background execution.
+// Without these, the agent will hit "exec blocked" errors in sandboxed environments.
+const DEFAULT_ALLOWED_TOOLS = [
+  'Bash',
+  'Read',
+  'Write',
+  'Edit',
+  'Glob',
+  'Grep',
+  'WebFetch',
+  'WebSearch',
+];
+
 /**
  * Spawns an ACP agent session in non-interactive background mode.
  *
@@ -39,7 +52,7 @@ async function runAgentBackground(prompt, options = {}) {
     agent = DEFAULT_AGENT,
     workdir = process.cwd(),
     timeout = 120000,
-    allowedTools = [],
+    allowedTools = DEFAULT_ALLOWED_TOOLS,
   } = options;
 
   return new Promise((resolve, reject) => {
@@ -54,7 +67,9 @@ async function runAgentBackground(prompt, options = {}) {
       args.push('--agent', agent);
     }
 
-    // Pre-approve specific tools to avoid any residual prompts
+    // Pre-approve specific tools to avoid any residual prompts.
+    // This is CRITICAL in sandboxed environments (like OpenClaw) where
+    // tools are blocked by default unless explicitly allowed.
     for (const tool of allowedTools) {
       args.push('--allowedTools', tool);
     }
@@ -69,6 +84,8 @@ async function runAgentBackground(prompt, options = {}) {
         // Force non-interactive mode at environment level
         CI: 'true',
         CLAUDE_NON_INTERACTIVE: '1',
+        // Ensure the agent knows where to find .claude/settings.json
+        CLAUDE_CONFIG_DIR: path.join(workdir, '.claude'),
       },
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout,
@@ -149,5 +166,6 @@ module.exports = {
   runAgentBackground,
   runAgentSDK,
   DEFAULT_AGENT,
+  DEFAULT_ALLOWED_TOOLS,
   PERMISSION_MODE,
 };
