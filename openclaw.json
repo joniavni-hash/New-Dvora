@@ -1,0 +1,190 @@
+{
+  "update": {
+    "checkOnStart": false
+  },
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "bind": "lan",
+    "auth": {
+      "mode": "token",
+      "token": "5099a49b465ae5992853aa42c5f07d2a43fb6da83a770ffb3ac0bdb53857e83c"
+    },
+    "trustedProxies": [
+      "0.0.0.0/0"
+    ],
+    "controlUi": {
+      "allowInsecureAuth": true,
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": [
+        "https://myclaw.ai",
+        "http://localhost:18789",
+        "http://127.0.0.1:18789"
+      ]
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "myclaw/gpt-5.4-mini",
+        "fallbacks": [
+          "myclaw/gpt-5.1",
+          "myclaw/minimax-m2.7"
+        ]
+      },
+      "memorySearch": {
+        "enabled": true,
+        "provider": "openai",
+        "remote": {
+          "apiKey": "REMOVED"
+        }
+      },
+      "subagents": {
+        "maxConcurrent": 4,
+        "runTimeoutSeconds": 900
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "subagents": {
+          "allowAgents": [
+            "osnat",
+            "adi",
+            "dalia"
+          ]
+        }
+      },
+      {
+        "id": "osnat",
+        "name": "osnat",
+        "workspace": "~/.openclaw/workspace-osnat",
+        "agentDir": "/home/ubuntu/.openclaw/agents/osnat/agent"
+      },
+      {
+        "id": "adi",
+        "name": "adi",
+        "workspace": "~/.openclaw/workspace-adi",
+        "agentDir": "/home/ubuntu/.openclaw/agents/adi/agent"
+      },
+      {
+        "id": "dalia",
+        "name": "dalia",
+        "workspace": "~/.openclaw/workspace-dalia"
+      }
+    ]
+  },
+  "models": {
+    "providers": {
+      "myclaw": {
+        "baseUrl": "https://api.myclaw.ai/v1",
+        "apiKey": "b6fb2df7-e14e-4aba-8204-ad4ae20d763c.12a26cd0-c0c4-4050-a5ae-4e03942299e7",
+        "models": [
+          {
+            "id": "gpt-5.4-mini",
+            "name": "gpt-5.4-mini",
+            "api": "openai-responses",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 400000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "gpt-5.1",
+            "name": "gpt-5.1",
+            "api": "openai-responses",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 400000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "minimax-m2.7",
+            "name": "minimax-m2.7",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 204800,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "dmPolicy": "allowlist",
+      "actions": {
+        "sendMessage": true,
+        "reactions": true,
+        "polls": true
+      },
+      "accounts": {},
+      "enabled": true,
+      "allowFrom": [
+        "+972543333556"
+      ]
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.4.9",
+    "lastTouchedAt": "2026-04-12T06:39:25.176Z"
+  },
+  "skills": {
+    "entries": {
+      "apple-notes": {
+        "enabled": false
+      },
+      "bear-notes": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "apiKey": "REMOVED"
+      }
+    }
+  },
+  "tools": {
+    "agentToAgent": {
+      "enabled": true,
+      "allow": [
+        "main",
+        "osnat",
+        "adi",
+        "dalia"
+      ]
+    }
+  },
+  "acp": {
+    "defaultAgent": "codex"
+  }
+}
