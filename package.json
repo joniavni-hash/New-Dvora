@@ -1,0 +1,19 @@
+{
+  "name": "new-dvora",
+  "version": "1.0.0",
+  "description": "Dvora WhatsApp bot - ACP agent in non-interactive background mode",
+  "main": "src/whatsapp-handler.js",
+  "scripts": {
+    "start": "node src/whatsapp-handler.js",
+    "dev": "node --watch src/whatsapp-handler.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "optionalDependencies": {
+    "@anthropic-ai/claude-code": "*"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
