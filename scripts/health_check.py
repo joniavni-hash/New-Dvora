@@ -28,15 +28,25 @@ def load_secrets():
 
 
 def check_outlook(secrets):
-    """Test Microsoft Graph token acquisition"""
+    """Test Microsoft Graph token acquisition with detailed diagnostics"""
     try:
         import urllib.request
         import urllib.parse
+        import urllib.error
         tenant = secrets.get('MS_GRAPH_TENANT', '')
         client_id = secrets.get('MS_GRAPH_CLIENT_ID', '')
         client_secret = secrets.get('MS_GRAPH_CLIENT_SECRET', '')
         if not all([tenant, client_id, client_secret]):
-            return {"status": "missing_credentials", "ok": False}
+            missing = []
+            if not tenant: missing.append('MS_GRAPH_TENANT')
+            if not client_id: missing.append('MS_GRAPH_CLIENT_ID')
+            if not client_secret: missing.append('MS_GRAPH_CLIENT_SECRET')
+            return {
+                "status": "missing_credentials",
+                "ok": False,
+                "missing": missing,
+                "action": "הגדירו את המפתחות החסרים ב-secrets/.env"
+            }
 
         data = urllib.parse.urlencode({
             'client_id': client_id,
@@ -46,11 +56,35 @@ def check_outlook(secrets):
         }).encode()
         url = f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token"
         req = urllib.request.Request(url, data=data)
-        resp = urllib.request.urlopen(req, timeout=10)
-        result = json.loads(resp.read())
-        if result.get('access_token'):
-            return {"status": "ok", "ok": True}
-        return {"status": "no_token", "ok": False}
+        try:
+            resp = urllib.request.urlopen(req, timeout=10)
+            result = json.loads(resp.read())
+            if result.get('access_token'):
+                return {
+                    "status": "ok",
+                    "ok": True,
+                    "last_success": datetime.now().isoformat()
+                }
+            return {"status": "no_token", "ok": False}
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode('utf-8', errors='replace')
+            try:
+                err_json = json.loads(error_body)
+                azure_error = err_json.get('error', '')
+                azure_desc = err_json.get('error_description', '')
+                if 'invalid_client' in azure_error or 'expired' in azure_desc.lower():
+                    return {
+                        "status": "secret_expired",
+                        "ok": False,
+                        "action": "Secret פג תוקף ב-Azure. צריך ליצור חדש ב-Azure Portal > App Registrations > Certificates & secrets ולעדכן ב-secrets/.env"
+                    }
+                return {
+                    "status": f"auth_error:{azure_error}",
+                    "ok": False,
+                    "detail": azure_desc[:150]
+                }
+            except:
+                return {"status": f"http_{e.code}", "ok": False, "detail": error_body[:100]}
     except Exception as e:
         return {"status": str(e)[:100], "ok": False}
 

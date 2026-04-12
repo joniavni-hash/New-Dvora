@@ -11,18 +11,24 @@ Last verified: 2026-03-17
 ## Default behavior
 When Yoni says "emails" or "mailbox", default to Outlook unless he explicitly says Gmail.
 ## Auth
-Stored in secrets only (MS_GRAPH_CLIENT_SECRET).
 Auth method: client_credentials flow via Microsoft Graph API.
-**Azure client secrets expire periodically** — if auth fails, it may just need renewal.
+Secret: `MS_GRAPH_CLIENT_SECRET` — stored in `secrets/.env` or as environment variable.
 
-## Fallback for reading emails
-If Graph API auth fails (secret expired / missing / 401):
-1. **Try Gmail MCP tools** (`gmail_search_messages` / `gmail_read_message`) as degraded fallback
-2. Gmail covers Joni.avni@gmail.com — not the same mailbox, but better than nothing
-3. Report the Outlook failure as a side note, not a blocker
-4. See `runbooks/EMAIL_REVIEW.md` for full fallback chain
+### Azure client secret expiry
+Azure AD client secrets expire. Default expiry is 6–24 months from creation.
+**If auth fails — check the Azure Portal for secret expiry before assuming anything else is broken.**
+When an expired secret is the cause, the Azure token endpoint returns `invalid_client` in the error response.
+
+### Secret sources (checked in order)
+1. Environment variable `MS_GRAPH_CLIENT_SECRET`
+2. `secrets/.env` file (key=value format)
+
+### When auth fails
+1. **Always try the API live** — don't rely on cached `state/health_check.json`
+2. Check the error: is it `invalid_client` (expired secret) or network/timeout?
+3. Report the specific error to Yoni — not just "can't authenticate"
+4. If expired: "ה-secret של Outlook פג תוקף. צריך ליצור חדש ב-Azure Portal ולעדכן ב-secrets/.env"
 
 ## Operational notes
 Use configured Microsoft Graph access.
-Always try auth live — don't rely on cached `state/health_check.json` status.
 Execution details belong in runbooks, not here.

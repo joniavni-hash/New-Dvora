@@ -65,9 +65,27 @@ def get_access_token():
         if response.status_code == 200:
             return response.json().get('access_token'), None
         else:
-            return None, f"Auth failed: {response.status_code} - {response.text}"
+            # Parse Azure error for actionable diagnostics
+            error_detail = ""
+            try:
+                err = response.json()
+                azure_error = err.get('error', '')
+                azure_desc = err.get('error_description', '')
+                if 'invalid_client' in azure_error or 'invalid_client' in azure_desc:
+                    error_detail = "SECRET_EXPIRED: ה-secret של Outlook פג תוקף ב-Azure. צריך ליצור secret חדש ב-Azure Portal ולעדכן ב-secrets/.env"
+                elif 'unauthorized_client' in azure_error:
+                    error_detail = "PERMISSIONS: ל-client אין הרשאות מתאימות ב-Azure. צריך לבדוק App Registration permissions."
+                else:
+                    error_detail = f"AZURE_ERROR: {azure_error} — {azure_desc[:200]}"
+            except:
+                error_detail = f"HTTP {response.status_code}"
+            return None, error_detail
+    except requests.exceptions.Timeout:
+        return None, "TIMEOUT: Graph API לא מגיב. כנראה בעיית רשת."
+    except requests.exceptions.ConnectionError:
+        return None, "CONNECTION_ERROR: לא ניתן להתחבר ל-Azure. בדקי חיבור רשת."
     except Exception as e:
-        return None, f"Request failed: {e}"
+        return None, f"REQUEST_ERROR: {e}"
 
 def fetch_emails(token, days=2):
     """Fetch emails from the last N days"""
@@ -164,16 +182,10 @@ def format_email_for_review(emails):
     
     return review_text
 
-FALLBACK_MSG = """⚠️ FALLBACK: Outlook Graph API authentication failed.
-💡 Use Gmail MCP tools as alternative:
-   1. gmail_search_messages — search for recent emails
-   2. gmail_read_message — read specific email details
-📌 See runbooks/EMAIL_REVIEW.md for full fallback procedure."""
-
 # Exit codes:
 # 0 = success
 # 1 = general error
-# 2 = auth failed (secret missing or invalid) — agent should try Gmail MCP fallback
+# 2 = auth failed (secret missing or invalid)
 # 3 = API error (authenticated but fetch failed)
 
 def main():
@@ -203,16 +215,21 @@ def main():
                 sys.exit(3)
         else:
             print(f"❌ Authentication failed: {error}")
-            print(FALLBACK_MSG)
             sys.exit(2)
         return
 
-    # Get access token
+    # Get access token with retry
+    import time
     print("🔐 Authenticating with Microsoft Graph...")
     token, auth_error = get_access_token()
     if not token:
-        print(f"❌ Authentication failed: {auth_error}")
-        print(FALLBACK_MSG)
+        print(f"⚠️ First attempt failed: {auth_error}")
+        print("🔄 Retrying in 3 seconds...")
+        time.sleep(3)
+        token, auth_error = get_access_token()
+
+    if not token:
+        print(f"❌ Authentication failed after 2 attempts: {auth_error}")
         sys.exit(2)
 
     # Fetch emails
