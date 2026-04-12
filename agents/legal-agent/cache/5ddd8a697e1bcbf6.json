@@ -1,0 +1,35 @@
+{
+  "cache_key": "5ddd8a697e1bcbf6",
+  "task_type": "legal_summary",
+  "document_hash": "18f0c4b2ebf6",
+  "query_hash": "c8b662d740df",
+  "result": {
+    "decision": "summary",
+    "confidence": 0.9,
+    "reasoning": "Summary/structuring task — well-suited for cheap model",
+    "draft": {
+      "type": "legal_summary",
+      "content": "# דוח משפטי מובנה\n**תאריך:** [לא צוין]  \n**מוכן על ידי:** מאשה - עוזרת ניתוח משפטי  \n**עבור:** יוני אבני ולקוח\n\n---\n\n## 📋 סיכום ביצוע המשימה\n\n**סוג משימה:** legal_summary  \n**מודל ניתוח:** claude-sonnet-4-20250514  \n**רמת ביטחון:** 90% ✅  \n**סטטוס השלמה:** הושלם עם דגשים\n\n---\n\n## 🔍 תוצאות חילוץ נתונים\n\n**תוצאות חילוץ:** ❌ לא נמצאו נתונים מובנים  \n**סטטוס:** רשימה ריקה - יש לבדוק את המסמך המקורי\n\n---\n\n## ⚠️ נושאים מדוגלים לתשומת לב\n\n### 🔴 נושאים בעדיפות גבוהה:\n1. **חובות הלקוח לא מוגדרות בבירור**\n   - קטגוריה: client_obligations\n   - דרישת פעולה: הגדרה מדויקת של התחייבויות הלקוח\n\n2. **שיעור ריבית גבוה**\n   - קטגוריה: late_payment\n   - פרט: 18% שנתי\n   - דרישת פעולה: בחינת סבירות הריבית\n\n3. **חלוקת הוצאות לא מוגדרת**\n   - קטגוריה: expenses\n   - דרישת פעולה: הגדרת אחריות להוצאות\n\n---\n\n## 📊 מצב הסיכונים\n\n**זיהוי עמימות:** ❌ לא זוהתה עמימות  \n**דרישת הסלמה:** ❌ לא נדרשת הסלמה  \n**סיבת הסלמה:** לא רלוונטי\n\n---\n\n## 📝 המלצות לפעולה\n\n1. **מיידי:** בדיקת המסמך המקורי לחילוץ נתונים חסרים\n2. **קצר טווח:** הבהרת חובות הלקוח והגדרת חלוקת הוצאות\n3. **בינוני טווח:** בחינת סבירות שיעור הריבית (18%)\n\n---\n\n## ⚫ הערות נוספות\n\n- **נתונים חסרים:** רוב הנתונים המובנים לא זוהו במסמך\n- **איכות המידע:** נדרשת בדיקה נוספת של המקור\n- **סטטוס עבודה:** מוכן להמשך עיבוד לאחר השלמת נתונים\n\n---\n\n**הוכן על ידי מאשה | עוזרת משפטית לניתוח מסמכים**  \n*דוח זה מבוסס על חילוץ נתונים בלבד ואינו מהווה ייעוץ משפטי*"
+    },
+    "legalRisk": "high",
+    "riskFactors": [
+      "client_obligations - Client obligations not clearly specified",
+      "late_payment - High interest rate (18% annually)",
+      "expenses - No expense allocation specified"
+    ],
+    "memoryDelta": null,
+    "stateDelta": null,
+    "qaResult": "pass",
+    "qaDetails": [],
+    "suggestedActions": [],
+    "requiresApproval": true,
+    "modelTier": "tier1",
+    "costUsd": 0.0485
+  },
+  "model_tier": "tier1",
+  "cost_usd": 0.048501,
+  "created_at": 1774293197.8230724,
+  "ttl_hours": 168,
+  "hit_count": 1,
+  "tags": []
+}

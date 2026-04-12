@@ -1,0 +1,35 @@
+{
+  "postiz": {
+    "apiKey": "YOUR_POSTIZ_API_KEY_HERE",
+    "baseUrl": "https://api.postiz.com/public/v1",
+    "integrationIds": {
+      "tiktok": "cmn4rugfx0e56pb0yn0tyvil3",
+      "instagram": "cmn4rshvr0e4xpb0yx8rwkgrb",
+      "facebook": "cmn4rv4i60e8opb0y2yncyc7i",
+      "pinterest": "cmn4rwivz0e8wpb0yvfykswih"
+    }
+  },
+  "imageGen": {
+    "provider": "google_drive",
+    "model": "manual",
+    "sourceFolder": "1x2qEmoYopOtlhXWQfunQ5H7a_hy2oisI"
+  },
+  "posting": {
+    "privacyLevel": "PUBLIC_TO_EVERYONE",
+    "crossPost": ["tiktok", "instagram"],
+    "addMusic": true,
+    "schedule": "now"
+  },
+  "app": {
+    "name": "Villa Lithos",
+    "description": "Luxury villa in Porto Rafti, Greece",
+    "niche": "luxury travel",
+    "targetAudience": "group travelers, luxury seekers",
+    "hooks": [
+      "Villa that costs LESS per person than a hotel room",
+      "22 friends split this Greek villa",
+      "This luxury villa has a PRIVATE padel court",
+      "15 minutes from Athens airport"
+    ]
+  }
+}

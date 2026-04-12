@@ -1,0 +1,107 @@
+{
+  "variation_a_math_challenge": {
+    "name": "Math Challenge Hook",
+    "slides": [
+      {
+        "slide": 1,
+        "text": "I rented a 9-bedroom villa in Greece\nfor my birthday.\nGuess how much each person paid? 🤔",
+        "visual": "Villa exterior wide shot"
+      },
+      {
+        "slide": 2,
+        "text": "22 people\nPrivate infinity pool\nSea views\nSauna\nPadel court",
+        "visual": "Infinity pool panorama"
+      },
+      {
+        "slide": 3,
+        "text": "15 minutes from Athens airport\n800m² of pure luxury",
+        "visual": "Interior luxury shots"
+      },
+      {
+        "slide": 4,
+        "text": "Split between everyone?\nLess than a budget hotel room.\nPer night.",
+        "visual": "Group/lifestyle shot"
+      },
+      {
+        "slide": 5,
+        "text": "Your Mykonos hotel room\ncosts more per NIGHT\nthan our whole WEEK",
+        "visual": "Comparison visual"
+      },
+      {
+        "slide": 6,
+        "text": "Villa Lithos\nPorto Rafti 🇬🇷\nLink in bio",
+        "visual": "Villa logo + contact"
+      }
+    ]
+  },
+  "variation_b_pov": {
+    "name": "POV Hook",
+    "slides": [
+      {
+        "slide": 1,
+        "text": "POV: You found a luxury villa in Greece\nthat sleeps 22\nand costs less than a hotel",
+        "visual": "Walking into villa entrance"
+      },
+      {
+        "slide": 2,
+        "text": "Heated infinity pool with sea views ✓\nPrivate padel court ✓\nOutdoor sauna ✓",
+        "visual": "Pool + amenities montage"
+      },
+      {
+        "slide": 3,
+        "text": "9 bedrooms\n8.5 bathrooms\nYour own private estate",
+        "visual": "Bedroom/interior tour"
+      },
+      {
+        "slide": 4,
+        "text": "Split the cost with your group\nCheaper than you think",
+        "visual": "Lifestyle/friends shot"
+      },
+      {
+        "slide": 5,
+        "text": "15 min from the airport\nNot stuck on a 4-hour ferry",
+        "visual": "Airport proximity map"
+      },
+      {
+        "slide": 6,
+        "text": "Villa Lithos, Porto Rafti 🇬🇷\nSave this for your group trip 📌",
+        "visual": "Villa sunset shot"
+      }
+    ]
+  },
+  "variation_c_conspiracy": {
+    "name": "They Don't Want You to Know Hook",
+    "slides": [
+      {
+        "slide": 1,
+        "text": "Hotels in Greece\ndon't want you to see this 🤫",
+        "visual": "Dramatic villa reveal"
+      },
+      {
+        "slide": 2,
+        "text": "Private villa\nInfinity pool\n22 guests\nSea views",
+        "visual": "Pool panorama"
+      },
+      {
+        "slide": 3,
+        "text": "Padel court\nSauna\nGym\nPrivate chef available",
+        "visual": "Amenities showcase"
+      },
+      {
+        "slide": 4,
+        "text": "Per person?\nCheaper than a basic hotel room",
+        "visual": "Price reveal moment"
+      },
+      {
+        "slide": 5,
+        "text": "15 min from Athens airport\nSkip the ferry\nKeep the luxury",
+        "visual": "Location/convenience"
+      },
+      {
+        "slide": 6,
+        "text": "Villa Lithos Porto Rafti\nLink in bio\nbefore summer books out 🔥",
+        "visual": "Villa + urgency CTA"
+      }
+    ]
+  }
+}

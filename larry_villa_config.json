@@ -1,0 +1,36 @@
+{
+  "app": {
+    "name": "Villa Lithos",
+    "description": "Luxury villa rental in Porto Rafti, Greece",
+    "niche": "luxury travel",
+    "targetAudience": "group travelers, luxury seekers, millennials planning trips",
+    "hooks": [
+      "Villa that costs LESS per person than a hotel room",
+      "22 friends split this Greek paradise",
+      "POV: Your group trip costs less than everyone thinks",
+      "This luxury villa has a PRIVATE padel court",
+      "15 minutes from Athens airport but feels like paradise",
+      "When your Airbnb has an infinity pool AND private beach access"
+    ]
+  },
+  "posting": {
+    "platform": "tiktok",
+    "crossPost": [
+      "tiktok",
+      "instagram"
+    ],
+    "schedule": "now",
+    "addTrendingMusic": true
+  },
+  "tokportal": {
+    "enabled": true,
+    "apiKey": null,
+    "trendingMusicEnabled": true,
+    "volumeOriginal": 30,
+    "volumeAdded": 100
+  },
+  "images": {
+    "source": "google_drive",
+    "folderId": "1x2qEmoYopOtlhXWQfunQ5H7a_hy2oisI"
+  }
+}

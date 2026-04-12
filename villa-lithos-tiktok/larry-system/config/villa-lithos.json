@@ -1,0 +1,88 @@
+{
+  "app": {
+    "name": "Villa Lithos",
+    "type": "property-rental",
+    "description": "Luxury 9-bedroom private villa in Porto Rafti, Greece. Sleeps 22, infinity pool, padel court, sauna, 15 min from Athens airport.",
+    "audience": "UK and European group travelers: friend groups, corporate retreats, extended families, celebrations",
+    "category": "travel-luxury",
+    "url": "https://www.villalithosgreece.com/",
+    "bookingUrls": {
+      "airbnb": "https://airbnb.com/h/lithoss",
+      "booking": "https://www.booking.com/hotel/gr/villa-lithos-porto-rafti",
+      "direct": "https://goldenberg-luxe.guestybookings.com/en/properties/69020736fb5e7a0014894f72"
+    }
+  },
+  "imageGen": {
+    "provider": "local",
+    "source": "villa-real-photos",
+    "note": "Villa Lithos uses REAL property photos, not AI-generated. Photos stored in villa config and Facebook album."
+  },
+  "postiz": {
+    "apiKey": "YOUR_POSTIZ_API_KEY_HERE",
+    "integrationIds": {
+      "tiktok": "cmn4rugfx0e56pb0yn0tyvil3",
+      "instagram": "cmn4rshvr0e4xpb0yx8rwkgrb",
+      "facebook": "cmn4rv4i60e8opb0y2yncyc7i",
+      "pinterest": "cmn4rwivz0e8wpb0yvfykswih"
+    },
+    "baseUrl": "https://api.postiz.com"
+  },
+  "posting": {
+    "privacyLevel": "SELF_ONLY",
+    "crossPost": ["tiktok", "instagram"],
+    "frequency": "2-per-day",
+    "maxPostsPerDay": 2,
+    "minHoursBetweenPosts": 4,
+    "bestTimes": {
+      "primary": { "ukTime": "19:30", "israelTime": "21:30", "label": "Evening prime" },
+      "secondary": { "ukTime": "12:00", "israelTime": "14:00", "label": "Lunch break" },
+      "tertiary": { "ukTime": "07:30", "israelTime": "09:30", "label": "Morning commute" }
+    }
+  },
+  "analytics": {
+    "checkAfterHours": 2,
+    "reportDays": 3,
+    "viewThresholds": {
+      "viral": 50000,
+      "strong": 10000,
+      "good": 5000,
+      "decent": 1000,
+      "poor": 500
+    }
+  },
+  "revenuecat": {
+    "enabled": false,
+    "note": "Not applicable - Villa Lithos tracks bookings, not app installs"
+  },
+  "conversionTracking": {
+    "type": "booking-inquiries",
+    "signals": ["profile-visits", "bio-link-clicks", "dm-inquiries", "booking-requests"],
+    "goal": "airbnb-booking-or-direct-inquiry"
+  },
+  "hashtags": {
+    "core": ["#luxuryvilla", "#greecevilla", "#travelgreece", "#villagoals", "#airbnbfinds"],
+    "rotation": {
+      "travel": ["#grouptravel", "#europetravel", "#luxurytravel", "#traveleurope", "#summertravel"],
+      "greece": ["#portorafti", "#athensgreece", "#greeksummer", "#visitgreece"],
+      "value": ["#splitcost", "#budgetluxury", "#travelhack", "#smarttravel"],
+      "lifestyle": ["#squadgoals", "#friendtrip", "#bachelorette", "#corporateretreat"]
+    }
+  },
+  "photoBank": {
+    "source": "facebook-album",
+    "albumId": "122095285455115407",
+    "photos": [
+      { "id": "paradise-view", "name": "Paradise view", "use": "hook-slide-pool" },
+      { "id": "paradise-view-2", "name": "Paradise view 2", "use": "pool-panorama" },
+      { "id": "bath-view", "name": "Bath with view to the beach", "use": "luxury-detail" },
+      { "id": "infinity-pool", "name": "Infinity Pool", "use": "hero-shot" },
+      { "id": "paddle-court", "name": "Paddle Court", "use": "amenity-unique" },
+      { "id": "sauna-path", "name": "Path to the Sauna", "use": "wellness-vibe" },
+      { "id": "exterior", "name": "Villa Lithos exterior", "use": "establishment-shot" },
+      { "id": "outdoor-kitchen", "name": "Outdoor Kitchen", "use": "dining-lifestyle" },
+      { "id": "living-room", "name": "Living Room", "use": "interior-luxury" },
+      { "id": "sauna", "name": "Sauna", "use": "wellness-amenity" },
+      { "id": "aerial", "name": "View from above", "use": "scale-shot" }
+    ]
+  }
+}

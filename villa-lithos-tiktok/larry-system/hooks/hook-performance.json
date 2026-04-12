@@ -1,0 +1,100 @@
+{
+  "lastUpdated": "2026-03-23",
+  "hooks": [
+    {
+      "id": "hook-001",
+      "postId": null,
+      "category": "cost-split",
+      "text": "My friends think I'm rich, but this luxury villa in Greece costs less per person than most hotels",
+      "slideSet": "carousel-1-split-the-cost",
+      "date": "2026-03-23",
+      "platform": "tiktok",
+      "views": null,
+      "likes": null,
+      "comments": null,
+      "shares": null,
+      "saves": null,
+      "profileVisits": null,
+      "engagementRate": null,
+      "status": "pending-post",
+      "cta": "Villa Lithos Porto Rafti — search on Airbnb",
+      "audio": null,
+      "postingTime": null,
+      "notes": "First pilot post. Slides ready in slides/final-1..6.png"
+    }
+  ],
+  "hookQueue": [
+    {
+      "id": "hook-002",
+      "category": "math-challenge",
+      "text": "I rented a 9-bedroom villa in Greece for my birthday. Guess how much each person paid?",
+      "status": "ready",
+      "priority": "high",
+      "source": "variation_a from hook-variations-slides.json"
+    },
+    {
+      "id": "hook-003",
+      "category": "pov",
+      "text": "POV: You found a luxury villa in Greece that sleeps 22 and costs less than a hotel",
+      "status": "ready",
+      "priority": "high",
+      "source": "variation_b from hook-variations-slides.json"
+    },
+    {
+      "id": "hook-004",
+      "category": "conspiracy",
+      "text": "Hotels in Greece don't want you to see this",
+      "status": "ready",
+      "priority": "medium",
+      "source": "variation_c from hook-variations-slides.json"
+    },
+    {
+      "id": "hook-005",
+      "category": "airport-proximity",
+      "text": "15 min from landing to THIS pool...",
+      "status": "concept",
+      "priority": "medium"
+    },
+    {
+      "id": "hook-006",
+      "category": "amenity-tour",
+      "text": "This villa has a padel court, sauna, infinity pool AND fits 22...",
+      "status": "concept",
+      "priority": "medium"
+    },
+    {
+      "id": "hook-007",
+      "category": "vs-hotel",
+      "text": "I cancelled my Mykonos hotel for this",
+      "status": "concept",
+      "priority": "high"
+    },
+    {
+      "id": "hook-008",
+      "category": "corporate",
+      "text": "Instead of a boring conference room, we booked THIS",
+      "status": "concept",
+      "priority": "low"
+    },
+    {
+      "id": "hook-009",
+      "category": "fomo-urgency",
+      "text": "Only 12 weeks left for summer 2026 bookings",
+      "status": "concept",
+      "priority": "high"
+    },
+    {
+      "id": "hook-010",
+      "category": "bachelorette",
+      "text": "Forget Benidorm. Do your hen do HERE instead",
+      "status": "concept",
+      "priority": "medium"
+    }
+  ],
+  "rules": {
+    "doubleDown": [],
+    "testing": ["cost-split", "math-challenge", "pov", "conspiracy"],
+    "dropped": []
+  },
+  "decisionLog": []
+}
