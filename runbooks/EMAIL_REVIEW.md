@@ -73,6 +73,35 @@ PATCH /v1.0/users/Yoni@grit-mind.com/messages/{id}
 ## סינון אוטומטי — תמיד ⚪
 - יעל בר — "עדכון שבועי נתוני גיוס" → סמן כנקרא, לא להציג
 
-## Fallback
-אם Graph API לא מגיב → 2 ניסיונות → דווחי ליוני
-אם token פג → נסי client_credentials מחדש → אם נכשל דווחי
+## Fallback — שרשרת נסיגה
+
+### שלב 1: Graph API (ברירת מחדל)
+```
+python3 scripts/email_review.py --review
+```
+אם הצליח → המשיכי כרגיל.
+
+### שלב 2: אם Graph API נכשל (401/403/missing secret)
+**לא לעצור ולדווח מיד.** קודם נסי Gmail MCP:
+1. השתמשי ב-`gmail_search_messages` עם query מתאים (תאריך, inbox)
+2. לכל תוצאה — `gmail_read_message` לפרטים
+3. הציגי בפורמט הרגיל של סקירת מיילים
+4. ציני בהודעה: "📬 מקור: Gmail (Outlook לא זמין זמנית)"
+
+### שלב 3: אם גם Gmail MCP לא זמין
+דווחי ליוני:
+"לא הצלחתי לגשת למיילים — לא דרך Outlook ולא דרך Gmail. צריך לבדוק גישה."
+
+### כלל ברזל
+- **לא לדווח "אין דרך לאמת ל-Outlook" בלי שניסית Gmail MCP קודם**
+- **לא להסתמך על health_check.json ישן** — תמיד לנסות את ה-API בפועל
+- **לא להגיד שהנושא "דורש secret חדש"** אם יש ערוץ חלופי זמין
+- אם Graph API חזר → עדכני את `state/health_check.json` בהתאם
+
+### ניסיון חוזר ל-Graph API
+```
+Graph API נכשל →
+1. חכי 3 שניות → ניסיון 2
+2. עדיין נכשל → עברי ל-Gmail MCP (שלב 2)
+3. דווחי ליוני על כשל Outlook **רק כנספח**, לא כחוסם
+```

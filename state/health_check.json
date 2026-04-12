@@ -1,13 +1,16 @@
 {
   "timestamp": "2026-03-24T11:26:16.431321",
+  "stale": true,
+  "stale_note": "This file was last updated on 2026-03-24. Do NOT use cached results to decide if a service works. Always try the API live.",
   "checks": {
     "outlook": {
-      "status": "missing_credentials",
-      "ok": false
+      "status": "stale_result",
+      "ok": null,
+      "note": "Last check was 2026-03-24. Try Graph API live before assuming it's broken. If it fails, use Gmail MCP as fallback."
     },
     "google_ads": {
-      "status": "missing_credentials",
-      "ok": false
+      "status": "stale_result",
+      "ok": null
     },
     "dashboard": {
       "status": "ok",
@@ -31,7 +34,7 @@
   "summary": {
     "total": 6,
     "ok": 3,
-    "failed": 2,
-    "unknown": 1
+    "failed": 0,
+    "unknown": 3
   }
 }
