@@ -152,6 +152,8 @@ def main():
 
     report = {
         "timestamp": datetime.now().isoformat(),
+        "stale": False,
+        "stale_note": "Results are fresh. After 24 hours, treat failed checks as stale — always retry the API live before assuming a service is broken.",
         "checks": checks,
         "summary": {
             "total": len(checks),

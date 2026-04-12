@@ -164,12 +164,24 @@ def format_email_for_review(emails):
     
     return review_text
 
+FALLBACK_MSG = """⚠️ FALLBACK: Outlook Graph API authentication failed.
+💡 Use Gmail MCP tools as alternative:
+   1. gmail_search_messages — search for recent emails
+   2. gmail_read_message — read specific email details
+📌 See runbooks/EMAIL_REVIEW.md for full fallback procedure."""
+
+# Exit codes:
+# 0 = success
+# 1 = general error
+# 2 = auth failed (secret missing or invalid) — agent should try Gmail MCP fallback
+# 3 = API error (authenticated but fetch failed)
+
 def main():
     if len(sys.argv) < 2 or sys.argv[1] not in ['--review', '--test']:
         print("Usage: python3 email_review.py --review [--days N]")
         print("       python3 email_review.py --test")
         return
-    
+
     days = 2
     if '--days' in sys.argv:
         try:
@@ -177,7 +189,7 @@ def main():
             days = int(sys.argv[days_idx])
         except:
             days = 2
-    
+
     if sys.argv[1] == '--test':
         print("Testing Microsoft Graph API connection...")
         token, error = get_access_token()
@@ -188,24 +200,28 @@ def main():
                 print(f"✅ Email fetch successful - found {len(emails)} emails")
             else:
                 print(f"❌ Email fetch failed: {fetch_error}")
+                sys.exit(3)
         else:
             print(f"❌ Authentication failed: {error}")
+            print(FALLBACK_MSG)
+            sys.exit(2)
         return
-    
+
     # Get access token
     print("🔐 Authenticating with Microsoft Graph...")
     token, auth_error = get_access_token()
     if not token:
         print(f"❌ Authentication failed: {auth_error}")
-        return
-    
+        print(FALLBACK_MSG)
+        sys.exit(2)
+
     # Fetch emails
     print(f"📬 Fetching emails from last {days} days...")
     emails, fetch_error = fetch_emails(token, days)
     if emails is None:
         print(f"❌ Failed to fetch emails: {fetch_error}")
-        return
-    
+        sys.exit(3)
+
     # Format for review
     review_text = format_email_for_review(emails)
     print(review_text)
