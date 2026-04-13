@@ -15,11 +15,11 @@ from collections import defaultdict
 from statistics import mean, median
 from pathlib import Path
 
-SESSIONS_DIR = "/home/jonia/.openclaw/agents/main/sessions/"
-OUTPUT_JSON = "/home/jonia/.openclaw/workspace/state/metrics_latest.json"
-CORRECTIONS_FILE = "/home/jonia/.openclaw/workspace/memory/corrections.md"
-HEARTBEAT_LOG = "/home/jonia/.openclaw/workspace/state/heartbeat_log.md"
-OPEN_TASKS = "/home/jonia/.openclaw/workspace/state/OPEN_TASKS.md"
+SESSIONS_DIR = "/home/ubuntu/.openclaw/agents/main/sessions/"
+OUTPUT_JSON = "/home/ubuntu/.openclaw/workspace/state/metrics_latest.json"
+CORRECTIONS_FILE = "/home/ubuntu/.openclaw/workspace/memory/corrections.md"
+HEARTBEAT_LOG = "/home/ubuntu/.openclaw/workspace/state/heartbeat_log.md"
+OPEN_TASKS = "/home/ubuntu/.openclaw/workspace/state/OPEN_TASKS.md"
 CUTOFF_DAYS = 30
 
 

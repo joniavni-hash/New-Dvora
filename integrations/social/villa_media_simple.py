@@ -17,7 +17,7 @@ class VillaMediaSimple:
     
     def __init__(self):
         self.folder_url = "https://drive.google.com/drive/folders/1x2qEmoYopOtlhXWQfunQ5H7a_hy2oisI"
-        self.workspace = Path("/home/jonia/.openclaw/workspace")
+        self.workspace = Path("/home/ubuntu/.openclaw/workspace")
         self.cache_dir = self.workspace / "cache" / "villa_media"
         self.cache_dir.mkdir(parents=True, exist_ok=True)
     

@@ -97,7 +97,7 @@
         "required": [
           "BRAVE_API_KEY"
         ],
-        "setup_hint": "Add BRAVE_API_KEY to secrets/.env"
+        "setup_hint": "Add BRAVE_API_KEY to /home/ubuntu/.openclaw/.env"
       },
       "auth_type": "api_key",
       "capabilities": [

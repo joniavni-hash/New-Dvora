@@ -105,7 +105,7 @@ python3 scripts/trace_service.py --stats
 מיקום קבוע:
 1. `/home/ubuntu/.openclaw/.env` — קובץ ה-env הראשי על MyClaw
 2. Environment variables — אם OpenClaw מזריק אותם
-3. `secrets/.env` — relative to workspace root (fallback)
+3. `/home/ubuntu/.openclaw/.env` — קובץ ה-env הראשי (fallback)
 
 **כלל:** לפני כל קריאת API שדורשת auth, קראי את הקובץ `/home/ubuntu/.openclaw/.env` ישירות. לא להסתמך על env vars בלבד.
 **כלל:** אם auth נכשל, דווחי את השגיאה המדויקת (ראי `integrations/OUTLOOK.md` > "When auth fails"). לא להגיד "אין דרך תקפה" בלי לפרט.

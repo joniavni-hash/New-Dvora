@@ -27,6 +27,6 @@ Data Handling
 Villa Lithos | Porto Rafti, Greece | Internal Tool | March 2026
 """
 
-with open('/home/jonia/.openclaw/workspace/google_ads_design_doc.txt', 'w') as f:
+with open('/home/ubuntu/.openclaw/workspace/google_ads_design_doc.txt', 'w') as f:
     f.write(content)
 print('OK')

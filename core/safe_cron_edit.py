@@ -98,7 +98,7 @@ def main():
     
     elif command == "test-edit":
         # Test the safe edit function
-        result = safe_cron_edit("old", "new", "/home/jonia/.openclaw/cron/jobs.json")
+        result = safe_cron_edit("old", "new", "/home/ubuntu/.openclaw/cron/jobs.json")
         print(f"Test edit result: {result}")
     
     else:

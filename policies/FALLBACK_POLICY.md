@@ -25,7 +25,7 @@ Token expired / 401 / 403 →
 
 ### אבחון שגיאות אימות
 - `invalid_client` → Secret פג תוקף ב-Azure. להגיד ליוני ליצור חדש.
-- `missing_credentials` → Secret לא מוגדר. לבדוק secrets/.env.
+- `missing_credentials` → Secret לא מוגדר. לבדוק /home/ubuntu/.openclaw/.env.
 - `401/403` → הרשאות חסרות. לבדוק את ההגדרות ב-Azure Portal.
 - Timeout → בעיית רשת. לנסות שוב מאוחר יותר.
 

@@ -9,7 +9,7 @@
 
 **פורמט**: JSON object per interaction.  
 **אחסון**: JSONL file, rotated daily.  
-**מיקום**: `/home/jonia/.openclaw/workspace/evaluation/traces/YYYY-MM-DD.jsonl`
+**מיקום**: `/home/ubuntu/.openclaw/workspace/evaluation/traces/YYYY-MM-DD.jsonl`
 
 ---
 

@@ -36,9 +36,9 @@ def get_access_token():
                         client_secret = v.strip()
                         break
 
-    # Method 3: secrets/.env file (relative to workspace)
+    # Method 3: /home/ubuntu/.openclaw/.env file
     if not client_secret:
-        secrets_file = Path(__file__).parent.parent / "secrets" / ".env"
+        secrets_file = Path("/home/ubuntu/.openclaw/.env")
         if secrets_file.exists():
             for line in secrets_file.read_text().splitlines():
                 line = line.strip()
@@ -61,7 +61,7 @@ def get_access_token():
             pass
     
     if not client_secret:
-        return None, "MS_GRAPH_CLIENT_SECRET not found in environment, secrets/.env, or temp script"
+        return None, "MS_GRAPH_CLIENT_SECRET not found in environment, /home/ubuntu/.openclaw/.env, or temp script"
     
     url = f"https://login.microsoftonline.com/{TENANT_ID}/oauth2/v2.0/token"
     
@@ -84,7 +84,7 @@ def get_access_token():
                 azure_error = err.get('error', '')
                 azure_desc = err.get('error_description', '')
                 if 'invalid_client' in azure_error or 'invalid_client' in azure_desc:
-                    error_detail = "SECRET_EXPIRED: ה-secret של Outlook פג תוקף ב-Azure. צריך ליצור secret חדש ב-Azure Portal ולעדכן ב-secrets/.env"
+                    error_detail = "SECRET_EXPIRED: ה-secret של Outlook פג תוקף ב-Azure. צריך ליצור secret חדש ב-Azure Portal ולעדכן ב-/home/ubuntu/.openclaw/.env"
                 elif 'unauthorized_client' in azure_error:
                     error_detail = "PERMISSIONS: ל-client אין הרשאות מתאימות ב-Azure. צריך לבדוק App Registration permissions."
                 else:

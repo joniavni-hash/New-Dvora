@@ -10,7 +10,7 @@
 ## דפוסי עבודה
 
 ### Outlook Auth
-- Secret נמצא ב-`/home/ubuntu/.openclaw/.env` (לא ב-`secrets/.env`)
+- Secret נמצא ב-`/home/ubuntu/.openclaw/.env`
 - תמיד לקרוא את הקובץ ישירות, לא להסתמך על env vars
 - אם auth נכשל: לדווח שגיאה מדויקת, לא "אין דרך תקפה"
 - `invalid_client` = secret שגוי או פג תוקף

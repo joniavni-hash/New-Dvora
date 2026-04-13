@@ -24,7 +24,7 @@ class VillaMediaManager:
     """
     
     def __init__(self, workspace_path: str = None):
-        self.workspace = Path(workspace_path or "/home/jonia/.openclaw/workspace")
+        self.workspace = Path(workspace_path or "/home/ubuntu/.openclaw/workspace")
         self.media_cache = self.workspace / "cache" / "villa_media"
         self.media_cache.mkdir(parents=True, exist_ok=True)
         self.usage_log = self.workspace / "state" / "villa_media_usage.json"

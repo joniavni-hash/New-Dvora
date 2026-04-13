@@ -14,7 +14,7 @@ Google Ads campaign management — reporting, pausing/enabling campaigns, keywor
 - Current Status: PAUSED (paused 20.3.2026 — מצב ביטחוני)
 
 ## Credentials
-All credentials in `secrets/.env` (prefixed `GOOGLE_ADS_*`):
+All credentials in `/home/ubuntu/.openclaw/.env` (prefixed `GOOGLE_ADS_*`):
 - `GOOGLE_ADS_DEVELOPER_TOKEN`
 - `GOOGLE_ADS_CLIENT_ID`
 - `GOOGLE_ADS_CLIENT_SECRET`
@@ -23,8 +23,8 @@ All credentials in `secrets/.env` (prefixed `GOOGLE_ADS_*`):
 - `GOOGLE_ADS_MCC_ID`
 
 ## Script
-`scripts/google_ads_report.py` — loads credentials from `secrets/.env`, generates report and sends via WhatsApp.
-- Fixed 22.3.2026: migrated from hardcoded REDACTED values to secrets/.env
+`scripts/google_ads_report.py` — loads credentials from `/home/ubuntu/.openclaw/.env`, generates report and sends via WhatsApp.
+- Fixed 22.3.2026: migrated from hardcoded REDACTED values to /home/ubuntu/.openclaw/.env
 - ⚠️ Running `python3 scripts/google_ads_report.py` sends the report to WhatsApp automatically (no dry-run mode)
 
 ## Allowed Actions

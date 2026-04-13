@@ -11,8 +11,8 @@ from datetime import datetime, date
 import sys
 import os
 
-# Config — load from secrets/.env
-SECRETS_PATH = os.path.join(os.path.expanduser('~/.openclaw/workspace/secrets'), '.env')
+# Config — load from /home/ubuntu/.openclaw/.env
+SECRETS_PATH = '/home/ubuntu/.openclaw/.env'
 YAML_PATH = '/tmp/google_ads_mcc.yaml'
 OPENCLAW_DIR = os.path.expanduser('~/.openclaw')
 

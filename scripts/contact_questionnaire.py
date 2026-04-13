@@ -11,7 +11,7 @@ from pathlib import Path
 
 class ContactQuestionnaire:
     def __init__(self):
-        self.contacts_dir = "/home/jonia/.openclaw/workspace/contacts"
+        self.contacts_dir = "/home/ubuntu/.openclaw/workspace/contacts"
         self.current_contact = {}
         self.current_step = 0
         

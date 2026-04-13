@@ -12,7 +12,7 @@ Last verified: 2026-03-17
 When Yoni says "emails" or "mailbox", default to Outlook unless he explicitly says Gmail.
 ## Auth
 Auth method: client_credentials flow via Microsoft Graph API.
-Secret: `MS_GRAPH_CLIENT_SECRET` — stored in `secrets/.env` or as environment variable.
+Secret: `MS_GRAPH_CLIENT_SECRET` — stored in `/home/ubuntu/.openclaw/.env` or as environment variable.
 
 ### Azure client secret expiry
 Azure AD client secrets expire. Default expiry is 6–24 months from creation.
@@ -22,13 +22,13 @@ When an expired secret is the cause, the Azure token endpoint returns `invalid_c
 ### Secret sources (checked in order)
 1. Environment variable `MS_GRAPH_CLIENT_SECRET`
 2. `/home/ubuntu/.openclaw/.env` (OpenClaw root env file)
-3. `secrets/.env` file (key=value format, relative to workspace root)
+3. `/home/ubuntu/.openclaw/.env` file (key=value format)
 
 ### When auth fails
 1. **Always try the API live** — don't rely on cached `state/health_check.json`
 2. Check the error: is it `invalid_client` (expired secret) or network/timeout?
 3. Report the specific error to Yoni — not just "can't authenticate"
-4. If expired: "ה-secret של Outlook פג תוקף. צריך ליצור חדש ב-Azure Portal ולעדכן ב-secrets/.env"
+4. If expired: "ה-secret של Outlook פג תוקף. צריך ליצור חדש ב-Azure Portal ולעדכן ב-/home/ubuntu/.openclaw/.env"
 
 ## Operational notes
 Use configured Microsoft Graph access.

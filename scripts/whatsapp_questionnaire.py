@@ -12,7 +12,7 @@ from contact_questionnaire import ContactQuestionnaire
 
 class WhatsAppQuestionnaire:
     def __init__(self):
-        self.state_file = "/home/jonia/.openclaw/workspace/state/active_questionnaire.json"
+        self.state_file = "/home/ubuntu/.openclaw/workspace/state/active_questionnaire.json"
         
     def load_state(self):
         """טוען מצב שאלון פעיל"""

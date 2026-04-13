@@ -13,13 +13,13 @@ from dotenv import dotenv_values
 from flask import Flask, jsonify, render_template
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRETS_ENV = BASE_DIR / "secrets" / ".env"
+SECRETS_ENV = Path("/home/ubuntu/.openclaw/.env")
 
 app = Flask(__name__)
 
 
 def load_secrets():
-    """Load secrets from secrets/.env file."""
+    """Load secrets from /home/ubuntu/.openclaw/.env file."""
     if SECRETS_ENV.exists():
         return dotenv_values(SECRETS_ENV)
     return {}

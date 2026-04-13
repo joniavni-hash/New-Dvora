@@ -17,8 +17,8 @@ class VillaMediaOAuth:
     """
     
     def __init__(self):
-        self.workspace = Path("/home/jonia/.openclaw/workspace")
-        self.gog_config_dir = Path("/home/jonia/.config/gogcli")
+        self.workspace = Path("/home/ubuntu/.openclaw/workspace")
+        self.gog_config_dir = Path("/home/ubuntu/.config/gogcli")
         self.credentials_file = self.gog_config_dir / "credentials.json"
         self.client_secret_file = self.gog_config_dir / "client_secret.json"
         

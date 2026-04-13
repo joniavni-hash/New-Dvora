@@ -13,13 +13,13 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 OPENCLAW_ENV = Path("/home/ubuntu/.openclaw/.env")
-SECRETS_PATH = BASE_DIR / "secrets" / ".env"
+SECRETS_PATH = Path("/home/ubuntu/.openclaw/.env")
 RESULTS_PATH = BASE_DIR / "state" / "health_check.json"
 
 
 def load_secrets():
     secrets = {}
-    # Check OpenClaw root .env first, then workspace secrets/.env
+    # Check OpenClaw root .env first, then /home/ubuntu/.openclaw/.env
     for env_path in [OPENCLAW_ENV, SECRETS_PATH]:
         if env_path.exists():
             for line in env_path.read_text().splitlines():
@@ -49,7 +49,7 @@ def check_outlook(secrets):
                 "status": "missing_credentials",
                 "ok": False,
                 "missing": missing,
-                "action": "הגדירו את המפתחות החסרים ב-secrets/.env"
+                "action": "הגדירו את המפתחות החסרים ב-/home/ubuntu/.openclaw/.env"
             }
 
         data = urllib.parse.urlencode({
@@ -80,7 +80,7 @@ def check_outlook(secrets):
                     return {
                         "status": "secret_expired",
                         "ok": False,
-                        "action": "Secret פג תוקף ב-Azure. צריך ליצור חדש ב-Azure Portal > App Registrations > Certificates & secrets ולעדכן ב-secrets/.env"
+                        "action": "Secret פג תוקף ב-Azure. צריך ליצור חדש ב-Azure Portal > App Registrations > Certificates & secrets ולעדכן ב-/home/ubuntu/.openclaw/.env"
                     }
                 return {
                     "status": f"auth_error:{azure_error}",

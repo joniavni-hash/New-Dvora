@@ -44,7 +44,7 @@ Outlook (Yoni@grit-mind.com) בלבד — אלא אם יוני מציין Gmail 
 Microsoft Graph API — client credentials flow
 - Tenant: f3f1de48-2393-431e-a506-bd5008c40298
 - Client ID: 846b39a9-c440-4468-9bae-51e2774a914b
-- Secret: read `MS_GRAPH_CLIENT_SECRET` from env var, or from `/home/ubuntu/.openclaw/.env`, or from `secrets/.env`
+- Secret: read `MS_GRAPH_CLIENT_SECRET` from env var, or from `/home/ubuntu/.openclaw/.env`
 - User: Yoni@grit-mind.com
 
 ### סימון כנקרא
@@ -87,8 +87,8 @@ Graph API נכשל →
 
 | שגיאה | משמעות | מה להגיד ליוני |
 |-------|--------|---------------|
-| `MS_GRAPH_CLIENT_SECRET not found` | Secret לא מוגדר בסביבה | "ה-secret של Outlook לא נמצא ב-secrets/.env. צריך להגדיר." |
-| `invalid_client` בתשובת Azure | Secret פג תוקף | "ה-secret של Outlook פג תוקף ב-Azure. צריך ליצור חדש בפורטל ולעדכן ב-secrets/.env." |
+| `MS_GRAPH_CLIENT_SECRET not found` | Secret לא מוגדר בסביבה | "ה-secret של Outlook לא נמצא ב-/home/ubuntu/.openclaw/.env. צריך להגדיר." |
+| `invalid_client` בתשובת Azure | Secret פג תוקף | "ה-secret של Outlook פג תוקף ב-Azure. צריך ליצור חדש בפורטל ולעדכן ב-/home/ubuntu/.openclaw/.env." |
 | `401` / `403` | Secret שגוי או הרשאות חסרות | "Outlook מחזיר שגיאת הרשאה. צריך לבדוק את ה-secret וההרשאות ב-Azure." |
 | Timeout / connection error | בעיית רשת | "Graph API לא מגיב — כנראה בעיית רשת. אנסה שוב מאוחר יותר." |
 

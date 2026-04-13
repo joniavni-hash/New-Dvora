@@ -2,7 +2,7 @@
 """Push dashboard data to Vercel Blob via the /api/push endpoint.
 
 Run from cron every 2 minutes:
-  */2 * * * * cd /home/jonia/.openclaw/workspace && /usr/bin/python3 scripts/dashboard_push.py
+  */2 * * * * cd /home/ubuntu/.openclaw/workspace && /usr/bin/python3 scripts/dashboard_push.py
 
 Required env vars:
   DASHBOARD_VERCEL_URL  — e.g. https://dvorah-dashboard.vercel.app

@@ -12,7 +12,7 @@ Dashboard hosting and deployment.
 
 ## Credentials Location
 - CLI: ~/.local/share/com.vercel.cli/auth.json
-- Push token: secrets/.env (DASHBOARD_PUSH_TOKEN)
+- Push token: /home/ubuntu/.openclaw/.env (DASHBOARD_PUSH_TOKEN)
 - Blob store: dvorah-blob (store_HmpM1PBtwLfJhlCm)
 
 ## Cron

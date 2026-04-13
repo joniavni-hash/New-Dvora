@@ -12,7 +12,7 @@ Website analytics and performance tracking — sessions, users, conversions, tra
 - Scope: https://www.googleapis.com/auth/analytics.readonly
 
 ## Credentials
-All credentials in `secrets/.env` (prefixed `GOOGLE_ANALYTICS_*`):
+All credentials in `/home/ubuntu/.openclaw/.env` (prefixed `GOOGLE_ANALYTICS_*`):
 - `GOOGLE_ANALYTICS_PROPERTY_ID`
 - `GOOGLE_ANALYTICS_CLIENT_ID`
 - `GOOGLE_ANALYTICS_CLIENT_SECRET`
@@ -57,4 +57,4 @@ All credentials in `secrets/.env` (prefixed `GOOGLE_ANALYTICS_*`):
 - OAuth 2.0 with refresh token
 - Scoped to analytics.readonly only
 - No write permissions to GA4 property
-- Credentials stored securely in secrets/.env
+- Credentials stored securely in /home/ubuntu/.openclaw/.env

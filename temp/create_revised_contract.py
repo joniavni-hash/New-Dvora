@@ -205,6 +205,6 @@ add_rtl_para(doc, "")
 add_rtl_para(doc, "נספח א' - הצעת מחיר מאת ח.ב.ג יזמות והשקעה בע\"מ", bold=True)
 
 # Save
-output_path = '/home/jonia/.openclaw/workspace/הסכם_מיגונית_מתוקן_לטובת_סיטיקידס.docx'
+output_path = '/home/ubuntu/.openclaw/workspace/הסכם_מיגונית_מתוקן_לטובת_סיטיקידס.docx'
 doc.save(output_path)
 print(f"Saved to: {output_path}")

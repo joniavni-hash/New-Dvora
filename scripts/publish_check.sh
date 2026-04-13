@@ -53,10 +53,8 @@ fi
 CRITICAL_FILES=(
     "AGENTS.md"
     "MEMORY_INDEX.md"
-    "identity/SOUL.md"
-    "identity/VOICE.md"
-    "identity/OPERATING_PRINCIPLES.md"
-    "identity/RULE_PRIORITY.md"
+    "SOUL.md"
+    "IDENTITY.md"
     "policies/MEMORY_POLICY.md"
     "policies/EXTERNAL_ACTIONS_POLICY.md"
     "policies/PRIVACY_POLICY.md"

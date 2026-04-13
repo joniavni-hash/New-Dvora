@@ -77,7 +77,7 @@ class IntegrationHealthMonitor:
                 return False, "missing_credentials", {
                     "error": "MS_GRAPH_CLIENT_SECRET not found",
                     "required": ["MS_GRAPH_CLIENT_SECRET"],
-                    "setup_hint": "Add MS_GRAPH_CLIENT_SECRET to secrets/.env"
+                    "setup_hint": "Add MS_GRAPH_CLIENT_SECRET to /home/ubuntu/.openclaw/.env"
                 }
             
             # Test token acquisition
@@ -169,7 +169,7 @@ class IntegrationHealthMonitor:
         if not api_key:
             return False, "missing_api_key", {
                 "required": ["BRAVE_API_KEY"],
-                "setup_hint": "Add BRAVE_API_KEY to secrets/.env"
+                "setup_hint": "Add BRAVE_API_KEY to /home/ubuntu/.openclaw/.env"
             }
         
         try:

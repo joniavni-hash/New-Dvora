@@ -18,7 +18,7 @@
 ---
 
 ### 2026-04-13 — Outlook auth path
-**מה קרה:** דבורה חיפשה secret ב-`secrets/.env` שלא קיים, נכשלה ב-auth, ודיווחה "אין דרך תקפה"
+**מה קרה:** דבורה חיפשה secret ב-`/home/ubuntu/.openclaw/.env` שלא קיים, נכשלה ב-auth, ודיווחה "אין דרך תקפה"
 **מה היה צריך:** לקרוא מ-`/home/ubuntu/.openclaw/.env` ולדווח שגיאה מדויקת
 **כלל חדש:** תמיד לקרוא secret מ-`/home/ubuntu/.openclaw/.env`. אם auth נכשל — לדווח את השגיאה המדויקת מ-Azure, לא הודעה גנרית.
 

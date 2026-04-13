@@ -52,7 +52,7 @@ def main():
             # Provide fix hints
             if details["reason"] == "missing_credentials":
                 if integration == "outlook":
-                    print("     Fix: Add MS_GRAPH_CLIENT_SECRET to secrets/.env")
+                    print("     Fix: Add MS_GRAPH_CLIENT_SECRET to /home/ubuntu/.openclaw/.env")
         
         # In real implementation, this would send notification to user
         print("\n📱 User notification recommended for critical failures")

@@ -81,7 +81,7 @@ class AgentRegistry:
                 capture_output=True,
                 text=True,
                 timeout=300,
-                cwd='/home/jonia/.openclaw/workspace'
+                cwd='/home/ubuntu/.openclaw/workspace'
             )
             
             if result.returncode == 0:
@@ -134,7 +134,7 @@ class AgentRegistry:
                 capture_output=True,
                 text=True,
                 timeout=10,
-                cwd='/home/jonia/.openclaw/workspace'
+                cwd='/home/ubuntu/.openclaw/workspace'
             )
             return {
                 'available': True if result.returncode == 0 else False,

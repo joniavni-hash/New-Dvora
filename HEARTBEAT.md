@@ -9,7 +9,7 @@
 
 **בכל heartbeat אחרי 07:00 (לפני 09:00):**
 ```bash
-python3 /home/jonia/.openclaw/workspace/scripts/health_check.py
+python3 /home/ubuntu/.openclaw/workspace/scripts/health_check.py
 ```
 - כשלון → דווחי ליוני
 - הכל תקין → דלגי
@@ -21,7 +21,7 @@ python3 /home/jonia/.openclaw/workspace/scripts/health_check.py
 
 **בכל heartbeat אחרי 08:00 (לפני 10:00):**
 ```bash
-python3 /home/jonia/.openclaw/workspace/core/research_scheduler.py run-scheduled
+python3 /home/ubuntu/.openclaw/workspace/core/research_scheduler.py run-scheduled
 ```
 - 3+ משימות מחקר → דווחי תמצית קצרה
 - התראות דחופות → הודעה מיידית
@@ -132,7 +132,7 @@ python3 /home/jonia/.openclaw/workspace/core/research_scheduler.py run-scheduled
 **בכל heartbeat אחרי 21:00:** בדקי מתי נשלח סיכום X אחרון.
 **3+ ימים:**
 ```bash
-python3 /home/jonia/.openclaw/workspace/scripts/x_feed.py
+python3 /home/ubuntu/.openclaw/workspace/scripts/x_feed.py
 ```
 קראי `state/x_feed_latest.md` → סיכום קצר ליוני.
 
@@ -184,14 +184,14 @@ python3 /home/jonia/.openclaw/workspace/scripts/x_feed.py
 
 ### מדדי ביצועים
 ```bash
-python3 /home/jonia/.openclaw/workspace/scripts/metrics.py
+python3 /home/ubuntu/.openclaw/workspace/scripts/metrics.py
 ```
 סיכום קצר ליוני.
 
 ### 🔬 Intelligence Briefing שבועי — ראשון 09:00
 **בכל heartbeat ביום ראשון אחרי 09:00 (לפני 11:00):**
 ```bash
-python3 /home/jonia/.openclaw/workspace/core/research_scheduler.py message-briefing 168
+python3 /home/ubuntu/.openclaw/workspace/core/research_scheduler.py message-briefing 168
 ```
 שלחי briefing מלא עם:
 - מחקר השבוע
