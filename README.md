@@ -1,12 +1,17 @@
-# דבורה (Dvora)
+# Dvora
 
-מערכת ניהול אישית וקבלת החלטות, מופעלת על ידי Claude Code.
+Personal operations agent for Yoni Avni, running on [OpenClaw](https://openclaw.com).
 
-## מבנה
-- `CLAUDE.md` - הוראות והקשר לקלוד (נטען אוטומטית)
-- `docs/` - מסמכי אסטרטגיה, תהליכים, יומן החלטות
-- `vault/` - Obsidian vault (daily notes, פרויקטים, תובנות)
-- `scripts/` - סקריפטים אוטומטיים
+## What Dvora does
+- Manages email (Outlook), calendar, and tasks
+- Runs health checks and automated routines
+- Conducts research and summarizes feeds
+- Maintains persistent memory across sessions
+- Executes runbooks for recurring workflows
 
-## כלים מחוברים
-Supabase | ClickUp | Google Calendar | Gmail | Canva | Netlify | Supermetrics | DocuSign
+## Stack
+- OpenClaw runtime
+- Python scripts
+- Microsoft Graph (Outlook/Calendar)
+- WhatsApp gateway
+- Git-based state management
