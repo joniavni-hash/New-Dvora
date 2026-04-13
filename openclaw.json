@@ -36,7 +36,7 @@
         "enabled": true,
         "provider": "openai",
         "remote": {
-          "apiKey": "REMOVED"
+          "apiKey": "REPLACE_WITH_ENV_VAR"
         }
       },
       "subagents": {
@@ -169,7 +169,7 @@
         "enabled": false
       },
       "openai-whisper-api": {
-        "apiKey": "REMOVED"
+        "apiKey": "REPLACE_WITH_ENV_VAR"
       }
     }
   },
