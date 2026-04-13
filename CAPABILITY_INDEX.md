@@ -58,7 +58,6 @@ Keywords:
 
 Load order:
 1. `integrations/CONTROL4.md`
-2. `TOOLS.md` אם צריך שמות מקומיים או כינויים
 
 ## Rides / Gett
 Keywords:
@@ -107,7 +106,7 @@ Keywords:
 
 Load order:
 1. `integrations/GOOGLE_ANALYTICS.md`
-2. `secrets/.env` for credentials
+2. `/home/ubuntu/.openclaw/.env` for credentials
 3. Villa Lithos property analysis
 
 ## Gmail / Google Workspace
