@@ -32,6 +32,10 @@
 - סיווג לפי `EMAIL_RULES.md`
 - תיקון auth path בוצע 13.4.2026
 
+### Model Routing
+- ברירת מחדל: Sonnet | Sub-agents: Haiku | משפטי/רגיש: Opus
+- פירוט מלא: `policies/MODEL_ROUTING_POLICY.md`
+
 ### תהליכי לילה
 - Dreaming (02:00) → `DREAMS.md`
 - Self-Improving (03:00) → `self-improving/`
