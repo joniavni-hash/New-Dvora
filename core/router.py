@@ -58,6 +58,12 @@ class Router:
             self.health_monitor = None
 
         self.patterns = {
+            "email": [
+                r"מייל|mail|inbox|אימייל|אאוטלוק|outlook",
+                r"תיבה|תיבת.?דואר|zero.?inbox",
+                r"סרקי|סריקה|סריקת|scan",
+                r"שלחי.*מייל|send.*mail|תשובה.*מייל|reply.*mail",
+            ],
             "legal": [
                 r"חוזה|הסכם|contract|legal",
                 r"משפטי|דין|law|clause",
@@ -113,6 +119,7 @@ class Router:
     # Legal uses tier2 by default.  Escalation to tier3 must go through
     # agent_executor with an explicit justification.
     DOMAIN_TIERS: Dict[str, str] = {
+        "email":            "tier2",   # email classification + drafting
         "legal":            "tier2",   # PR1: was tier3 — downgraded
         "whatsapp_group":   "tier1",   # always cheap
         "group_retrieval":  "tier1",   # retrieval is cheap
@@ -147,6 +154,7 @@ class Router:
             best = max(scores, key=scores.get)
             confidence = min(scores[best] * 2, 1.0)
             agent_map = {
+                "email":            "direct",  # Dvora handles email (sub-agents: asnat for classification)
                 "legal":            "masha",
                 "fitness":          "dana",
                 "whatsapp_group":   "odya",

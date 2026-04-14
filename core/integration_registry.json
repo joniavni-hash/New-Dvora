@@ -2,6 +2,15 @@
   "version": "1.0",
   "last_updated": "2026-03-24T15:46:30.062714Z",
   "integrations": {
+    "email": {
+      "enabled": true,
+      "required_files": [
+        "integrations/OUTLOOK.md",
+        "runbooks/EMAIL_REVIEW.md",
+        "EMAIL_RULES.md",
+        "ZERO_MAILBOX.md"
+      ]
+    },
     "outlook": {
       "enabled": true,
       "connected": true,
